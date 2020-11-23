@@ -10,7 +10,8 @@
                 "${file}",
                 "-o",
                 "${fileDirname}/${fileBasenameNoExtension}",
-                "-pthread"
+                "-pthread",
+                "-I${workspaceFolder}/include"
             ],
             "options": {
                 "cwd": "/usr/bin"
@@ -33,7 +34,9 @@
                 "${file}",
                 "-o",
                 "${fileDirname}/${fileBasenameNoExtension}",
-                "-pthread"
+                "-pthread",
+                "-I${workspaceFolder}/include",
+                "-I${workspaceFolder}/src"
             ],
             "options": {
                 "cwd": "/usr/bin"

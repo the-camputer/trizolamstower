@@ -5,5 +5,6 @@
 
 struct Symbol {
     std::string nonterminal;
-    std::regex terminal;
+    std::string terminal_pattern;
+    std::regex *terminal = nullptr;
 };

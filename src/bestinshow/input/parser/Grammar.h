@@ -11,7 +11,7 @@ class Grammar {
         std::vector<Rule*> *rules = nullptr;
 
     public:
-        Grammar(const std::string&& grammar_name);
+        Grammar(const std::string grammar_name);
         Grammar();
         Grammar(const Grammar &prev);
         ~Grammar();

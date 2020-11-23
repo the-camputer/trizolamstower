@@ -3,7 +3,7 @@
 #include <vector>
 #include "Rule.h"
 
-Grammar::Grammar(const std::string&& grammar_name) : grammar_name { grammar_name } {
+Grammar::Grammar(const std::string grammar_name) : grammar_name { grammar_name } {
     rules = new std::vector<Rule*>{};
 }
 
