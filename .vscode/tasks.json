@@ -36,6 +36,7 @@
                 "${fileDirname}/${fileBasenameNoExtension}",
                 "-pthread",
                 "-I${workspaceFolder}/include",
+                "-I${workspaceFolder}/lib",
                 "-I${workspaceFolder}/src"
             ],
             "options": {

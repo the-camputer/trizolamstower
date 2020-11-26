@@ -1,5 +1,5 @@
-#include "Rule.h"
-#include "Symbol.h"
+#include <bestinshow/input/parser/Rule.h>
+#include <bestinshow/input/parser/Symbol.h>
 #include <vector>
 #include <string>
 
@@ -63,18 +63,19 @@ void Rule::add_production(Production&& production)
     }
 }
 
-std::ostream& operator<<(std::ostream& os, const Rule& v) {
+std::ostream& operator<<(std::ostream& os, const Rule& v) 
+{
     os << "<" << v.get_rule_name() << "> ::= ";
 
     auto production_list = v.get_productions();
     if (production_list) {
         for(auto p = (*production_list).begin(); p != (*production_list).end(); p++) {
             auto production = **p;
-            std::for_each(production.begin(), production.end(), [&os] (Symbol &s){
-                if (s.terminal) {
-                    os << "\"" << s.terminal_pattern << "\" ";
+            std::for_each(production.begin(), production.end(), [&os] (Symbol *s){
+                if (s->terminal) {
+                    os << "\"" << s->terminal_pattern << "\" ";
                 } else {
-                    os << s.nonterminal << " ";
+                    os << s->nonterminal << " ";
                 }
             });
 
