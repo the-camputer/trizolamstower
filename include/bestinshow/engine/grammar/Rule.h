@@ -7,7 +7,7 @@
 #include <ostream>
 
 
-using Production = std::vector<Symbol*>;
+using Production = std::vector<Symbol>;
 using ProductionList = std::vector<Production*>;
 
 class Rule {
@@ -24,6 +24,6 @@ class Rule {
         std::string get_rule_name() const;
         void set_rule_name(std::string rule_name);
         ProductionList* get_productions() const;
-        void add_production(Production&& production);
+        void add_production(Production& production);
         friend std::ostream& operator<<(std::ostream& os, const Rule& v);
 };

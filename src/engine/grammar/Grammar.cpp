@@ -1,5 +1,5 @@
-#include "bestinshow/input/parser/Grammar.h"
-#include "bestinshow/input/parser/Rule.h"
+#include "bestinshow/engine/grammar/Grammar.h"
+#include "bestinshow/engine/grammar/Rule.h"
 #include <string>
 #include <vector>
 

@@ -1,5 +1,5 @@
-#include <bestinshow/input/parser/Rule.h>
-#include <bestinshow/input/parser/Symbol.h>
+#include <bestinshow/engine/grammar/Rule.h>
+#include <bestinshow/engine/grammar/Symbol.h>
 #include <vector>
 #include <string>
 
@@ -54,7 +54,7 @@ std::vector<Production*>* Rule::get_productions() const
     return this->productions;
 }
 
-void Rule::add_production(Production&& production)
+void Rule::add_production(Production& production)
 {
     if (!productions) {
         this->productions = new ProductionList{ &production };
@@ -71,15 +71,15 @@ std::ostream& operator<<(std::ostream& os, const Rule& v)
     if (production_list) {
         for(auto p = (*production_list).begin(); p != (*production_list).end(); p++) {
             auto production = **p;
-            std::for_each(production.begin(), production.end(), [&os] (Symbol *s){
-                if (s->terminal) {
-                    os << "\"" << s->terminal_pattern << "\" ";
+            std::for_each(production.begin(), production.end(), [&os] (Symbol s){
+                if (s.terminal) {
+                    os << "\"" << s.terminal_pattern << "\" ";
                 } else {
-                    os << s->nonterminal << " ";
+                    os << "<" << s.nonterminal << ">";
                 }
             });
 
-            if (p != (*production_list).end()) {
+            if (p != (*production_list).end() - 1) {
                 os << " | ";
             }
         }
