@@ -14,3 +14,15 @@ TEST_CASE("Grammar Creation") {
 
     REQUIRE(test_grammar.get_first_rule_name() == "test-rule");
 }
+
+TEST_CASE("Grammar Printing") {
+    std::ostringstream os{};
+
+    SECTION("Empty rule set prints just the grammar name as an initial rule") {
+        Grammar test_grammar { "test-grammar" };
+
+        os << test_grammar;
+
+        REQUIRE(os.str() == "<test-grammar> ::= \n");
+    }
+}

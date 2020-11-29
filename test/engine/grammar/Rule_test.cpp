@@ -9,7 +9,7 @@ TEST_CASE("Rule Creation") {
     REQUIRE(test_rule.get_rule_name() == "test-rule");
 }
 
-TEST_CASE("Printing") {
+TEST_CASE("Rule Printing") {
     std::ostringstream os{};
 
     SECTION("empty productions prints just the name in BNF format") {
