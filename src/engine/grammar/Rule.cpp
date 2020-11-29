@@ -67,20 +67,16 @@ std::ostream& operator<<(std::ostream& os, const Rule& v)
 {
     os << "<" << v.get_rule_name() << "> ::= ";
 
-    auto production_list = v.get_productions();
-    if (production_list) {
-        for(auto p = (*production_list).begin(); p != (*production_list).end(); p++) {
-            auto production = **p;
-            std::for_each(production.begin(), production.end(), [&os] (Symbol s){
-                if (s.terminal) {
-                    os << "\"" << s.terminal_pattern << "\" ";
-                } else {
-                    os << "<" << s.nonterminal << ">";
-                }
-            });
+    auto ref_production_list = v.get_productions();
+    if (ref_production_list) {
+        auto production_list = *ref_production_list;
+        for(Production *p : production_list) {
+            for(Symbol s : *p) {
+                os << s;
+            }
 
-            if (p != (*production_list).end() - 1) {
-                os << " | ";
+            if (p != *(production_list.end() - 1)) {
+                os << "|";
             }
         }
     }

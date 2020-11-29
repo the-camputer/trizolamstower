@@ -38,11 +38,9 @@ TEST_CASE("Printing") {
         Rule test_rule{ "test-rule" };
         Production *new_production = new Production();
         std::string terminal_regex_pattern = "[a-zA-Z0-9]";
-        std::regex *reg = new std::regex(terminal_regex_pattern);
         Symbol new_terminal {
             nonterminal: "",
-            terminal_pattern: terminal_regex_pattern, 
-            terminal: reg
+            terminal_pattern: terminal_regex_pattern
         };
 
         new_production->push_back(new_terminal);
@@ -50,9 +48,31 @@ TEST_CASE("Printing") {
 
         os << test_rule;
 
-        REQUIRE(os.str() == "<test-rule> ::= \"[a-zA-Z0-9]\" \n");
+        REQUIRE(os.str() == "<test-rule> ::= \"[a-zA-Z0-9]\"\n");
+    }
 
-        delete reg;
+    os.clear();
+
+    SECTION("Production lists are separated by pipes") {
+        Rule test_rule{ "test-rule" };
+        Production *recursive_digits = new Production();
+        Production *straight_digit = new Production();
+        Symbol digit_nonterminal {
+            nonterminal: "digit"
+        };
+        Symbol test_rule_nonterminal {
+            nonterminal: "test-rule"
+        };
+
+        recursive_digits->push_back(digit_nonterminal);
+        recursive_digits->push_back(test_rule_nonterminal);
+        test_rule.add_production(*recursive_digits);
+        straight_digit->push_back(digit_nonterminal);
+        test_rule.add_production(*straight_digit);
+
+        os << test_rule;
+
+        REQUIRE(os.str() == "<test-rule> ::= <digit><test-rule>|<digit>\n");
     }
 
     os.clear();
