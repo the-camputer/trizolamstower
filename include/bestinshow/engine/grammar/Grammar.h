@@ -15,4 +15,10 @@ class Grammar {
         Grammar();
         Grammar(const Grammar &prev);
         ~Grammar();
+        void add_rule(Rule& new_rule);
+        std::vector<Rule*> get_rules();
+        void set_name(std::string new_name);
+        std::string get_name();
+        void set_first_rule_name(std::string new_name);
+        std::string get_first_rule_name();
 };
