@@ -9,32 +9,22 @@ Grammar::Grammar(const std::string grammar_name) : grammar_name { grammar_name }
 Grammar::Grammar(const Grammar &prev) {
     grammar_name = prev.grammar_name;
     first_rule_name = prev.first_rule_name;
-    rules = prev.rules;
+    rules = std::make_unique<RuleList>(*prev.rules);
 }
 
 Grammar::Grammar() {}
 
-Grammar::~Grammar() {
-    if (rules != nullptr) {
-        for(auto p = (*rules).begin(); p != (*rules).end(); p++) {
-            delete *p;
-        }
-
-        delete rules;
-    }
-}
-
 void Grammar::add_rule(Rule& new_rule)
 {
     if (!rules) {
-        rules = new std::vector<Rule*> { &new_rule };
+        rules = std::make_unique<RuleList>();
         first_rule_name = new_rule.get_rule_name();
-    } else {
-        rules->push_back(&new_rule);
     }
+
+    rules->push_back(new_rule);
 }
 
-std::vector<Rule*> Grammar::get_rules() const
+RuleList Grammar::get_rules() const
 {
     return *rules;
 }
@@ -64,8 +54,8 @@ std::ostream& operator<<(std::ostream& os, const Grammar& v)
     os << "<" << v.grammar_name << "> ::= ";
     if (v.rules != nullptr) {
         os << "<" << v.first_rule_name << ">\n";
-        for(Rule *rule : v.get_rules()) {
-            os << *rule;
+        for(Rule rule : v.get_rules()) {
+            os << rule;
         }
     } else {
         os << std::endl;

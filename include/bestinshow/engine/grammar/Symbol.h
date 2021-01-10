@@ -18,4 +18,9 @@ struct Symbol {
 
         return os;
     }
+
+    friend inline bool operator==(const Symbol &s1, const Symbol &s2)
+    {
+        return s1.nonterminal == s2.nonterminal && s1.terminal_pattern == s2.terminal_pattern;
+    }
 };

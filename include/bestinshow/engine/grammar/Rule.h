@@ -5,21 +5,22 @@
 #include <vector>
 #include <string>
 #include <ostream>
+#include <memory>
 
 
 using Production = std::vector<Symbol>;
-using ProductionList = std::vector<Production*>;
+using ProductionList = std::vector<Production>;
 
 class Rule {
     private:
         std::string rule_name = "";
-        ProductionList *productions = nullptr;
+        std::unique_ptr<ProductionList> productions = nullptr;
     public:
         Rule();
         Rule(const std::string name);
         Rule(const std::string name, ProductionList *productions);
         Rule(const Rule& prev);
-        ~Rule();
+        ~Rule() = default;
 
         std::string get_rule_name() const;
         void set_rule_name(std::string rule_name);

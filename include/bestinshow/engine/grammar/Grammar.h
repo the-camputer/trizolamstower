@@ -2,21 +2,24 @@
 
 #include <string>
 #include <vector>
+#include <memory>
 #include "Rule.h"
+
+using RuleList = std::vector<Rule>;
 
 class Grammar {
     protected:
         std::string grammar_name = "";
         std::string first_rule_name = "";
-        std::vector<Rule*> *rules = nullptr;
+        std::unique_ptr<RuleList> rules = nullptr;
 
     public:
         Grammar(const std::string grammar_name);
         Grammar();
         Grammar(const Grammar &prev);
-        ~Grammar();
+        ~Grammar() = default;
         void add_rule(Rule& new_rule);
-        std::vector<Rule*> get_rules() const;
+        RuleList get_rules() const;
         void set_name(std::string new_name);
         std::string get_name();
         void set_first_rule_name(std::string new_name);

@@ -25,4 +25,44 @@ TEST_CASE("Grammar Printing") {
 
         REQUIRE(os.str() == "<test-grammar> ::= \n");
     }
+
+    os.clear();
+
+    SECTION("Nonempty rule set prints out all Symbols and Rules for the grammer") {
+        using namespace std::string_literals;
+        Grammar test_grammar { "test-grammar" }; 
+
+        Rule test_rule{ "test-rule" };
+        Production recursive_digits{};
+        Production straight_digit{};
+        Symbol test_rule_nonterminal {
+            nonterminal: "test-rule"
+        };
+        Symbol digit_nonterminal {
+            nonterminal: "digit"
+        };
+
+        recursive_digits.push_back(digit_nonterminal);
+        recursive_digits.push_back(test_rule_nonterminal);
+        test_rule.add_production(recursive_digits);
+        straight_digit.push_back(digit_nonterminal);
+        test_rule.add_production(straight_digit);
+
+        Rule digit_rule{ "digit" };
+        Production digit_production{};
+        std::string terminal_regex_pattern = "[0-9]";
+        Symbol digit_terminal {
+            nonterminal: "",
+            terminal_pattern: "[0-9]"
+        };
+        digit_production.push_back(digit_terminal);
+        digit_rule.add_production(digit_production);
+
+        test_grammar.add_rule(test_rule);
+        test_grammar.add_rule(digit_rule);
+
+        os << test_grammar;
+
+        REQUIRE(os.str() == "<test-grammar> ::= <test-rule>\n<test-rule> ::= <digit><test-rule>|<digit>\n<digit> ::= \"[0-9]\"\n");
+    }
 }

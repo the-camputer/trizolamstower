@@ -2,41 +2,30 @@
 #include <bestinshow/engine/grammar/Symbol.h>
 #include <vector>
 #include <string>
+#include <memory>
 
 
 Rule::Rule() 
 {
-    productions = new ProductionList{};
+    productions = std::make_unique<ProductionList>();
 }
 
 Rule::Rule(const std::string name)
 : rule_name { name } 
 {
-    productions = new ProductionList{};
+    productions = std::make_unique<ProductionList>();
 }
 
 Rule::Rule(const std::string name, ProductionList *productions)
 : rule_name { name }
 {
-    this->productions = new ProductionList{};
-    *(this->productions) = *productions;
+    this->productions = std::make_unique<ProductionList>(std::move(*productions));
 }
 
 Rule::Rule(const Rule& prev)
 : rule_name { prev.rule_name }
 {
-    this->productions = new ProductionList{};
-    *(this->productions) = *prev.productions;
-}
-
-Rule::~Rule()
-{
-    for (auto p = (*productions).begin(); p != (*productions).end(); p++)
-    {
-        delete *p;
-    }
-
-    delete productions;
+    this->productions = std::make_unique<ProductionList>(*(prev.productions));
 }
 
 std::string Rule::get_rule_name() const
@@ -49,18 +38,18 @@ void Rule::set_rule_name(std::string rule_name)
     this->rule_name = rule_name;
 }
 
-std::vector<Production*>* Rule::get_productions() const
+ProductionList* Rule::get_productions() const
 {
-    return this->productions;
+    return this->productions.get();
 }
 
 void Rule::add_production(Production& production)
 {
     if (!productions) {
-        this->productions = new ProductionList{ &production };
-    } else {
-        this->productions->push_back(&production);
+        this->productions = std::make_unique<ProductionList>();
     }
+
+    this->productions->push_back(production);
 }
 
 std::ostream& operator<<(std::ostream& os, const Rule& v) 
@@ -70,8 +59,8 @@ std::ostream& operator<<(std::ostream& os, const Rule& v)
     auto ref_production_list = v.get_productions();
     if (ref_production_list) {
         auto production_list = *ref_production_list;
-        for(Production *p : production_list) {
-            for(Symbol s : *p) {
+        for(Production p : production_list) {
+            for(Symbol s : p) {
                 os << s;
             }
 
