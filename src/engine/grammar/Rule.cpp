@@ -19,13 +19,13 @@ Rule::Rule(const std::string name)
 Rule::Rule(const std::string name, ProductionList *productions)
 : rule_name { name }
 {
-    this->productions = std::make_unique<ProductionList>(std::move(*productions));
+    this->productions = std::make_unique<ProductionList>(*productions);
 }
 
 Rule::Rule(const Rule& prev)
 : rule_name { prev.rule_name }
 {
-    this->productions = std::make_unique<ProductionList>(*(prev.productions));
+    this->productions = std::make_unique<ProductionList>(*prev.productions);
 }
 
 std::string Rule::get_rule_name() const
