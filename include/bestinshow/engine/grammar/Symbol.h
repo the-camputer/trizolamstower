@@ -4,16 +4,18 @@
 #include <regex>
 #include <ostream>
 
+enum SymbolType { TERMINAL, NONTERMINAL };
+
 struct Symbol {
-    std::string nonterminal;
-    std::string terminal_pattern;
+    std::string pattern;
+    SymbolType type;
 
     friend inline std::ostream& operator<<(std::ostream& os, const Symbol& v)
     {
-        if (v.nonterminal != "") {
-            os << "<" << v.nonterminal << ">";
+        if (v.type == SymbolType::NONTERMINAL) {
+            os << "<" << v.pattern << ">";
         } else {
-            os << "\"" << v.terminal_pattern << "\"";
+            os << v.pattern;
         }
 
         return os;
@@ -21,6 +23,6 @@ struct Symbol {
 
     friend inline bool operator==(const Symbol &s1, const Symbol &s2)
     {
-        return s1.nonterminal == s2.nonterminal && s1.terminal_pattern == s2.terminal_pattern;
+        return s1.pattern == s2.pattern && s1.type == s2.type;
     }
 };

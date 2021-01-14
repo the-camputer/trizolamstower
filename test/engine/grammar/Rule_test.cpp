@@ -21,11 +21,11 @@ TEST_CASE("Rule Printing") {
     os.clear();
 
     SECTION("Nonterminals are printed out in angled brackets") {
-        Rule test_rule{ "test-rule" };
-        Production *new_production = new Production();
-        Symbol new_nonterminal {nonterminal: "linked-rule"};
-        new_production->push_back(new_nonterminal);
-        test_rule.add_production(*new_production);
+        Rule test_rule{ "test-rule", {{{"linked-rule", SymbolType::NONTERMINAL}}} };
+        // Production *new_production = new Production();
+        // Symbol new_nonterminal {nonterminal: "linked-rule"};
+        // new_production->push_back(new_nonterminal);
+        // test_rule.add_production(*new_production);
 
         os << test_rule;
 
@@ -39,8 +39,7 @@ TEST_CASE("Rule Printing") {
         Production *new_production = new Production();
         std::string terminal_regex_pattern = "[a-zA-Z0-9]";
         Symbol new_terminal {
-            nonterminal: "",
-            terminal_pattern: terminal_regex_pattern
+            "[a-zA-Z0-9]", SymbolType::TERMINAL
         };
 
         new_production->push_back(new_terminal);
@@ -48,7 +47,7 @@ TEST_CASE("Rule Printing") {
 
         os << test_rule;
 
-        REQUIRE(os.str() == "<test-rule> ::= \"[a-zA-Z0-9]\"\n");
+        REQUIRE(os.str() == "<test-rule> ::= [a-zA-Z0-9]\n");
     }
 
     os.clear();
@@ -58,10 +57,10 @@ TEST_CASE("Rule Printing") {
         Production *recursive_digits = new Production();
         Production *straight_digit = new Production();
         Symbol digit_nonterminal {
-            nonterminal: "digit"
+            "digit", SymbolType::NONTERMINAL
         };
         Symbol test_rule_nonterminal {
-            nonterminal: "test-rule"
+            "test-rule", SymbolType::NONTERMINAL
         };
 
         recursive_digits->push_back(digit_nonterminal);

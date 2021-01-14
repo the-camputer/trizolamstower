@@ -36,10 +36,10 @@ TEST_CASE("Grammar Printing") {
         Production recursive_digits{};
         Production straight_digit{};
         Symbol test_rule_nonterminal {
-            nonterminal: "test-rule"
+            "test-rule", SymbolType::NONTERMINAL
         };
         Symbol digit_nonterminal {
-            nonterminal: "digit"
+            "digit", SymbolType::NONTERMINAL
         };
 
         recursive_digits.push_back(digit_nonterminal);
@@ -52,8 +52,7 @@ TEST_CASE("Grammar Printing") {
         Production digit_production{};
         std::string terminal_regex_pattern = "[0-9]";
         Symbol digit_terminal {
-            nonterminal: "",
-            terminal_pattern: "[0-9]"
+            "[0-9]", SymbolType::TERMINAL
         };
         digit_production.push_back(digit_terminal);
         digit_rule.add_production(digit_production);
@@ -63,6 +62,6 @@ TEST_CASE("Grammar Printing") {
 
         os << test_grammar;
 
-        REQUIRE(os.str() == "<test-grammar> ::= <test-rule>\n<test-rule> ::= <digit><test-rule>|<digit>\n<digit> ::= \"[0-9]\"\n");
+        REQUIRE(os.str() == "<test-grammar> ::= <test-rule>\n<test-rule> ::= <digit><test-rule>|<digit>\n<digit> ::= [0-9]\n");
     }
 }

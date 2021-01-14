@@ -18,7 +18,7 @@ class Rule {
     public:
         Rule();
         Rule(const std::string name);
-        Rule(const std::string name, ProductionList *productions);
+        Rule(const std::string name, ProductionList productions);
         Rule(const Rule& prev);
         ~Rule() = default;
 

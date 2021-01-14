@@ -16,10 +16,10 @@ Rule::Rule(const std::string name)
     productions = std::make_unique<ProductionList>();
 }
 
-Rule::Rule(const std::string name, ProductionList *productions)
+Rule::Rule(const std::string name, ProductionList productions)
 : rule_name { name }
 {
-    this->productions = std::make_unique<ProductionList>(*productions);
+    this->productions = std::make_unique<ProductionList>(productions);
 }
 
 Rule::Rule(const Rule& prev)
