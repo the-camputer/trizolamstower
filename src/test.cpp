@@ -1,5 +1,7 @@
 #include <iostream>
+#include "bestinshow/engine/grammar/TestGrammar.h"
 
 int main() {
-    std::cout << "Hello World";
+    TestGrammar grammar{};
+    std::cout << grammar.get_grammar();
 }
