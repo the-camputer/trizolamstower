@@ -1,11 +1,11 @@
 #include "Grammar.h"
 
-class TestGrammar {
+class ExampleGrammar {
     private:
         Grammar grammar;
     
     public:
-        TestGrammar();
-        ~TestGrammar() = default;
+        ExampleGrammar();
+        ~ExampleGrammar() = default;
         Grammar get_grammar();
 };

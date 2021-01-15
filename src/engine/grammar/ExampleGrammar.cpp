@@ -1,13 +1,13 @@
-#include "bestinshow/engine/grammar/TestGrammar.h"
+#include "bestinshow/engine/grammar/ExampleGrammar.h"
 #include "bestinshow/engine/grammar/Grammar.h"
 #include "bestinshow/engine/grammar/Rule.h"
 #include "bestinshow/engine/grammar/Symbol.h"
 #include <string>
 
-TestGrammar::TestGrammar() : grammar { Grammar{"test-grammar"} } 
+ExampleGrammar::ExampleGrammar() : grammar { Grammar{"exmaple-grammar"} } 
 {
-    /* implements simple grammar of the form
-    * <test-grammar> ::= <sum>
+    /** implements simple grammar of the form
+    * <exmaple-grammar> ::= <sum>
     * <sum> ::= <sum> [+-] <product>|<product>
     * <product> ::= <product> [/*] <factor> |<factor>
     * <factor> ::= ( <sum> )|<number>
@@ -39,4 +39,4 @@ TestGrammar::TestGrammar() : grammar { Grammar{"test-grammar"} }
     grammar.add_rule(number_rule);
 }
 
-Grammar TestGrammar::get_grammar() { return grammar; }
+Grammar ExampleGrammar::get_grammar() { return grammar; }
