@@ -14,23 +14,23 @@ ExampleGrammar::ExampleGrammar() : grammar { Grammar{"exmaple-grammar"} }
     * <number> ::= [0-9] <number>|[0-9]
     */
     Rule number_rule { "number", {
-        { { "[0-9]", SymbolType::TERMINAL }, { "number", SymbolType::NONTERMINAL } },
-        { { "[0-9]", SymbolType::TERMINAL } }
+        { { "[0-9]", SYMBOL_TYPE::TERMINAL }, { "number", SYMBOL_TYPE::NONTERMINAL } },
+        { { "[0-9]", SYMBOL_TYPE::TERMINAL } }
     } };
     
     Rule factor_rule { "factor", {
-        { { "(", SymbolType::TERMINAL }, { "sum", SymbolType::NONTERMINAL }, { ")", SymbolType::TERMINAL } },
-        { { "number", SymbolType::NONTERMINAL } }
+        { { "(", SYMBOL_TYPE::TERMINAL }, { "sum", SYMBOL_TYPE::NONTERMINAL }, { ")", SYMBOL_TYPE::TERMINAL } },
+        { { "number", SYMBOL_TYPE::NONTERMINAL } }
     } };
     
     Rule product_rule { "product", {
-        { { "product", SymbolType::NONTERMINAL }, { "[*/]", SymbolType::TERMINAL }, { "factor", SymbolType::NONTERMINAL } },
-        { { "factor", SymbolType::NONTERMINAL } }
+        { { "product", SYMBOL_TYPE::NONTERMINAL }, { "[*/]", SYMBOL_TYPE::TERMINAL }, { "factor", SYMBOL_TYPE::NONTERMINAL } },
+        { { "factor", SYMBOL_TYPE::NONTERMINAL } }
     } };
 
     Rule sum_rule { "sum", {
-        { { "sum", SymbolType::NONTERMINAL }, { "[+-]", SymbolType::TERMINAL }, { "product", SymbolType::NONTERMINAL} },
-        { { "product", SymbolType::NONTERMINAL } }
+        { { "sum", SYMBOL_TYPE::NONTERMINAL }, { "[+-]", SYMBOL_TYPE::TERMINAL }, { "product", SYMBOL_TYPE::NONTERMINAL} },
+        { { "product", SYMBOL_TYPE::NONTERMINAL } }
     } };
 
     grammar.add_rule(sum_rule);
