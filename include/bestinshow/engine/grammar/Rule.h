@@ -27,4 +27,7 @@ class Rule {
         ProductionList* get_productions() const;
         void add_production(Production& production);
         friend std::ostream& operator<<(std::ostream& os, const Rule& v);
+        inline Production& operator[](int i) {
+            return (*productions)[i];
+        }
 };

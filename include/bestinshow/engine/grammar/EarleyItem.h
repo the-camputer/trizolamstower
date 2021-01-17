@@ -1,8 +1,9 @@
 #pragma once
-#include <unordered_set>
+#include <vector>
 
 struct EarleyItem {
     int rule;
+    int production;
     int start;
     int next;
 
@@ -11,4 +12,5 @@ struct EarleyItem {
     }
 };
 
-using StateSet = std::unordered_set<EarleyItem>;
+using StateSet = std::vector<EarleyItem>;
+using ParseTable = std::vector<StateSet>;

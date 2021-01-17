@@ -26,4 +26,7 @@ class Grammar {
         std::string get_first_rule_name();
 
         friend std::ostream& operator<<(std::ostream& ostream, const Grammar& v);
+        inline Rule& operator[](int i) {
+            return get_rules()[i];
+        }
 };
