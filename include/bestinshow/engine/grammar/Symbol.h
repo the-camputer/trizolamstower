@@ -4,15 +4,15 @@
 #include <regex>
 #include <ostream>
 
-enum SymbolType { TERMINAL, NONTERMINAL };
+enum SYMBOL_TYPE { TERMINAL, NONTERMINAL };
 
 struct Symbol {
     std::string pattern;
-    SymbolType type;
+    SYMBOL_TYPE type;
 
     friend inline std::ostream& operator<<(std::ostream& os, const Symbol& v)
     {
-        if (v.type == SymbolType::NONTERMINAL) {
+        if (v.type == SYMBOL_TYPE::NONTERMINAL) {
             os << "<" << v.pattern << ">";
         } else {
             os << v.pattern;
