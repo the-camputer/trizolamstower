@@ -27,6 +27,6 @@ class Grammar {
 
         friend std::ostream& operator<<(std::ostream& ostream, const Grammar& v);
         inline Rule& operator[](int i) {
-            return get_rules()[i];
+            return get_rules().at(i);
         }
 };

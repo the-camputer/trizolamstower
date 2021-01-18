@@ -4,7 +4,7 @@
 #include <regex>
 #include <ostream>
 
-enum SYMBOL_TYPE { TERMINAL, NONTERMINAL };
+enum SYMBOL_TYPE { TERMINAL, NONTERMINAL, EMPTY };
 
 struct Symbol {
     std::string pattern;

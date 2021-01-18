@@ -28,6 +28,6 @@ class Rule {
         void add_production(Production& production);
         friend std::ostream& operator<<(std::ostream& os, const Rule& v);
         inline Production& operator[](int i) {
-            return (*productions)[i];
+            return (*productions).at(i);
         }
 };

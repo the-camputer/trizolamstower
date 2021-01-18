@@ -63,6 +63,7 @@
         "future": "cpp",
         "iomanip": "cpp",
         "mutex": "cpp",
-        "thread": "cpp"
+        "thread": "cpp",
+        "unordered_set": "cpp"
     }
 }

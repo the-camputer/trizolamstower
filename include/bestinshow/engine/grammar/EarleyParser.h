@@ -2,6 +2,8 @@
 #include "Grammar.h"
 #include "EarleyItem.h"
 #include <string>
+#include <stdexcept>
+#include <memory>
 
 enum RECOGNITION_STATUS { 
     COMPLETE, // Wholely valid input
@@ -12,7 +14,7 @@ enum RECOGNITION_STATUS {
 
 class EarleyParser {
     public:
-        static ParseTable build_items(Grammar grammar, std::string input);
+        static std::unique_ptr<ParseTable> build_items(Grammar grammar, std::string input);
 
         /**
          * @brief Analyzes the given parse table for validity of input against the grammar
@@ -24,9 +26,9 @@ class EarleyParser {
          */
         static RECOGNITION_STATUS diagnose(ParseTable parse_table, Grammar grammar, std::string input);
     private:
-        static void complete(ParseTable parse_table, int input_pos, int parse_table_pos, Grammar grammar);
-        static void scan(ParseTable parse_table, int input_pos, int parse_table_pos, Symbol symbol, std::string input);
-        static void predict(ParseTable parse_table, int input_pos, Symbol symbol, Grammar grammar);
+        static void complete(ParseTable& parse_table, int input_pos, int state_set_pos, Grammar grammar);
+        static void scan(ParseTable& parse_table, int input_pos, int state_set_pos, Symbol symbol, std::string input);
+        static void predict(ParseTable& parse_table, int input_pos, Symbol symbol, Grammar grammar);
 
         /**
          * @brief Checks to see if there exists a partial parse in the given ParseTable
@@ -57,11 +59,37 @@ class EarleyParser {
          * @return position in the ParseTable where the last partial parse exists, or -1 if none exists
          */
         static int last_partial_parse(ParseTable parse_table, Grammar grammar);
-        static void add_to_set(StateSet set, EarleyItem item);
 
+        /**
+         * @brief Adds EarleyItem to the StateSet if item does not already exist in the set
+         * 
+         * @param set The StateSet to add the EarleyItem to
+         * @param item The item to potentiallly add to the StateSet
+         */
+        static void add_to_set(StateSet& set, EarleyItem item);
+
+        /**
+         * @brief Retrieves the symbol next in line for the EarleyItem, i.e. what's 'right' of the dot
+         * 
+         * @param grammar 
+         * @param item 
+         * @return Symbol 
+         */
         static inline Symbol next_symbol(Grammar grammar, EarleyItem item) {
-            return grammar[item.rule][item.production][item.next];
+            try {
+                return grammar[item.rule][item.production][item.next];
+            } catch(std::out_of_range ignore) {
+                return { "", SYMBOL_TYPE::EMPTY };
+            }
         }
+
+        /**
+         * @brief Gets the name of the rule associated with the given EarleyItem
+         * 
+         * @param grammar
+         * @param item
+         * @return std::string Name of the associated rule
+         */
         static inline std::string name(Grammar grammar, EarleyItem item) {
             return grammar[item.rule].get_rule_name();
         }
