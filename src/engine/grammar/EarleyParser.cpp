@@ -6,6 +6,8 @@
 #include <string>
 #include <regex>
 #include <memory>
+#include <exception>
+#include <iostream>
 
 bool EarleyParser::has_partial_parse(ParseTable parse_table, int input_pos, Grammar grammar) {
     /*
@@ -103,15 +105,39 @@ void EarleyParser::predict(ParseTable& parse_table, int input_pos, Symbol symbol
 }
 
 std::unique_ptr<ParseTable> EarleyParser::build_items(Grammar grammar, std::string input) {
-    std::unique_ptr<ParseTable> parse_table = std::make_unique<ParseTable>(new ParseTable{});
+    if (input.length() == 0) {
+        throw std::length_error("input is empty");
+    }
+
+    auto parse_table = std::make_unique<ParseTable>();
+
+    std::cout << "PARSE TABLE CONSTRUCTED: " << parse_table->size() << std::endl;
+
 
     parse_table->push_back({});
     RuleList rules = grammar.get_rules();
-    Rule first_rule = grammar[0];
+    Rule first_rule = rules[0];
     ProductionList *first_rule_productions = first_rule.get_productions();
     for(size_t i = 0; i < first_rule_productions->size(); i++) {
         parse_table->at(0).push_back({ 0, i, 0, 0 });
     }
 
-    
+    for(size_t i = 0; i < parse_table->size(); i++) {
+        for(size_t ii = 0; ii < parse_table->at(i).size(); ii++) {
+            /*
+                TODO: This line is currently thoriwng a segmentation fault. Figure out why
+            */
+            Symbol symbol = next_symbol(grammar, parse_table->at(i).at(ii));
+            if (symbol.type == SYMBOL_TYPE::EMPTY) {
+                complete(*parse_table, i, ii, grammar);
+            } else if (symbol.type == SYMBOL_TYPE::TERMINAL) {
+                scan(*parse_table, i, ii, symbol, input);
+            } else if (symbol.type == SYMBOL_TYPE::NONTERMINAL) {
+                predict(*parse_table, i, symbol, grammar);
+            } else {
+                throw std::domain_error("Illegal rule in grammar");
+            }
+        }
+    }
+    return parse_table;
 }

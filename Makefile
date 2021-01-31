@@ -30,5 +30,8 @@ ExampleGrammar.o: src/engine/grammar/ExampleGrammar.cpp
 parsing_example.o: src/parsing_example.cpp
 	$(CC) $(CFLAGS) -c src/parsing_example.cpp -o build/parsing_example.o
 
-parsing_example: parsing_example.o ExampleGrammar.o libgrammar.a
-	$(CC) $(CFLAGS) -o bin/parsing_example build/parsing_example.o -L./lib/bestinshow/engine/grammar -l grammar build/ExampleGrammar.o
+EarleyParser.o: src/engine/grammar/EarleyParser.cpp
+	$(CC) $(CFLAGS) -c src/engine/grammar/EarleyParser.cpp -o build/EarleyParser.o
+
+parsing_example: parsing_example.o ExampleGrammar.o EarleyParser.o libgrammar.a
+	$(CC) $(CFLAGS) -o bin/parsing_example build/parsing_example.o build/EarleyParser.o -L./lib/bestinshow/engine/grammar -l grammar build/ExampleGrammar.o

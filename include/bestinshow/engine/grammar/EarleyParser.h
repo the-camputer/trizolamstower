@@ -5,11 +5,20 @@
 #include <stdexcept>
 #include <memory>
 
+#define stringify( name ) # name
 enum RECOGNITION_STATUS { 
-    COMPLETE, // Wholely valid input
+    COMPLETE = 0, // Wholely valid input
     INCOMPLETE, // parsed wholely, but no partial success found at end of parse table
     PARTIAL_FAILURE, // parsing stopped part of the way through
     FAILURE // No partial successes found in parse table
+};
+
+inline const char* RECOGNITION_STATUS_NAMES[] =
+{
+    stringify(RECOGNITION_STATUS::COMPLETE),
+    stringify(RECOGNITION_STATUS::INCOMPLETE),
+    stringify(RECOGNITION_STATUS::PARTIAL_FAILURE),
+    stringify(RECOGNITION_STATUS::FAILURE)
 };
 
 class EarleyParser {
