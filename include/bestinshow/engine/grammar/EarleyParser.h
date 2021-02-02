@@ -87,7 +87,7 @@ class EarleyParser {
         static inline Symbol next_symbol(Grammar grammar, EarleyItem item) {
             try {
                 return grammar[item.rule][item.production][item.next];
-            } catch(std::out_of_range ignore) {
+            } catch(std::out_of_range& ignore) {
                 return { "", SYMBOL_TYPE::EMPTY };
             }
         }

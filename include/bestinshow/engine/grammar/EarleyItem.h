@@ -13,6 +13,7 @@ struct EarleyItem {
 
     inline friend std::ostream& operator<<(std::ostream& ostream, const EarleyItem& v) {
         ostream << "{ rule: " << v.rule << ", production: " << v.production << ", start: " << v.start << ", next: " << v.next << "}";
+        return ostream;
     }
 };
 

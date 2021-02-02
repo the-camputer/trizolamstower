@@ -24,7 +24,7 @@ bool EarleyParser::has_partial_parse(ParseTable parse_table, int input_pos, Gram
         Rule rule = grammar[item.rule];
         Production production = (*rule.get_productions())[item.production];
         if (rule.get_rule_name() == grammar.get_first_rule_name() &&
-            item.next > production.size() &&
+            (size_t)item.next > production.size() &&
             item.start == 0) {
                 return true;
             }
@@ -90,7 +90,7 @@ void EarleyParser::scan(ParseTable& parse_table, int input_pos, int state_set_po
     std::cout << "SCAN ITEM! " << item << " AND SYMBOL! " << symbol << std::endl;
     if (std::regex_match(input.substr(input_pos, 1), std::regex(symbol.pattern))) {
         std::cout << "FOUND MATCH FOR " << symbol.pattern << " IN " << input.substr(input_pos, 1) << std::endl;
-        if (parse_table.size() == input_pos + 1) {
+        if (parse_table.size() == (size_t)(input_pos + 1)) {
             parse_table.push_back({});
         }
 
@@ -105,7 +105,7 @@ void EarleyParser::predict(ParseTable& parse_table, int input_pos, Symbol symbol
     for(size_t i = 0; i < rules.size(); i++) {
         if (rules[i].get_rule_name() == symbol.pattern) {
             for (size_t ii = 0; ii < rules[i].get_productions()->size(); ii++) {
-                add_to_set(parse_table[input_pos], { i, ii, input_pos, 0 });
+                add_to_set(parse_table[input_pos], { (int)i, (int)ii, input_pos, 0 });
             }
         }
     }
@@ -123,7 +123,7 @@ std::unique_ptr<ParseTable> EarleyParser::build_items(Grammar grammar, std::stri
     Rule first_rule = rules[0];
     ProductionList *first_rule_productions = first_rule.get_productions();
     for(size_t i = 0; i < first_rule_productions->size(); i++) {
-        parse_table->at(0).push_back({ 0, i, 0, 0 });
+        parse_table->at(0).push_back({ 0, (int)i, 0, 0 });
     }
 
     for(size_t i = 0; i < parse_table->size(); i++) {
