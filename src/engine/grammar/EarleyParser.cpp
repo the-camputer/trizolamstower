@@ -72,6 +72,7 @@ void EarleyParser::add_to_set(StateSet& set, EarleyItem item) {
         }
     }
 
+    std::cout << "ADDING " << item << " TO STATE SET" << std::endl;
     set.push_back(item);
 }
 
@@ -86,12 +87,16 @@ void EarleyParser::complete(ParseTable& parse_table, int input_pos, int state_se
 
 void EarleyParser::scan(ParseTable& parse_table, int input_pos, int state_set_pos, Symbol symbol, std::string input) {
     EarleyItem item = parse_table[input_pos][state_set_pos];
+    std::cout << "SCAN ITEM! " << item << " AND SYMBOL! " << symbol << std::endl;
     if (std::regex_match(input.substr(input_pos, 1), std::regex(symbol.pattern))) {
+        std::cout << "FOUND MATCH FOR " << symbol.pattern << " IN " << input.substr(input_pos, 1) << std::endl;
         if (parse_table.size() == input_pos + 1) {
             parse_table.push_back({});
         }
 
         parse_table[input_pos+1].push_back({ item.rule, item.production, item.start, item.next + 1 });
+    } else {
+        std::cout << "SCAN FAILED" << std::endl;
     }
 }
 
@@ -99,7 +104,9 @@ void EarleyParser::predict(ParseTable& parse_table, int input_pos, Symbol symbol
     RuleList rules = grammar.get_rules();
     for(size_t i = 0; i < rules.size(); i++) {
         if (rules[i].get_rule_name() == symbol.pattern) {
-            add_to_set(parse_table[input_pos], { i, 0, input_pos, 0 });
+            for (size_t ii = 0; ii < rules[i].get_productions()->size(); ii++) {
+                add_to_set(parse_table[input_pos], { i, ii, input_pos, 0 });
+            }
         }
     }
 }
@@ -110,11 +117,8 @@ std::unique_ptr<ParseTable> EarleyParser::build_items(Grammar grammar, std::stri
     }
 
     auto parse_table = std::make_unique<ParseTable>();
-
-    std::cout << "PARSE TABLE CONSTRUCTED: " << parse_table->size() << std::endl;
-
-
     parse_table->push_back({});
+
     RuleList rules = grammar.get_rules();
     Rule first_rule = rules[0];
     ProductionList *first_rule_productions = first_rule.get_productions();
@@ -124,20 +128,27 @@ std::unique_ptr<ParseTable> EarleyParser::build_items(Grammar grammar, std::stri
 
     for(size_t i = 0; i < parse_table->size(); i++) {
         for(size_t ii = 0; ii < parse_table->at(i).size(); ii++) {
-            /*
-                TODO: This line is currently thoriwng a segmentation fault. Figure out why
-            */
             Symbol symbol = next_symbol(grammar, parse_table->at(i).at(ii));
+            std::cout << "NEXT SYMBOL IS " << symbol << std::endl;
             if (symbol.type == SYMBOL_TYPE::EMPTY) {
+                std::cout << "RUNNING COMPLETE" << std::endl;
                 complete(*parse_table, i, ii, grammar);
             } else if (symbol.type == SYMBOL_TYPE::TERMINAL) {
+                std::cout << "RUNNING SCAN" << std::endl;
                 scan(*parse_table, i, ii, symbol, input);
             } else if (symbol.type == SYMBOL_TYPE::NONTERMINAL) {
+                std::cout << "RUNNING PREDICT" << std::endl;
                 predict(*parse_table, i, symbol, grammar);
             } else {
                 throw std::domain_error("Illegal rule in grammar");
             }
         }
+
+        std::cout << "STATE SET FOR S[" << i << "]" << std::endl;
+        for(size_t ii = 0; ii < parse_table->at(i).size(); ii++) {
+            std::cout << parse_table->at(i).at(ii) << std::endl;
+        }
+        std::cout << std::endl;
     }
     return parse_table;
 }

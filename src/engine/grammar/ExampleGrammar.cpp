@@ -19,7 +19,7 @@ ExampleGrammar::ExampleGrammar() : grammar { Grammar{"exmaple-grammar"} }
     } };
     
     Rule factor_rule { "factor", {
-        { { "(", SYMBOL_TYPE::TERMINAL }, { "sum", SYMBOL_TYPE::NONTERMINAL }, { ")", SYMBOL_TYPE::TERMINAL } },
+        { { "\\(", SYMBOL_TYPE::TERMINAL }, { "sum", SYMBOL_TYPE::NONTERMINAL }, { "\\)", SYMBOL_TYPE::TERMINAL } },
         { { "number", SYMBOL_TYPE::NONTERMINAL } }
     } };
     
