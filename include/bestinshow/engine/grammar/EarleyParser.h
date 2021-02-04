@@ -3,6 +3,7 @@
 #include "EarleyItem.h"
 #include <string>
 #include <stdexcept>
+#include <iostream>
 #include <memory>
 
 #define stringify( name ) # name
@@ -86,7 +87,7 @@ class EarleyParser {
          */
         static inline Symbol next_symbol(Grammar grammar, EarleyItem item) {
             try {
-                return grammar[item.rule][item.production][item.next];
+                return grammar[item.rule][item.production].at(item.next);
             } catch(std::out_of_range& ignore) {
                 return { "", SYMBOL_TYPE::EMPTY };
             }

@@ -17,7 +17,7 @@ int main() {
 
     try {
         RECOGNITION_STATUS result = EarleyParser::diagnose(*sample_parse_table, grammar.get_grammar(), sample_input);
-        std::cout << "Result is " << RECOGNITION_STATUS_NAMES[result];
+        std::cout << "Result is " << RECOGNITION_STATUS_NAMES[result] << std::endl;
     } catch(std::domain_error& e) {
         std::cout << "Unable to parse: " << e.what() << std::endl;
     } catch(std::length_error& e) {

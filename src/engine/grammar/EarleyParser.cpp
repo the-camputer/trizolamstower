@@ -22,9 +22,9 @@ bool EarleyParser::has_partial_parse(ParseTable parse_table, int input_pos, Gram
     StateSet set = parse_table[input_pos];
     for(EarleyItem item : set) {
         Rule rule = grammar[item.rule];
-        Production production = (*rule.get_productions())[item.production];
+        Production production = rule.get_productions()->at(item.production);
         if (rule.get_rule_name() == grammar.get_first_rule_name() &&
-            (size_t)item.next > production.size() &&
+            (size_t)item.next >= production.size() &&
             item.start == 0) {
                 return true;
             }
@@ -35,7 +35,7 @@ bool EarleyParser::has_partial_parse(ParseTable parse_table, int input_pos, Gram
 
 bool EarleyParser::has_complete_parse(ParseTable parse_table, Grammar grammar) {
     // If a partial parse exists at the end of the parse table, then there exists a complete parse
-    return has_partial_parse(parse_table, parse_table.size(), grammar);
+    return has_partial_parse(parse_table, parse_table.size() - 1, grammar);
 }
 
 int EarleyParser::last_partial_parse(ParseTable parse_table, Grammar grammar) {
@@ -127,6 +127,12 @@ std::unique_ptr<ParseTable> EarleyParser::build_items(Grammar grammar, std::stri
     }
 
     for(size_t i = 0; i < parse_table->size(); i++) {
+        std::cout << "STATE SET FOR S[" << i << "] STARTS WITH" << std::endl;
+        for(size_t ii = 0; ii < parse_table->at(i).size(); ii++) {
+            std::cout << parse_table->at(i).at(ii) << std::endl;
+        }
+        std::cout << std::endl;
+
         for(size_t ii = 0; ii < parse_table->at(i).size(); ii++) {
             Symbol symbol = next_symbol(grammar, parse_table->at(i).at(ii));
             std::cout << "NEXT SYMBOL IS " << symbol << std::endl;
@@ -144,7 +150,7 @@ std::unique_ptr<ParseTable> EarleyParser::build_items(Grammar grammar, std::stri
             }
         }
 
-        std::cout << "STATE SET FOR S[" << i << "]" << std::endl;
+        std::cout << "STATE SET FOR S[" << i << "] ENDS WITH" << std::endl;
         for(size_t ii = 0; ii < parse_table->at(i).size(); ii++) {
             std::cout << parse_table->at(i).at(ii) << std::endl;
         }
