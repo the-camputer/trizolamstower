@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include "spdlog/fmt/ostr.h"
 
 struct EarleyItem {
     int rule;
@@ -11,7 +12,8 @@ struct EarleyItem {
         return ei1.rule == ei2.rule && ei1.production == ei2.production &&  ei1.start == ei2.start && ei1.next == ei2.next;
     }
 
-    inline friend std::ostream& operator<<(std::ostream& ostream, const EarleyItem& v) {
+    template<typename OStream>
+    inline friend OStream& operator<<(OStream& ostream, const EarleyItem& v) {
         ostream << "{ rule: " << v.rule << ", production: " << v.production << ", start: " << v.start << ", next: " << v.next << "}";
         return ostream;
     }

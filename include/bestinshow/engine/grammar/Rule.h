@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Symbol.h"
+#include "spdlog/fmt/ostr.h"
 #include <algorithm>
 #include <vector>
 #include <string>
@@ -26,7 +27,29 @@ class Rule {
         void set_rule_name(std::string rule_name);
         ProductionList* get_productions() const;
         void add_production(Production& production);
-        friend std::ostream& operator<<(std::ostream& os, const Rule& v);
+        template<typename OStream>
+        friend OStream& operator<<(OStream& os, const Rule& v)
+        {
+    os << "<" << v.get_rule_name() << "> ::= ";
+
+    auto ref_production_list = v.get_productions();
+    if (ref_production_list) {
+        auto production_list = *ref_production_list;
+        for(Production p : production_list) {
+            for(Symbol s : p) {
+                os << s;
+            }
+
+            if (p != *(production_list.end() - 1)) {
+                os << "|";
+            }
+        }
+    }
+
+    os << std::endl;
+
+    return os;
+}
         inline Production& operator[](int i) {
             return (*productions).at(i);
         }

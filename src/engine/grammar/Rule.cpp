@@ -3,7 +3,8 @@
 #include <vector>
 #include <string>
 #include <memory>
-
+#include "spdlog/spdlog.h"
+#include "spdlog/fmt/ostr.h"
 
 Rule::Rule() 
 {
@@ -52,25 +53,26 @@ void Rule::add_production(Production& production)
     this->productions->push_back(production);
 }
 
-std::ostream& operator<<(std::ostream& os, const Rule& v) 
-{
-    os << "<" << v.get_rule_name() << "> ::= ";
+// template<typename OStream>
+// OStream& operator<<(OStream& os, const Rule& v) 
+// {
+//     os << "<" << v.get_rule_name() << "> ::= ";
 
-    auto ref_production_list = v.get_productions();
-    if (ref_production_list) {
-        auto production_list = *ref_production_list;
-        for(Production p : production_list) {
-            for(Symbol s : p) {
-                os << s;
-            }
+//     auto ref_production_list = v.get_productions();
+//     if (ref_production_list) {
+//         auto production_list = *ref_production_list;
+//         for(Production p : production_list) {
+//             for(Symbol s : p) {
+//                 os << s;
+//             }
 
-            if (p != *(production_list.end() - 1)) {
-                os << "|";
-            }
-        }
-    }
+//             if (p != *(production_list.end() - 1)) {
+//                 os << "|";
+//             }
+//         }
+//     }
 
-    os << std::endl;
+//     os << std::endl;
 
-    return os;
-}
+//     return os;
+// }

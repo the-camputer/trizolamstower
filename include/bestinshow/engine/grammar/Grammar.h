@@ -4,6 +4,8 @@
 #include <vector>
 #include <memory>
 #include "Rule.h"
+#include "spdlog/fmt/ostr.h"
+#include "spdlog/spdlog.h"
 
 using RuleList = std::vector<Rule>;
 
@@ -25,7 +27,21 @@ class Grammar {
         void set_first_rule_name(std::string new_name);
         std::string get_first_rule_name();
 
-        friend std::ostream& operator<<(std::ostream& ostream, const Grammar& v);
+        template<typename OStream>
+        inline friend OStream& operator<<(OStream& ostream, const Grammar& v)
+        {
+    ostream << "<" << v.grammar_name << "> ::= ";
+    if (v.rules != nullptr) {
+        ostream << "<" << v.first_rule_name << ">\n";
+        for(Rule rule : v.get_rules()) {
+            ostream << rule;
+        }
+    } else {
+        ostream << std::endl;
+    }
+
+    return ostream;
+}
         inline Rule operator[](int i)
         {
             return get_rules().at(i);

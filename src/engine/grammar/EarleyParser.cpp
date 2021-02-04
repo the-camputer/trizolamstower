@@ -3,6 +3,8 @@
 #include "bestinshow/engine/grammar/Grammar.h"
 #include "bestinshow/engine/grammar/Rule.h"
 #include "bestinshow/engine/grammar/Symbol.h"
+#include "spdlog/spdlog.h"
+#include "spdlog/fmt/ostr.h"
 #include <string>
 #include <regex>
 #include <memory>
@@ -72,7 +74,7 @@ void EarleyParser::add_to_set(StateSet& set, EarleyItem item) {
         }
     }
 
-    std::cout << "ADDING " << item << " TO STATE SET" << std::endl;
+    spdlog::debug("ADDING {} TO STATE SET", item);
     set.push_back(item);
 }
 
@@ -87,16 +89,16 @@ void EarleyParser::complete(ParseTable& parse_table, int input_pos, int state_se
 
 void EarleyParser::scan(ParseTable& parse_table, int input_pos, int state_set_pos, Symbol symbol, std::string input) {
     EarleyItem item = parse_table[input_pos][state_set_pos];
-    std::cout << "SCAN ITEM! " << item << " AND SYMBOL! " << symbol << std::endl;
+    spdlog::debug("SCANNING {} WITH TERMINAL PATTERN {}", item, symbol);
     if (std::regex_match(input.substr(input_pos, 1), std::regex(symbol.pattern))) {
-        std::cout << "FOUND MATCH FOR " << symbol.pattern << " IN " << input.substr(input_pos, 1) << std::endl;
+        spdlog::debug("MATCH FOUND: {}", input.substr(input_pos, 1));
         if (parse_table.size() == (size_t)(input_pos + 1)) {
             parse_table.push_back({});
         }
 
         parse_table[input_pos+1].push_back({ item.rule, item.production, item.start, item.next + 1 });
     } else {
-        std::cout << "SCAN FAILED" << std::endl;
+        spdlog::debug("SCAN FAILED TO MATCH");
     }
 }
 
@@ -127,32 +129,32 @@ std::unique_ptr<ParseTable> EarleyParser::build_items(Grammar grammar, std::stri
     }
 
     for(size_t i = 0; i < parse_table->size(); i++) {
-        std::cout << "STATE SET FOR S[" << i << "] STARTS WITH" << std::endl;
-        for(size_t ii = 0; ii < parse_table->at(i).size(); ii++) {
-            std::cout << parse_table->at(i).at(ii) << std::endl;
-        }
-        std::cout << std::endl;
-
         for(size_t ii = 0; ii < parse_table->at(i).size(); ii++) {
             Symbol symbol = next_symbol(grammar, parse_table->at(i).at(ii));
-            std::cout << "NEXT SYMBOL IS " << symbol << std::endl;
+            // spdlog::debug("NEXT SYMBOL IS {}", symbol);
+            // std::cout << "NEXT SYMBOL IS " << symbol << std::endl;
             if (symbol.type == SYMBOL_TYPE::EMPTY) {
-                std::cout << "RUNNING COMPLETE" << std::endl;
+                // spdlog::debug("RUNNING COMPLETION");
+                // std::cout << "RUNNING COMPLETE" << std::endl;
                 complete(*parse_table, i, ii, grammar);
             } else if (symbol.type == SYMBOL_TYPE::TERMINAL) {
-                std::cout << "RUNNING SCAN" << std::endl;
+                // spdlog::debug("RUNNING SCAN");
+                // std::cout << "RUNNING SCAN" << std::endl;
                 scan(*parse_table, i, ii, symbol, input);
             } else if (symbol.type == SYMBOL_TYPE::NONTERMINAL) {
-                std::cout << "RUNNING PREDICT" << std::endl;
+                // spdlog::debug("RUNNING PREDICT");
+                // std::cout << "RUNNING PREDICT" << std::endl;
                 predict(*parse_table, i, symbol, grammar);
             } else {
                 throw std::domain_error("Illegal rule in grammar");
             }
         }
 
-        std::cout << "STATE SET FOR S[" << i << "] ENDS WITH" << std::endl;
+        spdlog::debug("FINAL STATE SET FOR S[{}]", i);
+        // std::cout << "STATE SET FOR S[" << i << "] ENDS WITH" << std::endl;
         for(size_t ii = 0; ii < parse_table->at(i).size(); ii++) {
-            std::cout << parse_table->at(i).at(ii) << std::endl;
+            spdlog::debug("{}", parse_table->at(i).at(ii));
+            // std::cout << parse_table->at(i).at(ii) << std::endl;
         }
         std::cout << std::endl;
     }

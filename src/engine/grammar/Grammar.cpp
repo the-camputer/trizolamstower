@@ -2,7 +2,8 @@
 #include "bestinshow/engine/grammar/Rule.h"
 #include <string>
 #include <vector>
-
+#include "spdlog/fmt/ostr.h"
+#include "spdlog/spdlog.h"
 
 Grammar::Grammar(const std::string grammar_name) : grammar_name { grammar_name } {}
 
@@ -49,17 +50,18 @@ std::string Grammar::get_first_rule_name()
     return first_rule_name;
 }
 
-std::ostream& operator<<(std::ostream& os, const Grammar& v)
-{
-    os << "<" << v.grammar_name << "> ::= ";
-    if (v.rules != nullptr) {
-        os << "<" << v.first_rule_name << ">\n";
-        for(Rule rule : v.get_rules()) {
-            os << rule;
-        }
-    } else {
-        os << std::endl;
-    }
+// template<typename OStream>
+// OStream& operator<<(OStream& ostream, const Grammar& v)
+// {
+//     ostream << "<" << v.grammar_name << "> ::= ";
+//     if (v.rules != nullptr) {
+//         ostream << "<" << v.first_rule_name << ">\n";
+//         for(Rule rule : v.get_rules()) {
+//             ostream << rule;
+//         }
+//     } else {
+//         ostream << std::endl;
+//     }
 
-    return os;
-}
+//     return ostream;
+// }

@@ -33,5 +33,5 @@ parsing_example.o: src/parsing_example.cpp
 EarleyParser.o: src/engine/grammar/EarleyParser.cpp
 	$(CC) $(CFLAGS) -c src/engine/grammar/EarleyParser.cpp -o build/EarleyParser.o
 
-parsing_example: parsing_example.o ExampleGrammar.o EarleyParser.o libgrammar.a
+parsing_example: EarleyParser.o ExampleGrammar.o libgrammar.a parsing_example.o 
 	$(CC) $(CFLAGS) -o bin/parsing_example build/parsing_example.o build/EarleyParser.o -L./lib/bestinshow/engine/grammar -l grammar build/ExampleGrammar.o
