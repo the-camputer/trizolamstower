@@ -49,19 +49,3 @@ std::string Grammar::get_first_rule_name()
 {
     return first_rule_name;
 }
-
-// template<typename OStream>
-// OStream& operator<<(OStream& ostream, const Grammar& v)
-// {
-//     ostream << "<" << v.grammar_name << "> ::= ";
-//     if (v.rules != nullptr) {
-//         ostream << "<" << v.first_rule_name << ">\n";
-//         for(Rule rule : v.get_rules()) {
-//             ostream << rule;
-//         }
-//     } else {
-//         ostream << std::endl;
-//     }
-
-//     return ostream;
-// }

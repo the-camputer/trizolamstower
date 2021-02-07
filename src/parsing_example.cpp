@@ -16,7 +16,6 @@ int main(int argc, char *argv[]) {
 
     ExampleGrammar grammar{};
     spdlog::info("{}", grammar.get_grammar());
-    // std::cout << grammar.get_grammar() << std::endl;
 
     std::string sample_input = argv[1];
 

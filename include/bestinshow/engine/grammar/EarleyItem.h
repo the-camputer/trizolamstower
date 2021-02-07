@@ -1,4 +1,5 @@
 #pragma once
+
 #include <vector>
 #include "spdlog/fmt/ostr.h"
 

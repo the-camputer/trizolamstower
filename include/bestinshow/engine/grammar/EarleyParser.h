@@ -36,8 +36,35 @@ class EarleyParser {
          */
         static RECOGNITION_STATUS diagnose(ParseTable parse_table, Grammar grammar, std::string input);
     private:
+        /**
+         * @brief Completes a successful scan by backfilling the state set with origins of the successful scan
+         * 
+         * @param parse_table Table to analyze
+         * @param input_pos What state set to complete
+         * @param state_set_pos What Earley Item within the State Set to complete
+         * @param grammar What grammar the parse table is based on
+         */
         static void complete(ParseTable& parse_table, int input_pos, int state_set_pos, Grammar grammar);
+
+        /**
+         * @brief Scans the next character in the input string and compares against the given pattern
+         * 
+         * @param parse_table Parse Table to be building
+         * @param input_pos What poisition in the string to scan and what State Set in the Parse Table to work with
+         * @param state_set_pos What Earley Item in the given State Set to use for scanning
+         * @param symbol What pattern to use for regex parsing
+         * @param input The string to be processing
+         */
         static void scan(ParseTable& parse_table, int input_pos, int state_set_pos, Symbol symbol, std::string input);
+
+        /**
+         * @brief Adds all relevant possible states to a State Set given a rule name
+         * 
+         * @param parse_table The Parse Table to build
+         * @param input_pos The State Set within the parse table to add Earley Items to
+         * @param symbol The Symbol representing the Rule to pull possible future items from
+         * @param grammar The Grammar the Parse Table is based on
+         */
         static void predict(ParseTable& parse_table, int input_pos, Symbol symbol, Grammar grammar);
 
         /**
