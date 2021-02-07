@@ -10,6 +10,8 @@
 #include <memory>
 #include <exception>
 #include <iostream>
+#include <algorithm>
+#include <cctype>
 
 bool EarleyParser::has_partial_parse(ParseTable parse_table, int input_pos, Grammar grammar) {
     /*
@@ -114,6 +116,9 @@ void EarleyParser::predict(ParseTable& parse_table, int input_pos, Symbol symbol
 }
 
 std::unique_ptr<ParseTable> EarleyParser::build_items(Grammar grammar, std::string input) {
+    
+    input.erase(std::remove_if(input.begin(), input.end(), isspace), input.end());
+
     if (input.length() == 0) {
         throw std::length_error("input is empty");
     }

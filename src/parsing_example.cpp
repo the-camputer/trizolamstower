@@ -8,7 +8,6 @@
 #include "spdlog/fmt/ostr.h"
 
 int main(int argc, char *argv[]) {
-    spdlog::info("Hello World: {}", argv[2]);
     if (argc == 3 && strcmp(argv[2], "debug") == 0) {
         spdlog::set_level(spdlog::level::debug);
     } else {
@@ -23,17 +22,18 @@ int main(int argc, char *argv[]) {
 
     spdlog::info("parsing the following input: {}", sample_input);
 
-    std::unique_ptr<ParseTable> sample_parse_table = EarleyParser::build_items(grammar.get_grammar(), sample_input);
-
     try {
+        std::unique_ptr<ParseTable> sample_parse_table = EarleyParser::build_items(grammar.get_grammar(), sample_input);
         RECOGNITION_STATUS result = EarleyParser::diagnose(*sample_parse_table, grammar.get_grammar(), sample_input);
         spdlog::info("Result is {}", RECOGNITION_STATUS_NAMES[result]);
-        // std::cout << "Result is " << RECOGNITION_STATUS_NAMES[result] << std::endl;
     } catch(std::domain_error& e) {
-        // std::cout << "Unable to parse: " << e.what() << std::endl;
+        spdlog::error("Unable to parse: {}", e.what());
+        return -2;
     } catch(std::length_error& e) {
-        // std::cout << "Input is empty" << std::endl;
+        spdlog::warn("Input is empty");
+        return -3;
     } catch(std::exception& e) {
-        // std::cout << "didn't expect this: " << e.what() << std::endl;
+        spdlog::error("Encounted unexpected error: {}", e.what());
+        return -1;
     }
 }
