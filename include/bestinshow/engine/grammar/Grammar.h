@@ -30,18 +30,19 @@ class Grammar {
         template<typename OStream>
         inline friend OStream& operator<<(OStream& ostream, const Grammar& v)
         {
-    ostream << "<" << v.grammar_name << "> ::= ";
-    if (v.rules != nullptr) {
-        ostream << "<" << v.first_rule_name << ">\n";
-        for(Rule rule : v.get_rules()) {
-            ostream << rule;
-        }
-    } else {
-        ostream << std::endl;
-    }
+            ostream << "<" << v.grammar_name << "> ::= ";
+            if (v.rules != nullptr) {
+                ostream << "<" << v.first_rule_name << ">\n";
+                for(Rule rule : v.get_rules()) {
+                    ostream << rule;
+                }
+            } else {
+                ostream << std::endl;
+            }
 
-    return ostream;
-}
+            return ostream;
+        }
+        
         inline Rule operator[](int i)
         {
             return get_rules().at(i);
