@@ -3,7 +3,7 @@
 #include "bestinshow/engine/grammar/Symbol.h"
 #include <string>
 #include <ostream>
-#include <catch2/catch.hpp>
+#include <catch/catch.hpp>
 
 TEST_CASE("Grammar Creation") {
     Grammar test_grammar { "test-grammar" };

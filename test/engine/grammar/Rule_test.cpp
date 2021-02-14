@@ -1,4 +1,4 @@
-#include <catch2/catch.hpp>
+#include <catch/catch.hpp>
 #include <string>
 #include <ostream>
 #include "bestinshow/engine/grammar/Rule.h"

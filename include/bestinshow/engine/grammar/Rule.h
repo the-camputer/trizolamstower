@@ -13,7 +13,7 @@ using Production = std::vector<Symbol>;
 using ProductionList = std::vector<Production>;
 
 class Rule {
-    private:
+    protected:
         std::string rule_name = "";
         std::unique_ptr<ProductionList> productions = nullptr;
     public:

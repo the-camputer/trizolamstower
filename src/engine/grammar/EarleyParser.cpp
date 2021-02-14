@@ -3,8 +3,8 @@
 #include "bestinshow/engine/grammar/Grammar.h"
 #include "bestinshow/engine/grammar/Rule.h"
 #include "bestinshow/engine/grammar/Symbol.h"
-#include "spdlog/spdlog.h"
-#include "spdlog/fmt/ostr.h"
+#include <spdlog/spdlog.h>
+#include <spdlog/fmt/ostr.h>
 #include <string>
 #include <regex>
 #include <memory>
