@@ -2,6 +2,7 @@
 #include "Grammar.h"
 #include "EarleyItem.h"
 #include <string>
+#include <vector>
 #include <stdexcept>
 #include <iostream>
 #include <memory>
@@ -24,7 +25,7 @@ inline const char* RECOGNITION_STATUS_NAMES[] =
 
 class EarleyParser {
     public:
-        static std::unique_ptr<ParseTable> build_items(Grammar grammar, std::string input);
+        static std::unique_ptr<ParseTable> build_items(Grammar grammar, std::vector<std::string>& input);
 
         /**
          * @brief Analyzes the given parse table for validity of input against the grammar
@@ -34,7 +35,7 @@ class EarleyParser {
          * @param input 
          * @return RECOGNITION_STATUS Synbolizes the state of the ParseTable in regard to validity
          */
-        static RECOGNITION_STATUS diagnose(ParseTable parse_table, Grammar grammar, std::string input);
+        static RECOGNITION_STATUS diagnose(ParseTable parse_table, Grammar grammar, std::vector<std::string>& input);
     private:
         /**
          * @brief Completes a successful scan by backfilling the state set with origins of the successful scan
@@ -55,7 +56,7 @@ class EarleyParser {
          * @param symbol What pattern to use for regex parsing
          * @param input The string to be processing
          */
-        static void scan(ParseTable& parse_table, int input_pos, int state_set_pos, Symbol symbol, std::string input);
+        static void scan(ParseTable& parse_table, int input_pos, int state_set_pos, Symbol symbol, std::vector<std::string>& input);
 
         /**
          * @brief Adds all relevant possible states to a State Set given a rule name

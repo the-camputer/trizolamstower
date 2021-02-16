@@ -7,6 +7,7 @@
 #include <spdlog/fmt/ostr.h>
 #include <string>
 #include <regex>
+#include <vector>
 #include <memory>
 #include <exception>
 #include <iostream>
@@ -52,7 +53,7 @@ int EarleyParser::last_partial_parse(ParseTable parse_table, Grammar grammar) {
     return -1;
 }
 
-RECOGNITION_STATUS EarleyParser::diagnose(ParseTable parse_table, Grammar grammar, std::string input) {
+RECOGNITION_STATUS EarleyParser::diagnose(ParseTable parse_table, Grammar grammar, std::vector<std::string>& input) {
     if (has_complete_parse(parse_table, grammar)) {
         return RECOGNITION_STATUS::COMPLETE;
     } else {
@@ -89,11 +90,11 @@ void EarleyParser::complete(ParseTable& parse_table, int input_pos, int state_se
     }
 }
 
-void EarleyParser::scan(ParseTable& parse_table, int input_pos, int state_set_pos, Symbol symbol, std::string input) {
+void EarleyParser::scan(ParseTable& parse_table, int input_pos, int state_set_pos, Symbol symbol, std::vector<std::string>& input) {
     EarleyItem item = parse_table[input_pos][state_set_pos];
-    spdlog::debug("SCANNING {} WITH TERMINAL PATTERN {}", item, symbol);
-    if (std::regex_match(input.substr(input_pos, 1), std::regex(symbol.pattern))) {
-        spdlog::debug("MATCH FOUND: {}", input.substr(input_pos, 1));
+    spdlog::debug("SCANNING {} WITH TERMINAL PATTERN {}", input[input_pos], symbol);
+    if (std::regex_match(input[input_pos], std::regex(symbol.pattern))) {
+        spdlog::debug("MATCH FOUND: {}", input[input_pos]);
         if (parse_table.size() == (size_t)(input_pos + 1)) {
             parse_table.push_back({});
         }
@@ -115,11 +116,9 @@ void EarleyParser::predict(ParseTable& parse_table, int input_pos, Symbol symbol
     }
 }
 
-std::unique_ptr<ParseTable> EarleyParser::build_items(Grammar grammar, std::string input) {
-    
-    input.erase(std::remove_if(input.begin(), input.end(), isspace), input.end());
+std::unique_ptr<ParseTable> EarleyParser::build_items(Grammar grammar, std::vector<std::string>& input) {
 
-    if (input.length() == 0) {
+    if (input.size() == 0) {
         throw std::length_error("input is empty");
     }
 

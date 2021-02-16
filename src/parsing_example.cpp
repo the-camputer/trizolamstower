@@ -20,10 +20,17 @@ int main(int argc, char *argv[]) {
     std::string sample_input = argv[1];
 
     spdlog::info("parsing the following input: {}", sample_input);
+    
+    sample_input.erase(std::remove_if(sample_input.begin(), sample_input.end(), isspace), sample_input.end());
+
+    std::vector<std::string> split_input;
+    for(auto &ch : sample_input) {
+        split_input.push_back(std::string(1, ch));
+    }
 
     try {
-        std::unique_ptr<ParseTable> sample_parse_table = EarleyParser::build_items(grammar.get_grammar(), sample_input);
-        RECOGNITION_STATUS result = EarleyParser::diagnose(*sample_parse_table, grammar.get_grammar(), sample_input);
+        std::unique_ptr<ParseTable> sample_parse_table = EarleyParser::build_items(grammar.get_grammar(), split_input);
+        RECOGNITION_STATUS result = EarleyParser::diagnose(*sample_parse_table, grammar.get_grammar(), split_input);
         spdlog::info("Result is {}", RECOGNITION_STATUS_NAMES[result]);
     } catch(std::domain_error& e) {
         spdlog::error("Unable to parse: {}", e.what());
