@@ -25,5 +25,6 @@ add_executable(
 
     ${PROJECT_SOURCE_DIR}/include/bestinshow/engine/grammar/Grammar.h
     ${PROJECT_SOURCE_DIR}/include/trizolams_tower/player_input/grammar/TrizolamGrammar.h
+    ${PROJECT_SOURCE_DIR}/include/bestinshow/engine/grammar/EarleyParser.h
 )
-target_link_libraries(testing_trizolam_grammar grammar)
+target_link_libraries(testing_trizolam_grammar grammar EarleyParser)

@@ -2,8 +2,10 @@
 #include "bestinshow/engine/grammar/Grammar.h"
 #include "bestinshow/engine/grammar/Rule.h"
 #include "bestinshow/engine/grammar/Symbol.h"
+#include "bestinshow/engine/grammar/EarleyParser.h"
 #include <iostream>
 #include <memory>
+#include <string>
 
 Rule Command = 
 {
@@ -50,6 +52,8 @@ Rule MovementCommand =
     }
 };
 
+
+
 Grammar TrizolamGrammar::create_new_instance()
 {
     Grammar *new_instance = new Grammar("trizolam-grammar");
@@ -75,5 +79,11 @@ Grammar& TrizolamGrammar::get_instance()
 
 int main() {
     std::cout << "THING! " << std::endl;
-    std::cout << TrizolamGrammar::get_instance() << std::endl; 
+    std::cout << TrizolamGrammar::get_instance() << std::endl;
+
+    std::vector<std::string> sample_input = {"go", "west"};
+    std::unique_ptr<ParseTable> sample_parse_table = EarleyParser::build_items(TrizolamGrammar::get_instance(), sample_input);
+    RECOGNITION_STATUS result = EarleyParser::diagnose(*sample_parse_table, TrizolamGrammar::get_instance(), sample_input);
+
+    std::cout << "TEST RESULT IS " << RECOGNITION_STATUS_NAMES[result] << std::endl;
 }
