@@ -25,6 +25,16 @@ void Grammar::add_rule(Rule& new_rule)
     rules->push_back(new_rule);
 }
 
+void Grammar::add_rule(Rule&& new_rule)
+{
+    if (!rules) {
+        rules = std::make_unique<RuleList>();
+        first_rule_name = new_rule.get_rule_name();
+    }
+
+    rules->push_back(new_rule);
+}
+
 RuleList Grammar::get_rules() const
 {
     return *rules;

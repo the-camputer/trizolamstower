@@ -21,6 +21,7 @@ class Grammar {
         Grammar(const Grammar &prev);
         ~Grammar() = default;
         void add_rule(Rule& new_rule);
+        void add_rule(Rule&& new_rule);
         RuleList get_rules() const;
         void set_name(std::string new_name);
         std::string get_name();
