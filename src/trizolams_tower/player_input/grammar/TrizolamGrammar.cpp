@@ -1,10 +1,12 @@
 #include "trizolams_tower/player_input/grammar/TrizolamGrammar.h"
-#include "TrizolamGrammarRules.h"
-#include "bestinshow/engine/grammar/Grammar.h"
-#include "bestinshow/engine/grammar/EarleyParser.h"
+
 #include <iostream>
 #include <memory>
 #include <string>
+
+#include "TrizolamGrammarRules.h"
+#include "bestinshow/engine/grammar/EarleyParser.h"
+#include "bestinshow/engine/grammar/Grammar.h"
 
 Grammar TrizolamGrammar::create_new_instance()
 {
@@ -39,22 +41,26 @@ Grammar TrizolamGrammar::create_new_instance()
 
 std::unique_ptr<Grammar> TrizolamGrammar::m_instance;
 
-Grammar& TrizolamGrammar::get_instance()
+Grammar &TrizolamGrammar::get_instance()
 {
-    if (!m_instance) {
+    if (!m_instance)
+    {
         m_instance = std::make_unique<Grammar>(create_new_instance());
     }
 
     return *m_instance;
 }
 
-int main() {
+int main()
+{
     std::cout << "THING! " << std::endl;
     std::cout << TrizolamGrammar::get_instance() << std::endl;
 
     std::vector<std::string> sample_input = {"go", "west"};
-    std::unique_ptr<ParseTable> sample_parse_table = EarleyParser::build_items(TrizolamGrammar::get_instance(), sample_input);
-    RECOGNITION_STATUS result = EarleyParser::diagnose(*sample_parse_table, TrizolamGrammar::get_instance(), sample_input);
+    std::unique_ptr<ParseTable> sample_parse_table =
+        EarleyParser::build_items(TrizolamGrammar::get_instance(), sample_input);
+    RECOGNITION_STATUS result =
+        EarleyParser::diagnose(*sample_parse_table, TrizolamGrammar::get_instance(), sample_input);
 
     std::cout << "TEST RESULT IS " << RECOGNITION_STATUS_NAMES[result] << std::endl;
 }

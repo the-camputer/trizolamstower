@@ -1,32 +1,39 @@
 #include "bestinshow/engine/grammar/Grammar.h"
 #include "bestinshow/engine/grammar/Rule.h"
-#include <string>
-#include <vector>
 #include "spdlog/fmt/ostr.h"
 #include "spdlog/spdlog.h"
+#include <string>
+#include <vector>
 
-Grammar::Grammar(const std::string grammar_name) : grammar_name { grammar_name } {}
+Grammar::Grammar(const std::string grammar_name) : grammar_name{grammar_name}
+{
+}
 
-Grammar::Grammar(const Grammar &prev) {
+Grammar::Grammar(const Grammar &prev)
+{
     grammar_name = prev.grammar_name;
     first_rule_name = prev.first_rule_name;
     rules = prev.rules;
 }
 
-Grammar::Grammar() {}
-
-void Grammar::add_rule(Rule& new_rule)
+Grammar::Grammar()
 {
-    if (first_rule_name.empty()) {
+}
+
+void Grammar::add_rule(Rule &new_rule)
+{
+    if (first_rule_name.empty())
+    {
         first_rule_name = new_rule.get_rule_name();
     }
 
     rules.push_back(new_rule);
 }
 
-void Grammar::add_rule(Rule&& new_rule)
+void Grammar::add_rule(Rule &&new_rule)
 {
-    if (first_rule_name.empty()) {
+    if (first_rule_name.empty())
+    {
         first_rule_name = new_rule.get_rule_name();
     }
 

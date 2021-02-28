@@ -1,24 +1,21 @@
 #include "bestinshow/engine/grammar/Rule.h"
 #include "bestinshow/engine/grammar/Symbol.h"
-#include <vector>
-#include <string>
-#include <memory>
-#include "spdlog/spdlog.h"
 #include "spdlog/fmt/ostr.h"
+#include "spdlog/spdlog.h"
+#include <memory>
+#include <string>
+#include <vector>
 
-Rule::Rule(const std::string name)
-: rule_name { name } 
+Rule::Rule(const std::string name) : rule_name{name}
 {
 }
 
-Rule::Rule(const std::string name, ProductionList productions)
-: rule_name { name }
+Rule::Rule(const std::string name, ProductionList productions) : rule_name{name}
 {
     this->productions = productions;
 }
 
-Rule::Rule(const Rule& prev)
-: rule_name { prev.rule_name }
+Rule::Rule(const Rule &prev) : rule_name{prev.rule_name}
 {
     this->productions = prev.productions;
 }
@@ -38,13 +35,13 @@ ProductionList Rule::get_productions() const
     return productions;
 }
 
-void Rule::add_production(Production& production)
+void Rule::add_production(Production &production)
 {
     productions.push_back(production);
 }
 
 // template<typename OStream>
-// OStream& operator<<(OStream& os, const Rule& v) 
+// OStream& operator<<(OStream& os, const Rule& v)
 // {
 //     os << "<" << v.get_rule_name() << "> ::= ";
 
