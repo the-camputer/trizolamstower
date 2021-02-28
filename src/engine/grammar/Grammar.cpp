@@ -10,34 +10,32 @@ Grammar::Grammar(const std::string grammar_name) : grammar_name { grammar_name }
 Grammar::Grammar(const Grammar &prev) {
     grammar_name = prev.grammar_name;
     first_rule_name = prev.first_rule_name;
-    rules = std::make_unique<RuleList>(*prev.rules);
+    rules = prev.rules;
 }
 
 Grammar::Grammar() {}
 
 void Grammar::add_rule(Rule& new_rule)
 {
-    if (!rules) {
-        rules = std::make_unique<RuleList>();
+    if (first_rule_name.empty()) {
         first_rule_name = new_rule.get_rule_name();
     }
 
-    rules->push_back(new_rule);
+    rules.push_back(new_rule);
 }
 
 void Grammar::add_rule(Rule&& new_rule)
 {
-    if (!rules) {
-        rules = std::make_unique<RuleList>();
+    if (first_rule_name.empty()) {
         first_rule_name = new_rule.get_rule_name();
     }
 
-    rules->push_back(new_rule);
+    rules.push_back(new_rule);
 }
 
 RuleList Grammar::get_rules() const
 {
-    return *rules;
+    return rules;
 }
 
 void Grammar::set_name(std::string new_name)

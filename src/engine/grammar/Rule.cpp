@@ -6,27 +6,21 @@
 #include "spdlog/spdlog.h"
 #include "spdlog/fmt/ostr.h"
 
-Rule::Rule() 
-{
-    productions = std::make_unique<ProductionList>();
-}
-
 Rule::Rule(const std::string name)
 : rule_name { name } 
 {
-    productions = std::make_unique<ProductionList>();
 }
 
 Rule::Rule(const std::string name, ProductionList productions)
 : rule_name { name }
 {
-    this->productions = std::make_unique<ProductionList>(productions);
+    this->productions = productions;
 }
 
 Rule::Rule(const Rule& prev)
 : rule_name { prev.rule_name }
 {
-    this->productions = std::make_unique<ProductionList>(*prev.productions);
+    this->productions = prev.productions;
 }
 
 std::string Rule::get_rule_name() const
@@ -39,18 +33,14 @@ void Rule::set_rule_name(std::string rule_name)
     this->rule_name = rule_name;
 }
 
-ProductionList* Rule::get_productions() const
+ProductionList Rule::get_productions() const
 {
-    return this->productions.get();
+    return productions;
 }
 
 void Rule::add_production(Production& production)
 {
-    if (!productions) {
-        this->productions = std::make_unique<ProductionList>();
-    }
-
-    this->productions->push_back(production);
+    productions.push_back(production);
 }
 
 // template<typename OStream>

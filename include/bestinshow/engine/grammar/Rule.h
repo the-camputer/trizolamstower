@@ -15,9 +15,9 @@ using ProductionList = std::vector<Production>;
 class Rule {
     protected:
         std::string rule_name = "";
-        std::unique_ptr<ProductionList> productions = nullptr;
+        ProductionList productions{};
     public:
-        Rule();
+        Rule() = default;
         Rule(const std::string name);
         Rule(const std::string name, ProductionList productions);
         Rule(const Rule& prev);
@@ -25,16 +25,15 @@ class Rule {
 
         std::string get_rule_name() const;
         void set_rule_name(std::string rule_name);
-        ProductionList* get_productions() const;
+        ProductionList get_productions() const;
         void add_production(Production& production);
         template<typename OStream>
         friend OStream& operator<<(OStream& os, const Rule& v)
         {
             os << "<" << v.get_rule_name() << "> ::= ";
 
-            auto ref_production_list = v.get_productions();
-            if (ref_production_list) {
-                auto production_list = *ref_production_list;
+            auto production_list = v.get_productions();
+            if (production_list.size() > 0) {
                 for(Production p : production_list) {
                     for(Symbol s : p) {
                         os << s;
@@ -52,6 +51,6 @@ class Rule {
         }
         
         inline Production& operator[](int i) {
-            return (*productions).at(i);
+            return productions.at(i);
         }
 };

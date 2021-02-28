@@ -113,13 +113,7 @@ class EarleyParser {
          * @param item 
          * @return Symbol 
          */
-        static inline Symbol next_symbol(Grammar grammar, EarleyItem item) {
-            try {
-                return grammar[item.rule][item.production].at(item.next);
-            } catch(std::out_of_range& ignore) {
-                return { "", SYMBOL_TYPE::EMPTY };
-            }
-        }
+        static Symbol next_symbol(Grammar grammar, EarleyItem item);
 
         /**
          * @brief Gets the name of the rule associated with the given EarleyItem

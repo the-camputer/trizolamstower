@@ -13,7 +13,7 @@ class Grammar {
     protected:
         std::string grammar_name = "";
         std::string first_rule_name = "";
-        std::unique_ptr<RuleList> rules = nullptr;
+        RuleList rules{};
 
     public:
         Grammar(const std::string grammar_name);
@@ -32,7 +32,7 @@ class Grammar {
         inline friend OStream& operator<<(OStream& ostream, const Grammar& v)
         {
             ostream << "<" << v.grammar_name << "> ::= ";
-            if (v.rules != nullptr) {
+            if (v.rules.size() > 0) {
                 ostream << "<" << v.first_rule_name << ">\n";
                 for(Rule rule : v.get_rules()) {
                     ostream << rule;
