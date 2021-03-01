@@ -14,3 +14,4 @@ add_executable(
 )
 # target_include_directories(tests PUBLIC ${PROJECT_SOURCE_DIR})
 target_link_libraries(tests grammar)
+target_link_libraries(tests spdlog)

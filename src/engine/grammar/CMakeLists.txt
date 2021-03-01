@@ -27,6 +27,7 @@ add_library(
 )
 target_include_directories(EarleyParser PRIVATE ${PROJECT_SOURCE_DIR}/include)
 target_link_libraries(EarleyParser grammar)
+target_link_libraries(EarleyParser spdlog)
 
 add_library(
     ExampleGrammar

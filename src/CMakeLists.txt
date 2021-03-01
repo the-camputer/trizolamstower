@@ -14,9 +14,8 @@ add_executable(
     ${PROJECT_SOURCE_DIR}/include/bestinshow/engine/grammar/EarleyParser.h
     ${PROJECT_SOURCE_DIR}/include/bestinshow/engine/grammar/EarleyItem.h
 )
-target_link_libraries(parsing_example EarleyParser)
-target_link_libraries(parsing_example ExampleGrammar)
-target_link_libraries(parsing_example grammar)
+target_link_libraries(parsing_example EarleyParser ExampleGrammar grammar)
+target_link_libraries(parsing_example spdlog)
 
 add_executable(
     testing_trizolam_grammar

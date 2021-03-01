@@ -130,20 +130,33 @@ void EarleyParser::scan(ParseTable &parse_table, int input_pos, int state_set_po
     bool should_scan = (size_t)item.start <= input.size() - 1 && (size_t)input_pos <= input.size() - 1;
     if (should_scan)
     {
-        spdlog::debug("SCANNING {} WITH TERMINAL PATTERN {}", input[input_pos], symbol);
-        if (std::regex_match(input[input_pos], std::regex(symbol.pattern)))
+        if (!symbol.pattern.empty())
         {
-            spdlog::debug("MATCH FOUND: {}", input[input_pos]);
+            spdlog::debug("SCANNING {} WITH TERMINAL PATTERN {}", input[input_pos], symbol);
+            if (std::regex_match(input[input_pos], std::regex(symbol.pattern)))
+            {
+                spdlog::debug("MATCH FOUND: {}", input[input_pos]);
+                if (parse_table.size() == (size_t)(input_pos + 1))
+                {
+                    parse_table.push_back({});
+                }
+
+                parse_table[input_pos + 1].push_back({item.rule, item.production, item.start, item.next + 1});
+            }
+            else
+            {
+                spdlog::debug("SCAN FAILED TO MATCH");
+            }
+        }
+        else
+        {
+            spdlog::debug("EMPTY PATTERN FOUND. ASSUMING OPTIONAL");
             if (parse_table.size() == (size_t)(input_pos + 1))
             {
                 parse_table.push_back({});
             }
 
-            parse_table[input_pos + 1].push_back({item.rule, item.production, item.start, item.next + 1});
-        }
-        else
-        {
-            spdlog::debug("SCAN FAILED TO MATCH");
+            parse_table[input_pos].push_back({item.rule, item.production, item.start, item.next + 1});
         }
     }
     else
@@ -195,13 +208,13 @@ std::unique_ptr<ParseTable> EarleyParser::build_items(Grammar grammar, std::vect
             // std::cout << "NEXT SYMBOL IS " << symbol << std::endl;
             if (symbol.type == SYMBOL_TYPE::EMPTY)
             {
-                spdlog::debug("RUNNING COMPLETION");
+                spdlog::debug("RUNNING COMPLETION FOR {}", parse_table->at(i).at(ii));
                 // std::cout << "RUNNING COMPLETE" << std::endl;
                 complete(*parse_table, i, ii, grammar);
             }
             else if (symbol.type == SYMBOL_TYPE::TERMINAL)
             {
-                spdlog::debug("RUNNING SCAN");
+                spdlog::debug("RUNNING SCAN FOR {}", parse_table->at(i).at(ii));
                 // std::cout << "RUNNING SCAN" << std::endl;
                 try
                 {
@@ -214,7 +227,7 @@ std::unique_ptr<ParseTable> EarleyParser::build_items(Grammar grammar, std::vect
             }
             else if (symbol.type == SYMBOL_TYPE::NONTERMINAL)
             {
-                spdlog::debug("RUNNING PREDICT");
+                spdlog::debug("RUNNING PREDICT FOR {}", parse_table->at(i).at(ii));
                 // std::cout << "RUNNING PREDICT" << std::endl;
                 predict(*parse_table, i, symbol, grammar);
             }

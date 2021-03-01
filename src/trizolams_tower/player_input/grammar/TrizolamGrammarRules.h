@@ -56,6 +56,7 @@ class TrizolamGrammarRules
 
     static inline Rule InteractableObject = {"interactable-object",
                                              {
+                                                 {{"glove", SYMBOL_TYPE::TERMINAL}}
                                                  // This will be filled in dynamically based on scene and configuration
                                              }};
 
@@ -94,13 +95,13 @@ class TrizolamGrammarRules
     static inline Rule InventoryCommand = {"inventory-command",
                                            {{{"take-command", SYMBOL_TYPE::NONTERMINAL},
                                              {"optional-article", SYMBOL_TYPE::NONTERMINAL},
-                                             {"inventory-object", SYMBOL_TYPE::NONTERMINAL}},
+                                             {"interactable-object", SYMBOL_TYPE::NONTERMINAL}},
                                             {{"drop-command", SYMBOL_TYPE::NONTERMINAL},
                                              {"optional-article", SYMBOL_TYPE::NONTERMINAL},
-                                             {"inventory-object", SYMBOL_TYPE::NONTERMINAL}},
+                                             {"interactable-object", SYMBOL_TYPE::NONTERMINAL}},
                                             {{"place-command", SYMBOL_TYPE::NONTERMINAL},
                                              {"optional-article", SYMBOL_TYPE::NONTERMINAL},
-                                             {"inventory-object", SYMBOL_TYPE::NONTERMINAL},
+                                             {"interactable-object", SYMBOL_TYPE::NONTERMINAL},
                                              {"preposition", SYMBOL_TYPE::NONTERMINAL},
                                              {"optional-article", SYMBOL_TYPE::NONTERMINAL},
                                              {"interactable-object", SYMBOL_TYPE::NONTERMINAL}}}};

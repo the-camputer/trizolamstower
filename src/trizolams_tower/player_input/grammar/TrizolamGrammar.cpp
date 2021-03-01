@@ -7,6 +7,7 @@
 #include "TrizolamGrammarRules.h"
 #include "bestinshow/engine/grammar/EarleyParser.h"
 #include "bestinshow/engine/grammar/Grammar.h"
+#include <spdlog/spdlog.h>
 
 Grammar TrizolamGrammar::create_new_instance()
 {
@@ -56,7 +57,9 @@ int main()
     std::cout << "THING! " << std::endl;
     std::cout << TrizolamGrammar::get_instance() << std::endl;
 
-    std::vector<std::string> sample_input = {"go", "west"};
+    spdlog::set_level(spdlog::level::debug);
+
+    std::vector<std::string> sample_input = {"take", "glove"};
     std::unique_ptr<ParseTable> sample_parse_table =
         EarleyParser::build_items(TrizolamGrammar::get_instance(), sample_input);
     RECOGNITION_STATUS result =
