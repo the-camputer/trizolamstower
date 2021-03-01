@@ -31,6 +31,9 @@ Grammar TrizolamGrammar::create_new_instance()
     new_instance->add_rule(TrizolamGrammarRules::LoadCommand);
     new_instance->add_rule(TrizolamGrammarRules::ResetCommand);
     new_instance->add_rule(TrizolamGrammarRules::InventoryCommand);
+    new_instance->add_rule(TrizolamGrammarRules::PutInInventoryCommand);
+    new_instance->add_rule(TrizolamGrammarRules::RemoveFromInventoryCommand);
+    new_instance->add_rule(TrizolamGrammarRules::PlaceObjectCommand);
     new_instance->add_rule(TrizolamGrammarRules::TakeCommand);
     new_instance->add_rule(TrizolamGrammarRules::DropCommand);
     new_instance->add_rule(TrizolamGrammarRules::PlaceCommand);

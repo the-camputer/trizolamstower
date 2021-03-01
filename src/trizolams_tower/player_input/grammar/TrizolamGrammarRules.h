@@ -43,12 +43,8 @@ class TrizolamGrammarRules
                                              {{"look(\\s)?at", SYMBOL_TYPE::TERMINAL}},
                                              {{"look(\\s)?around", SYMBOL_TYPE::TERMINAL}}}};
 
-    static inline Rule OptionalArticle = {
-        "optional-article",
-        {
-            {{"the", SYMBOL_TYPE::TERMINAL}},
-            {{"", SYMBOL_TYPE::TERMINAL}} // TODO Update EarleyParser to handle optional rules
-        }};
+    static inline Rule OptionalArticle = {"optional-article",
+                                          {{{"the", SYMBOL_TYPE::TERMINAL}}, {{"", SYMBOL_TYPE::TERMINAL}}}};
 
     static inline Rule SceneObject = {
         "scene-object",
@@ -93,18 +89,27 @@ class TrizolamGrammarRules
     static inline Rule ResetCommand = {"reset-command", {{{"reset((\\s)?game)?", SYMBOL_TYPE::TERMINAL}}}};
 
     static inline Rule InventoryCommand = {"inventory-command",
-                                           {{{"take-command", SYMBOL_TYPE::NONTERMINAL},
-                                             {"optional-article", SYMBOL_TYPE::NONTERMINAL},
-                                             {"interactable-object", SYMBOL_TYPE::NONTERMINAL}},
-                                            {{"drop-command", SYMBOL_TYPE::NONTERMINAL},
-                                             {"optional-article", SYMBOL_TYPE::NONTERMINAL},
-                                             {"interactable-object", SYMBOL_TYPE::NONTERMINAL}},
-                                            {{"place-command", SYMBOL_TYPE::NONTERMINAL},
-                                             {"optional-article", SYMBOL_TYPE::NONTERMINAL},
-                                             {"interactable-object", SYMBOL_TYPE::NONTERMINAL},
-                                             {"preposition", SYMBOL_TYPE::NONTERMINAL},
-                                             {"optional-article", SYMBOL_TYPE::NONTERMINAL},
-                                             {"interactable-object", SYMBOL_TYPE::NONTERMINAL}}}};
+                                           {{{"put-in-inventory-command", SYMBOL_TYPE::NONTERMINAL}},
+                                            {{"remove-from-inventory-command", SYMBOL_TYPE::NONTERMINAL}},
+                                            {{"place-object-command", SYMBOL_TYPE::NONTERMINAL}}}};
+
+    static inline Rule PutInInventoryCommand = {"put-in-inventory-command",
+                                                {{{"take-command", SYMBOL_TYPE::NONTERMINAL},
+                                                  {"optional-article", SYMBOL_TYPE::NONTERMINAL},
+                                                  {"interactable-object", SYMBOL_TYPE::NONTERMINAL}}}};
+
+    static inline Rule RemoveFromInventoryCommand = {"remove-from-inventory-command",
+                                                     {{{"drop-command", SYMBOL_TYPE::NONTERMINAL},
+                                                       {"optional-article", SYMBOL_TYPE::NONTERMINAL},
+                                                       {"interactable-object", SYMBOL_TYPE::NONTERMINAL}}}};
+
+    static inline Rule PlaceObjectCommand = {"place-object-command",
+                                             {{{"place-command", SYMBOL_TYPE::NONTERMINAL},
+                                               {"optional-article", SYMBOL_TYPE::NONTERMINAL},
+                                               {"interactable-object", SYMBOL_TYPE::NONTERMINAL},
+                                               {"preposition", SYMBOL_TYPE::NONTERMINAL},
+                                               {"optional-article", SYMBOL_TYPE::NONTERMINAL},
+                                               {"interactable-object", SYMBOL_TYPE::NONTERMINAL}}}};
 
     static inline Rule TakeCommand = {"take-command",
                                       {{{"take", SYMBOL_TYPE::TERMINAL}}, {{"pick(\\s)?up", SYMBOL_TYPE::TERMINAL}}}};
