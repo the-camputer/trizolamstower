@@ -158,7 +158,7 @@ class TrizolamGrammarRules
                                               {"save-state-command", SYMBOL_TYPE::NONTERMINAL},
                                           },
                                           {
-                                              {"inventory-command", SYMBOL_TYPE::NONTERMINAL},
+                                              {"log-command", SYMBOL_TYPE::NONTERMINAL},
                                           },
                                       }};
 
@@ -195,6 +195,20 @@ class TrizolamGrammarRules
                                                {"reset((\\s)?game)?", SYMBOL_TYPE::TERMINAL},
                                            },
                                        }};
+
+    static inline Rule LogCommand = {"log-command",
+                                     {
+                                         {
+                                             {"(show\\s)?log", SYMBOL_TYPE::TERMINAL},
+                                         },
+                                     }};
+
+    static inline Rule InteractionCommand = {"interaction-command",
+                                             {
+                                                 {
+                                                     {"inventory-command", SYMBOL_TYPE::NONTERMINAL},
+                                                 },
+                                             }};
 
     static inline Rule InventoryCommand = {"inventory-command",
                                            {
@@ -295,9 +309,4 @@ class TrizolamGrammarRules
                                               {"into", SYMBOL_TYPE::TERMINAL},
                                           },
                                       }};
-
-    static inline Rule InteractionCommand = {"interaction-command",
-                                             {
-                                                 // This will be filled in dynamically based on scene and configuration
-                                             }};
 };
