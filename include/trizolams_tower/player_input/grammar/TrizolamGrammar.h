@@ -13,8 +13,4 @@ class TrizolamGrammar
   public:
     ~TrizolamGrammar() = default;
     static Grammar &get_instance();
-    static void add_interactable_object(Production);    // TODO Flesh this out
-    static void add_interation_command(Production);     // TODO Flesh this out
-    static bool interactable_exists(Production);        // TODO Flesh this out
-    static bool interaction_command_exists(Production); // TODO Flesh this out
 };
