@@ -5,9 +5,9 @@
 #include <string>
 
 #include "TrizolamGrammarRules.h"
-#include "bestinshow/engine/grammar/EarleyParser.h"
 #include "bestinshow/engine/grammar/Grammar.h"
-#include <spdlog/spdlog.h>
+// #include "bestinshow/engine/grammar/EarleyParser.h"
+// #include <spdlog/spdlog.h>
 
 Grammar TrizolamGrammar::create_new_instance()
 {
@@ -22,6 +22,7 @@ Grammar TrizolamGrammar::create_new_instance()
     new_instance->add_rule(TrizolamGrammarRules::OptionalArticle);
     new_instance->add_rule(TrizolamGrammarRules::SceneObject);
     new_instance->add_rule(TrizolamGrammarRules::InteractableObject);
+    new_instance->add_rule(TrizolamGrammarRules::BasicWord);
     new_instance->add_rule(TrizolamGrammarRules::NoninteractableObject);
     new_instance->add_rule(TrizolamGrammarRules::Scene);
     new_instance->add_rule(TrizolamGrammarRules::PlayerCharacter);
@@ -30,6 +31,7 @@ Grammar TrizolamGrammar::create_new_instance()
     new_instance->add_rule(TrizolamGrammarRules::SaveCommand);
     new_instance->add_rule(TrizolamGrammarRules::LoadCommand);
     new_instance->add_rule(TrizolamGrammarRules::ResetCommand);
+    new_instance->add_rule(TrizolamGrammarRules::LogCommand);
     new_instance->add_rule(TrizolamGrammarRules::InventoryCommand);
     new_instance->add_rule(TrizolamGrammarRules::PutInInventoryCommand);
     new_instance->add_rule(TrizolamGrammarRules::RemoveFromInventoryCommand);
@@ -53,20 +55,4 @@ Grammar &TrizolamGrammar::get_instance()
     }
 
     return *m_instance;
-}
-
-int main()
-{
-    std::cout << "THING! " << std::endl;
-    std::cout << TrizolamGrammar::get_instance() << std::endl;
-
-    spdlog::set_level(spdlog::level::debug);
-
-    std::vector<std::string> sample_input = {"take", "glove"};
-    std::unique_ptr<ParseTable> sample_parse_table =
-        EarleyParser::build_items(TrizolamGrammar::get_instance(), sample_input);
-    RECOGNITION_STATUS result =
-        EarleyParser::diagnose(*sample_parse_table, TrizolamGrammar::get_instance(), sample_input);
-
-    std::cout << "TEST RESULT IS " << RECOGNITION_STATUS_NAMES[result] << std::endl;
 }

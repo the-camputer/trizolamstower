@@ -1,5 +1,6 @@
 # add_definitions(-g -Wall -std=c++2a)
 add_subdirectory(engine/grammar)
+add_subdirectory(trizolams_tower/player_input/grammar)
 # add_subdirectory(trizolams_tower/player_input/grammar)
 
 include_directories(${CMAKE_SOURCE_DIR}/include)
@@ -17,14 +18,14 @@ add_executable(
 target_link_libraries(parsing_example EarleyParser ExampleGrammar grammar)
 target_link_libraries(parsing_example spdlog)
 
-add_executable(
-    testing_trizolam_grammar
+# add_executable(
+#     testing_trizolam_grammar
 
-    trizolams_tower/player_input/grammar/TrizolamGrammar.cpp
+#     trizolams_tower/player_input/grammar/TrizolamGrammar.cpp
 
-    ${PROJECT_SOURCE_DIR}/include/bestinshow/engine/grammar/Grammar.h
-    ${PROJECT_SOURCE_DIR}/include/trizolams_tower/player_input/grammar/TrizolamGrammar.h
-    trizolams_tower/player_input/grammar/TrizolamGrammarRules.h
-    ${PROJECT_SOURCE_DIR}/include/bestinshow/engine/grammar/EarleyParser.h
-)
-target_link_libraries(testing_trizolam_grammar grammar EarleyParser)
+#     ${PROJECT_SOURCE_DIR}/include/bestinshow/engine/grammar/Grammar.h
+#     ${PROJECT_SOURCE_DIR}/include/trizolams_tower/player_input/grammar/TrizolamGrammar.h
+#     trizolams_tower/player_input/grammar/TrizolamGrammarRules.h
+#     ${PROJECT_SOURCE_DIR}/include/bestinshow/engine/grammar/EarleyParser.h
+# )
+# target_link_libraries(testing_trizolam_grammar grammar EarleyParser)

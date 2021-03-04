@@ -24,7 +24,7 @@ inline const char *RECOGNITION_STATUS_NAMES[] = {
 class EarleyParser
 {
   public:
-    static std::unique_ptr<ParseTable> build_items(Grammar grammar, std::vector<std::string> &input);
+    static std::unique_ptr<ParseTable> build_items(Grammar grammar, std::vector<std::string> input);
 
     /**
      * @brief Analyzes the given parse table for validity of input against the
@@ -36,7 +36,7 @@ class EarleyParser
      * @return RECOGNITION_STATUS Synbolizes the state of the ParseTable in
      * regard to validity
      */
-    static RECOGNITION_STATUS diagnose(ParseTable parse_table, Grammar grammar, std::vector<std::string> &input);
+    static RECOGNITION_STATUS diagnose(ParseTable parse_table, Grammar grammar, std::vector<std::string> input);
 
   private:
     /**

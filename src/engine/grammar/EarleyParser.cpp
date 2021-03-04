@@ -72,7 +72,7 @@ int EarleyParser::last_partial_parse(ParseTable parse_table, Grammar grammar)
     return -1;
 }
 
-RECOGNITION_STATUS EarleyParser::diagnose(ParseTable parse_table, Grammar grammar, std::vector<std::string> &input)
+RECOGNITION_STATUS EarleyParser::diagnose(ParseTable parse_table, Grammar grammar, std::vector<std::string> input)
 {
     if (has_complete_parse(parse_table, grammar))
     {
@@ -180,7 +180,7 @@ void EarleyParser::predict(ParseTable &parse_table, int input_pos, Symbol symbol
     }
 }
 
-std::unique_ptr<ParseTable> EarleyParser::build_items(Grammar grammar, std::vector<std::string> &input)
+std::unique_ptr<ParseTable> EarleyParser::build_items(Grammar grammar, std::vector<std::string> input)
 {
 
     if (input.size() == 0)

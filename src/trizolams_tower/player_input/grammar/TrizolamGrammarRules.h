@@ -85,10 +85,12 @@ class TrizolamGrammarRules
                                                     {"examine", SYMBOL_TYPE::TERMINAL},
                                                 },
                                                 {
-                                                    {"look(\\s)?at", SYMBOL_TYPE::TERMINAL},
+                                                    {"look", SYMBOL_TYPE::TERMINAL},
+                                                    {"at", SYMBOL_TYPE::TERMINAL},
                                                 },
                                                 {
-                                                    {"look(\\s)?around", SYMBOL_TYPE::TERMINAL},
+                                                    {"look", SYMBOL_TYPE::TERMINAL},
+                                                    {"around", SYMBOL_TYPE::TERMINAL},
                                                 },
                                             }};
 
@@ -114,8 +116,21 @@ class TrizolamGrammarRules
 
     static inline Rule InteractableObject = {"interactable-object",
                                              {
-                                                 // This will be filled in dynamically based on scene and configuration
+                                                 {
+                                                     {"interactable-object", SYMBOL_TYPE::NONTERMINAL},
+                                                     {"basic-word", SYMBOL_TYPE::NONTERMINAL},
+                                                 },
+                                                 {
+                                                     {"basic-word", SYMBOL_TYPE::NONTERMINAL},
+                                                 },
                                              }};
+
+    static inline Rule BasicWord = {"basic-word",
+                                    {
+                                        {
+                                            {"\\w+", SYMBOL_TYPE::TERMINAL},
+                                        },
+                                    }};
 
     static inline Rule NoninteractableObject = {"noninteractable-object",
                                                 {
@@ -133,7 +148,9 @@ class TrizolamGrammarRules
                                         {"area", SYMBOL_TYPE::TERMINAL},
                                     },
                                     {
-                                        {"what(\\s)?is(\\s)?around", SYMBOL_TYPE::TERMINAL},
+                                        {"what", SYMBOL_TYPE::TERMINAL},
+                                        {"is", SYMBOL_TYPE::TERMINAL},
+                                        {"around", SYMBOL_TYPE::TERMINAL},
                                     },
                                     {
                                         {"nearby", SYMBOL_TYPE::TERMINAL},
@@ -178,28 +195,44 @@ class TrizolamGrammarRules
     static inline Rule SaveCommand = {"save-command",
                                       {
                                           {
-                                              {"save((\\s)?game)?", SYMBOL_TYPE::TERMINAL},
+                                              {"save", SYMBOL_TYPE::TERMINAL},
+                                              {"game", SYMBOL_TYPE::TERMINAL},
+                                          },
+                                          {
+                                              {"save", SYMBOL_TYPE::TERMINAL},
                                           },
                                       }};
 
     static inline Rule LoadCommand = {"load-command",
                                       {
                                           {
-                                              {"load((\\s)?game)?", SYMBOL_TYPE::TERMINAL},
+                                              {"load", SYMBOL_TYPE::TERMINAL},
+                                              {"game", SYMBOL_TYPE::TERMINAL},
+                                          },
+                                          {
+                                              {"load", SYMBOL_TYPE::TERMINAL},
                                           },
                                       }};
 
     static inline Rule ResetCommand = {"reset-command",
                                        {
                                            {
-                                               {"reset((\\s)?game)?", SYMBOL_TYPE::TERMINAL},
+                                               {"reset", SYMBOL_TYPE::TERMINAL},
+                                               {"game", SYMBOL_TYPE::TERMINAL},
+                                           },
+                                           {
+                                               {"reset", SYMBOL_TYPE::TERMINAL},
                                            },
                                        }};
 
     static inline Rule LogCommand = {"log-command",
                                      {
                                          {
-                                             {"(show\\s)?log", SYMBOL_TYPE::TERMINAL},
+                                             {"show", SYMBOL_TYPE::TERMINAL},
+                                             {"log", SYMBOL_TYPE::TERMINAL},
+                                         },
+                                         {
+                                             {"log", SYMBOL_TYPE::TERMINAL},
                                          },
                                      }};
 
@@ -255,15 +288,20 @@ class TrizolamGrammarRules
 
     static inline Rule TakeCommand = {"take-command",
                                       {
-                                          {{"take", SYMBOL_TYPE::TERMINAL}},
                                           {
-                                              {"pick(\\s)?up", SYMBOL_TYPE::TERMINAL},
+                                              {"take", SYMBOL_TYPE::TERMINAL},
+                                          },
+                                          {
+                                              {"pick", SYMBOL_TYPE::TERMINAL},
+                                              {"up", SYMBOL_TYPE::TERMINAL},
                                           },
                                       }};
 
     static inline Rule DropCommand = {"drop-command",
                                       {
-                                          {{"drop", SYMBOL_TYPE::TERMINAL}},
+                                          {
+                                              {"drop", SYMBOL_TYPE::TERMINAL},
+                                          },
                                           {
                                               {"toss", SYMBOL_TYPE::TERMINAL},
                                           },
