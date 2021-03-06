@@ -3,6 +3,9 @@
 !*.*
 !Makefile
 
+/build/
+/bin/
+
 # Prerequisites
 *.d
 

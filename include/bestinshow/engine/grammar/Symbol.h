@@ -1,23 +1,31 @@
 #pragma once
 
-#include <string>
-#include <regex>
-#include <ostream>
-#include "spdlog/spdlog.h"
 #include "spdlog/fmt/ostr.h"
+#include "spdlog/spdlog.h"
+#include <ostream>
+#include <regex>
+#include <string>
 
-enum SYMBOL_TYPE { TERMINAL, NONTERMINAL, EMPTY };
+enum SYMBOL_TYPE
+{
+    TERMINAL,
+    NONTERMINAL,
+    EMPTY
+};
 
-struct Symbol {
+struct Symbol
+{
     std::string pattern;
     SYMBOL_TYPE type;
 
-    template<typename OStream>
-    friend inline OStream& operator<<(OStream& os, const Symbol& v)
+    template <typename OStream> friend inline OStream &operator<<(OStream &os, const Symbol &v)
     {
-        if (v.type == SYMBOL_TYPE::NONTERMINAL) {
+        if (v.type == SYMBOL_TYPE::NONTERMINAL)
+        {
             os << "<" << v.pattern << ">";
-        } else {
+        }
+        else
+        {
             os << v.pattern;
         }
 

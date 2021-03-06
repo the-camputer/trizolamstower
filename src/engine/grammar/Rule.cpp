@@ -1,32 +1,23 @@
 #include "bestinshow/engine/grammar/Rule.h"
 #include "bestinshow/engine/grammar/Symbol.h"
-#include <vector>
-#include <string>
-#include <memory>
-#include "spdlog/spdlog.h"
 #include "spdlog/fmt/ostr.h"
+#include "spdlog/spdlog.h"
+#include <memory>
+#include <string>
+#include <vector>
 
-Rule::Rule() 
+Rule::Rule(const std::string name) : rule_name{name}
 {
-    productions = std::make_unique<ProductionList>();
 }
 
-Rule::Rule(const std::string name)
-: rule_name { name } 
+Rule::Rule(const std::string name, ProductionList productions) : rule_name{name}
 {
-    productions = std::make_unique<ProductionList>();
+    this->productions = productions;
 }
 
-Rule::Rule(const std::string name, ProductionList productions)
-: rule_name { name }
+Rule::Rule(const Rule &prev) : rule_name{prev.rule_name}
 {
-    this->productions = std::make_unique<ProductionList>(productions);
-}
-
-Rule::Rule(const Rule& prev)
-: rule_name { prev.rule_name }
-{
-    this->productions = std::make_unique<ProductionList>(*prev.productions);
+    this->productions = prev.productions;
 }
 
 std::string Rule::get_rule_name() const
@@ -39,22 +30,18 @@ void Rule::set_rule_name(std::string rule_name)
     this->rule_name = rule_name;
 }
 
-ProductionList* Rule::get_productions() const
+ProductionList Rule::get_productions() const
 {
-    return this->productions.get();
+    return productions;
 }
 
-void Rule::add_production(Production& production)
+void Rule::add_production(Production &production)
 {
-    if (!productions) {
-        this->productions = std::make_unique<ProductionList>();
-    }
-
-    this->productions->push_back(production);
+    productions.push_back(production);
 }
 
 // template<typename OStream>
-// OStream& operator<<(OStream& os, const Rule& v) 
+// OStream& operator<<(OStream& os, const Rule& v)
 // {
 //     os << "<" << v.get_rule_name() << "> ::= ";
 
