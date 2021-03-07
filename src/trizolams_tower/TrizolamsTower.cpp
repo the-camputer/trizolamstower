@@ -1,6 +1,7 @@
 #include "bestinshow/engine/grammar/EarleyParser.h"
 #include "boost/algorithm/string/classification.hpp"
 #include "boost/algorithm/string/split.hpp"
+#include "player_input/InputProcessor.h"
 #include "trizolams_tower/player_input/grammar/TrizolamGrammar.h"
 #include <iostream>
 #include <memory>
@@ -9,6 +10,7 @@
 int main()
 {
     std::string player_input;
+    InputProcessor input_processor{};
     Grammar grammar = TrizolamGrammar::get_instance();
     while (true)
     {
@@ -22,17 +24,18 @@ int main()
 
         std::cout << "Processing the following input: " << player_input << std::endl;
 
-        std::vector<std::string> processable_input;
-        boost::split(processable_input, player_input, boost::is_any_of(" "), boost::token_compress_on);
+        input_processor.process(player_input);
+        // std::vector<std::string> processable_input;
+        // boost::split(processable_input, player_input, boost::is_any_of(" "), boost::token_compress_on);
 
-        std::cout << "Length of input in words is " << processable_input.size() << std::endl;
+        // std::cout << "Length of input in words is " << processable_input.size() << std::endl;
 
-        std::cout << "Processing for grammatical completeness..." << std::endl;
+        // std::cout << "Processing for grammatical completeness..." << std::endl;
 
-        std::unique_ptr<ParseTable> parsed_input = EarleyParser::build_items(grammar, processable_input);
+        // std::unique_ptr<ParseTable> parsed_input = EarleyParser::build_items(grammar, processable_input);
 
-        RECOGNITION_STATUS parse_status = EarleyParser::diagnose(*parsed_input, grammar, processable_input);
+        // RECOGNITION_STATUS parse_status = EarleyParser::diagnose(*parsed_input, grammar, processable_input);
 
-        std::cout << "Result is: " << RECOGNITION_STATUS_NAMES[parse_status] << std::endl;
+        // std::cout << "Result is: " << RECOGNITION_STATUS_NAMES[parse_status] << std::endl;
     }
 }

@@ -1,10 +1,9 @@
 # add_definitions(-g -Wall -std=c++2a)
 add_subdirectory(engine/grammar)
-add_subdirectory(trizolams_tower/player_input/grammar)
-# add_subdirectory(trizolams_tower/player_input/grammar)
+add_subdirectory(trizolams_tower/player_input)
 
 include_directories(${CMAKE_SOURCE_DIR}/include)
-INCLUDE_DIRECTORIES( ${Boost_INCLUDE_DIR} )
+include_directories( ${Boost_INCLUDE_DIR} )
 link_directories(${CMAKE_SOURCE_DIR}/lib)
 
 FIND_PACKAGE(Boost)
@@ -15,11 +14,12 @@ add_executable(
 
     trizolams_tower/TrizolamsTower.cpp
 
+    trizolams_tower/player_input/InputProcessor.h
     ${PROJECT_SOURCE_DIR}/include/trizolams_tower/player_input/grammar/TrizolamGrammar.h
     ${PROJECT_SOURCE_DIR}/include/bestinshow/engine/grammar/EarleyParser.h
     ${PROJECT_SOURCE_DIR}/include/bestinshow/engine/grammar/EarleyItem.h
 )
-target_link_libraries(TrizolamsTower EarleyParser grammar TrizolamGrammar)
+target_link_libraries(TrizolamsTower EarleyParser grammar TrizolamGrammar InputProcessor)
 target_link_libraries(TrizolamsTower spdlog ${Boost_LIBRARIES})
 
 # add_executable(
