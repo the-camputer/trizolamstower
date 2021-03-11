@@ -1,11 +1,12 @@
 #include "InputProcessor.h"
-#include "ICommandPayload.h"
-#include "PlayerCommand.h"
 #include "bestinshow/engine/grammar/EarleyParser.h"
-#include "boost/algorithm/string/classification.hpp"
-#include "boost/algorithm/string/split.hpp"
+#include "commands/PlayerCommand.h"
+#include "commands/PlayerCommandFactory.h"
 #include "trizolams_tower/player_input/grammar/TrizolamGrammar.h"
+#include <algorithm>
+#include <boost/algorithm/string/classification.hpp>
 #include <boost/algorithm/string/join.hpp>
+#include <boost/algorithm/string/split.hpp>
 #include <iostream>
 #include <memory>
 
@@ -13,7 +14,7 @@ InputProcessor::InputProcessor() : grammar(TrizolamGrammar::get_instance())
 {
 }
 
-PlayerCommand<ICommandPayload> InputProcessor::process(std::string player_input)
+PlayerCommand InputProcessor::process(std::string player_input)
 {
     // Remove special characters except spaces
     player_input.erase(std::remove_if(player_input.begin(), player_input.end(), InputProcessor::not_isalnum_or_space),
@@ -31,7 +32,20 @@ PlayerCommand<ICommandPayload> InputProcessor::process(std::string player_input)
 
     std::cout << "Result is: " << RECOGNITION_STATUS_NAMES[parse_status] << std::endl;
 
-    return PlayerCommand<ICommandPayload>(); // TODO: Create CommandPayloads and process based on parse table
+    if (parse_status == RECOGNITION_STATUS::COMPLETE)
+    {
+        auto input_length = processable_input.size();
+        auto final_state_set = parsed_input->at(input_length - 1);
+        auto end_rule_earley_item =
+            std::find_if(final_state_set.begin(), final_state_set.end(),
+                         [&input_length](const EarleyItem &s) { return s.next == (int)input_length; });
+
+        std::string rule_name = grammar[end_rule_earley_item->rule].get_rule_name();
+        auto result = PlayerCommandFactory::generate_player_command(rule_name, processable_input);
+        return result;
+    }
+
+    return PlayerCommand(); // TODO: Create CommandPayloads and process based on parse table
 }
 
 bool InputProcessor::not_isalnum_or_space(char c)

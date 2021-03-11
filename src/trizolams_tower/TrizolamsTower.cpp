@@ -1,10 +1,12 @@
 #include "bestinshow/engine/grammar/EarleyParser.h"
-#include "boost/algorithm/string/classification.hpp"
-#include "boost/algorithm/string/split.hpp"
 #include "player_input/InputProcessor.h"
 #include "trizolams_tower/player_input/grammar/TrizolamGrammar.h"
+#include <boost/algorithm/string/classification.hpp>
+#include <boost/algorithm/string/split.hpp>
 #include <iostream>
 #include <memory>
+#include <spdlog/fmt/ostr.h>
+#include <spdlog/spdlog.h>
 #include <string>
 
 int main()
@@ -24,7 +26,8 @@ int main()
 
         std::cout << "Processing the following input: " << player_input << std::endl;
 
-        input_processor.process(player_input);
+        auto command = input_processor.process(player_input);
+        spdlog::info("WOW MUCH THING {}", command);
         // std::vector<std::string> processable_input;
         // boost::split(processable_input, player_input, boost::is_any_of(" "), boost::token_compress_on);
 
