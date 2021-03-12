@@ -13,7 +13,6 @@ int main()
 {
     std::string player_input;
     InputProcessor input_processor{};
-    Grammar grammar = TrizolamGrammar::get_instance();
     while (true)
     {
         std::cout << "What is your command? " << std::endl;

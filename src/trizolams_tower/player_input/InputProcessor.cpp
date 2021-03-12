@@ -20,11 +20,11 @@ PlayerCommand InputProcessor::process(std::string player_input)
     player_input.erase(std::remove_if(player_input.begin(), player_input.end(), InputProcessor::not_isalnum_or_space),
                        player_input.end());
 
-    std::cout << "RAW INPUT: " << player_input << std::endl;
+    // std::cout << "RAW INPUT: " << player_input << std::endl;
     std::vector<std::string> processable_input;
     boost::split(processable_input, player_input, boost::is_any_of(" "), boost::token_compress_on);
 
-    std::cout << "SPLIT INPUT: " << boost::join(processable_input, ", ") << std::endl;
+    // std::cout << "SPLIT INPUT: " << boost::join(processable_input, ", ") << std::endl;
 
     std::unique_ptr<ParseTable> parsed_input = EarleyParser::build_items(grammar, processable_input);
 
@@ -35,7 +35,7 @@ PlayerCommand InputProcessor::process(std::string player_input)
     if (parse_status == RECOGNITION_STATUS::COMPLETE)
     {
         auto input_length = processable_input.size();
-        auto final_state_set = parsed_input->at(input_length - 1);
+        auto final_state_set = parsed_input->at(parsed_input->size() - 1);
         auto end_rule_earley_item =
             std::find_if(final_state_set.begin(), final_state_set.end(),
                          [&input_length](const EarleyItem &s) { return s.next == (int)input_length; });
