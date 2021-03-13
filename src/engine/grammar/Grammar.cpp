@@ -9,6 +9,11 @@ Grammar::Grammar(const std::string grammar_name) : grammar_name{grammar_name}
 {
 }
 
+Grammar::Grammar(const std::string grammar_name, RuleList rules) : grammar_name{grammar_name}, rules{rules}
+{
+    first_rule_name = rules[0].get_rule_name();
+}
+
 Grammar::Grammar(const Grammar &prev)
 {
     grammar_name = prev.grammar_name;

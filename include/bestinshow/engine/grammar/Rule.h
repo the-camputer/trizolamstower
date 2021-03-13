@@ -3,24 +3,30 @@
 #include "Symbol.h"
 #include "spdlog/fmt/ostr.h"
 #include <algorithm>
+#include <functional>
 #include <memory>
 #include <ostream>
 #include <string>
+#include <unordered_map>
 #include <vector>
 
 using Production = std::vector<Symbol>;
 using ProductionList = std::vector<Production>;
+using ActionPayload = std::unordered_map<std::string, std::string>;
 
 class Rule
 {
   protected:
     std::string rule_name = "";
     ProductionList productions{};
+    std::function<ActionPayload(std::vector<std::string>)> payload_generator;
 
   public:
     Rule() = default;
     Rule(const std::string name);
     Rule(const std::string name, ProductionList productions);
+    Rule(const std::string name, ProductionList productions,
+         std::function<ActionPayload(std::vector<std::string>)> generator);
     Rule(const Rule &prev);
     ~Rule() = default;
 
@@ -28,6 +34,8 @@ class Rule
     void set_rule_name(std::string rule_name);
     ProductionList get_productions() const;
     void add_production(Production &production);
+    std::function<ActionPayload(std::vector<std::string>)> get_payload_generator();
+    void set_payload_generator(ActionPayload generator(std::vector<std::string>));
     template <typename OStream> friend OStream &operator<<(OStream &os, const Rule &v)
     {
         os << "<" << v.get_rule_name() << "> ::= ";

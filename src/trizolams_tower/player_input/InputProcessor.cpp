@@ -1,7 +1,5 @@
 #include "InputProcessor.h"
 #include "bestinshow/engine/grammar/EarleyParser.h"
-#include "commands/PlayerCommand.h"
-#include "commands/PlayerCommandFactory.h"
 #include "trizolams_tower/player_input/grammar/TrizolamGrammar.h"
 #include <algorithm>
 #include <boost/algorithm/string/classification.hpp>
@@ -34,15 +32,15 @@ PlayerCommand InputProcessor::process(std::string player_input)
 
     if (parse_status == RECOGNITION_STATUS::COMPLETE)
     {
-        auto input_length = processable_input.size();
         auto final_state_set = parsed_input->at(parsed_input->size() - 1);
-        auto end_rule_earley_item =
-            std::find_if(final_state_set.begin(), final_state_set.end(),
-                         [&input_length](const EarleyItem &s) { return s.next == (int)input_length; });
+        std::sort(final_state_set.begin(), final_state_set.end(),
+                  [](const EarleyItem &lhs, const EarleyItem &rhs) { return lhs.rule < rhs.rule; });
+        auto end_rule_earley_item = final_state_set.back();
 
-        std::string rule_name = grammar[end_rule_earley_item->rule].get_rule_name();
-        auto result = PlayerCommandFactory::generate_player_command(rule_name, processable_input);
-        return result;
+        Rule recognized_rule = grammar[end_rule_earley_item.rule];
+        std::string rule_name = recognized_rule.get_rule_name();
+        ActionPayload payload = recognized_rule.get_payload_generator()(processable_input);
+        return PlayerCommand{rule_name, payload};
     }
 
     return PlayerCommand(); // TODO: Create CommandPayloads and process based on parse table

@@ -13,6 +13,7 @@ int main()
 {
     std::string player_input;
     InputProcessor input_processor{};
+    spdlog::set_level(spdlog::level::debug);
     while (true)
     {
         std::cout << "What is your command? " << std::endl;
