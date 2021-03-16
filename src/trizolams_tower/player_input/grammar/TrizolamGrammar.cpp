@@ -9,8 +9,10 @@
 // #include "bestinshow/engine/grammar/EarleyParser.h"
 // #include <spdlog/spdlog.h>
 
-const std::function<ActionPayload(std::vector<std::string>)> empty_payload_generator =
-    [](std::vector<std::string> player_input) { return ActionPayload{}; };
+const std::function<ActionPayload(std::vector<std::string>)> boop_payload_generator(
+    [](std::vector<std::string> player_input) {
+        return ActionPayload{{"event", "boop"}};
+    });
 
 Grammar TrizolamGrammar::create_new_instance()
 {
@@ -205,7 +207,8 @@ Grammar TrizolamGrammar::create_new_instance()
                                                  {
                                                      {"load", SYMBOL_TYPE::TERMINAL},
                                                  },
-                                             }},
+                                             },
+                                             boop_payload_generator},
                                             {"reset-command",
                                              {
                                                  {
@@ -225,8 +228,7 @@ Grammar TrizolamGrammar::create_new_instance()
                                                  {
                                                      {"log", SYMBOL_TYPE::TERMINAL},
                                                  },
-                                             },
-                                             empty_payload_generator},
+                                             }}, // TODO Figure out why this is throwing a bad_function_call exception
                                             {"interaction-command",
                                              {
                                                  {

@@ -2,16 +2,23 @@
 #include "bestinshow/engine/grammar/Symbol.h"
 #include "spdlog/fmt/ostr.h"
 #include "spdlog/spdlog.h"
+#include <functional>
+#include <iostream>
 #include <memory>
 #include <string>
 #include <vector>
 
+const std::function<ActionPayload(std::vector<std::string>)> empty_payload_generator =
+    [](std::vector<std::string> player_input) { return ActionPayload{}; };
+
 Rule::Rule(const std::string name) : rule_name{name}
 {
+    payload_generator = empty_payload_generator;
 }
 
 Rule::Rule(const std::string name, ProductionList productions) : rule_name{name}, productions{productions}
 {
+    payload_generator = empty_payload_generator;
 }
 
 Rule::Rule(const std::string name, ProductionList productions,
@@ -20,9 +27,9 @@ Rule::Rule(const std::string name, ProductionList productions,
 {
 }
 
-Rule::Rule(const Rule &prev) : rule_name{prev.rule_name}
+Rule::Rule(const Rule &prev)
+    : rule_name{prev.rule_name}, productions{prev.productions}, payload_generator{prev.payload_generator}
 {
-    this->productions = prev.productions;
 }
 
 std::string Rule::get_rule_name() const
@@ -49,7 +56,7 @@ std::function<ActionPayload(std::vector<std::string>)> Rule::get_payload_generat
 {
     return this->payload_generator;
 }
-void Rule::set_payload_generator(ActionPayload generator(std::vector<std::string>))
+void Rule::set_payload_generator(std::function<ActionPayload(std::vector<std::string>)> generator)
 {
     payload_generator = generator;
 }

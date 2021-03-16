@@ -39,7 +39,8 @@ PlayerCommand InputProcessor::process(std::string player_input)
 
         Rule recognized_rule = grammar[end_rule_earley_item.rule];
         std::string rule_name = recognized_rule.get_rule_name();
-        ActionPayload payload = recognized_rule.get_payload_generator()(processable_input);
+        auto func = recognized_rule.get_payload_generator();
+        ActionPayload payload = func(processable_input);
         return PlayerCommand{rule_name, payload};
     }
 

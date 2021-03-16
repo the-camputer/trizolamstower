@@ -25,8 +25,7 @@ class Rule
     Rule() = default;
     Rule(const std::string name);
     Rule(const std::string name, ProductionList productions);
-    Rule(const std::string name, ProductionList productions,
-         std::function<ActionPayload(std::vector<std::string>)> generator);
+    Rule(const std::string, ProductionList, std::function<ActionPayload(std::vector<std::string>)>);
     Rule(const Rule &prev);
     ~Rule() = default;
 
@@ -35,7 +34,7 @@ class Rule
     ProductionList get_productions() const;
     void add_production(Production &production);
     std::function<ActionPayload(std::vector<std::string>)> get_payload_generator();
-    void set_payload_generator(ActionPayload generator(std::vector<std::string>));
+    void set_payload_generator(std::function<ActionPayload(std::vector<std::string>)>);
     template <typename OStream> friend OStream &operator<<(OStream &os, const Rule &v)
     {
         os << "<" << v.get_rule_name() << "> ::= ";
