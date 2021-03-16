@@ -1,17 +1,52 @@
 #include "trizolams_tower/player_input/grammar/TrizolamGrammar.h"
-
+#include "../commands/MovementDirections.h"
+#include "bestinshow/engine/grammar/Grammar.h"
+#include <algorithm>
 #include <iostream>
 #include <memory>
 #include <string>
 
-// #include "TrizolamGrammarRules.h"
-#include "bestinshow/engine/grammar/Grammar.h"
-// #include "bestinshow/engine/grammar/EarleyParser.h"
-// #include <spdlog/spdlog.h>
-
-const std::function<ActionPayload(std::vector<std::string>)> boop_payload_generator =
+const std::function<ActionPayload(std::vector<std::string>)> travel_command_payload_generator =
     [](std::vector<std::string> player_input) {
-        return ActionPayload{{"event", "boop"}};
+        auto get_direction = [](std::string direction_raw) {
+            std::transform(direction_raw.begin(), direction_raw.end(), direction_raw.begin(),
+                           [](unsigned char c) { return std::tolower(c); });
+            auto direction = direction_raw.at(0);
+            auto result = MOVEMENT_DIRECTION::UNKOWN;
+            switch (direction)
+            {
+            case 'n':
+                result = MOVEMENT_DIRECTION::NORTH;
+                break;
+            case 'e':
+                result = MOVEMENT_DIRECTION::EAST;
+                break;
+            case 's':
+                result = MOVEMENT_DIRECTION::SOUTH;
+                break;
+            case 'w':
+                result = MOVEMENT_DIRECTION::WEST;
+                break;
+            default:
+                result = MOVEMENT_DIRECTION::UNKOWN;
+                break;
+            };
+
+            return result;
+        };
+
+        MOVEMENT_DIRECTION direction_to_go;
+
+        if (player_input.size() == 1)
+        {
+            direction_to_go = get_direction(player_input[0]);
+        }
+        else
+        {
+            direction_to_go = get_direction(player_input[1]);
+        }
+
+        return ActionPayload{{"direction", std::to_string(direction_to_go)}};
     };
 
 Grammar TrizolamGrammar::create_new_instance()
@@ -73,6 +108,12 @@ Grammar TrizolamGrammar::create_new_instance()
                                                  },
                                                  {
                                                      {"walk", SYMBOL_TYPE::TERMINAL},
+                                                 },
+                                                 {
+                                                     {"move", SYMBOL_TYPE::TERMINAL},
+                                                 },
+                                                 {
+                                                     {"run", SYMBOL_TYPE::TERMINAL},
                                                  },
                                              }},
                                             {"scene-object",
@@ -273,8 +314,7 @@ Grammar TrizolamGrammar::create_new_instance()
                                                  {
                                                      {"load", SYMBOL_TYPE::TERMINAL},
                                                  },
-                                             },
-                                             boop_payload_generator},
+                                             }},
                                             {"reset-command",
                                              {
                                                  {
@@ -304,7 +344,8 @@ Grammar TrizolamGrammar::create_new_instance()
                                                      {"movement", SYMBOL_TYPE::NONTERMINAL},
                                                      {"direction", SYMBOL_TYPE::NONTERMINAL},
                                                  },
-                                             }},
+                                             },
+                                             travel_command_payload_generator},
                                             {"place-object-command",
                                              {
                                                  {
