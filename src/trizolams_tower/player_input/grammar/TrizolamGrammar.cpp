@@ -9,25 +9,34 @@
 // #include "bestinshow/engine/grammar/EarleyParser.h"
 // #include <spdlog/spdlog.h>
 
-const std::function<ActionPayload(std::vector<std::string>)> boop_payload_generator(
+const std::function<ActionPayload(std::vector<std::string>)> boop_payload_generator =
     [](std::vector<std::string> player_input) {
         return ActionPayload{{"event", "boop"}};
-    });
+    };
 
 Grammar TrizolamGrammar::create_new_instance()
 {
     Grammar *new_instance =
         new Grammar("trizolam-grammar", {
-                                            {"command",
+                                            {"input",
                                              {
                                                  {
-                                                     {"personal-command", SYMBOL_TYPE::NONTERMINAL},
+                                                     {"personal", SYMBOL_TYPE::NONTERMINAL},
                                                  },
                                                  {
-                                                     {"interaction-command", SYMBOL_TYPE::NONTERMINAL},
+                                                     {"interaction", SYMBOL_TYPE::NONTERMINAL},
                                                  },
                                              }},
-                                            {"personal-command",
+                                            {"optional-article",
+                                             {
+                                                 {
+                                                     {"the", SYMBOL_TYPE::TERMINAL},
+                                                 },
+                                                 {
+                                                     {"", SYMBOL_TYPE::TERMINAL},
+                                                 },
+                                             }},
+                                            {"personal",
                                              {
                                                  {
                                                      {"travel-command", SYMBOL_TYPE::NONTERMINAL},
@@ -36,17 +45,7 @@ Grammar TrizolamGrammar::create_new_instance()
                                                      {"insight-command", SYMBOL_TYPE::NONTERMINAL},
                                                  },
                                                  {
-                                                     {"meta-command", SYMBOL_TYPE::NONTERMINAL},
-                                                 },
-                                             }},
-                                            {"travel-command",
-                                             {
-                                                 {
-                                                     {"direction", SYMBOL_TYPE::NONTERMINAL},
-                                                 },
-                                                 {
-                                                     {"movement-command", SYMBOL_TYPE::NONTERMINAL},
-                                                     {"direction", SYMBOL_TYPE::NONTERMINAL},
+                                                     {"meta", SYMBOL_TYPE::NONTERMINAL},
                                                  },
                                              }},
                                             {"direction",
@@ -64,7 +63,7 @@ Grammar TrizolamGrammar::create_new_instance()
                                                      {"w(est)?", SYMBOL_TYPE::TERMINAL},
                                                  },
                                              }},
-                                            {"movement-command",
+                                            {"movement",
                                              {
                                                  {
                                                      {"go", SYMBOL_TYPE::TERMINAL},
@@ -74,40 +73,6 @@ Grammar TrizolamGrammar::create_new_instance()
                                                  },
                                                  {
                                                      {"walk", SYMBOL_TYPE::TERMINAL},
-                                                 },
-                                             }},
-                                            {"insight-command",
-                                             {
-                                                 {
-                                                     {"perception-command", SYMBOL_TYPE::NONTERMINAL},
-                                                     {"optional-article", SYMBOL_TYPE::NONTERMINAL},
-                                                     {"scene-object", SYMBOL_TYPE::NONTERMINAL},
-                                                 },
-                                                 {
-                                                     {"perception-command", SYMBOL_TYPE::NONTERMINAL},
-                                                 },
-                                             }},
-                                            {"perception-command",
-                                             {
-                                                 {
-                                                     {"examine", SYMBOL_TYPE::TERMINAL},
-                                                 },
-                                                 {
-                                                     {"look", SYMBOL_TYPE::TERMINAL},
-                                                     {"at", SYMBOL_TYPE::TERMINAL},
-                                                 },
-                                                 {
-                                                     {"look", SYMBOL_TYPE::TERMINAL},
-                                                     {"around", SYMBOL_TYPE::TERMINAL},
-                                                 },
-                                             }},
-                                            {"optional-article",
-                                             {
-                                                 {
-                                                     {"the", SYMBOL_TYPE::TERMINAL},
-                                                 },
-                                                 {
-                                                     {"", SYMBOL_TYPE::TERMINAL},
                                                  },
                                              }},
                                             {"scene-object",
@@ -167,16 +132,41 @@ Grammar TrizolamGrammar::create_new_instance()
                                                      {"me", SYMBOL_TYPE::TERMINAL},
                                                  },
                                              }},
-                                            {"meta-command",
+                                            {"perception",
                                              {
                                                  {
-                                                     {"save-state-command", SYMBOL_TYPE::NONTERMINAL},
+                                                     {"examine", SYMBOL_TYPE::TERMINAL},
+                                                 },
+                                                 {
+                                                     {"look", SYMBOL_TYPE::TERMINAL},
+                                                     {"at", SYMBOL_TYPE::TERMINAL},
+                                                 },
+                                                 {
+                                                     {"look", SYMBOL_TYPE::TERMINAL},
+                                                     {"around", SYMBOL_TYPE::TERMINAL},
+                                                 },
+                                             }},
+                                            {"insight-command",
+                                             {
+                                                 {
+                                                     {"perception", SYMBOL_TYPE::NONTERMINAL},
+                                                     {"optional-article", SYMBOL_TYPE::NONTERMINAL},
+                                                     {"scene-object", SYMBOL_TYPE::NONTERMINAL},
+                                                 },
+                                                 {
+                                                     {"perception", SYMBOL_TYPE::NONTERMINAL},
+                                                 },
+                                             }},
+                                            {"meta",
+                                             {
+                                                 {
+                                                     {"save-state", SYMBOL_TYPE::NONTERMINAL},
                                                  },
                                                  {
                                                      {"log-command", SYMBOL_TYPE::NONTERMINAL},
                                                  },
                                              }},
-                                            {"save-state-command",
+                                            {"save-state",
                                              {
                                                  {
                                                      {"save-command", SYMBOL_TYPE::NONTERMINAL},
@@ -186,6 +176,82 @@ Grammar TrizolamGrammar::create_new_instance()
                                                  },
                                                  {
                                                      {"reset-command", SYMBOL_TYPE::NONTERMINAL},
+                                                 },
+                                             }},
+                                            {"interaction",
+                                             {
+                                                 {
+                                                     {"inventory", SYMBOL_TYPE::NONTERMINAL},
+                                                 },
+                                             }},
+                                            {"preposition",
+                                             {
+                                                 {
+                                                     {"on", SYMBOL_TYPE::TERMINAL},
+                                                 },
+                                                 {
+                                                     {"in", SYMBOL_TYPE::TERMINAL},
+                                                 },
+                                                 {
+                                                     {"inside", SYMBOL_TYPE::TERMINAL},
+                                                 },
+                                                 {
+                                                     {"into", SYMBOL_TYPE::TERMINAL},
+                                                 },
+                                             }},
+                                            {"inventory",
+                                             {
+                                                 {
+                                                     {"put-in-inventory-command", SYMBOL_TYPE::NONTERMINAL},
+                                                 },
+                                                 {
+                                                     {"remove-from-inventory-command", SYMBOL_TYPE::NONTERMINAL},
+                                                 },
+                                                 {
+                                                     {"place-object-command", SYMBOL_TYPE::NONTERMINAL},
+                                                 },
+                                             }},
+                                            {"take",
+                                             {
+                                                 {
+                                                     {"take", SYMBOL_TYPE::TERMINAL},
+                                                 },
+                                                 {
+                                                     {"pick", SYMBOL_TYPE::TERMINAL},
+                                                     {"up", SYMBOL_TYPE::TERMINAL},
+                                                 },
+                                             }},
+                                            {"drop",
+                                             {
+                                                 {
+                                                     {"drop", SYMBOL_TYPE::TERMINAL},
+                                                 },
+                                                 {
+                                                     {"toss", SYMBOL_TYPE::TERMINAL},
+                                                 },
+                                             }},
+                                            {"place",
+                                             {
+                                                 {
+                                                     {"drop", SYMBOL_TYPE::NONTERMINAL},
+                                                 },
+                                                 {
+                                                     {"place", SYMBOL_TYPE::TERMINAL},
+                                                 },
+                                                 {
+                                                     {"put", SYMBOL_TYPE::TERMINAL},
+                                                 },
+                                                 {
+                                                     {"put", SYMBOL_TYPE::TERMINAL},
+                                                 },
+                                                 {
+                                                     {"lay", SYMBOL_TYPE::TERMINAL},
+                                                 },
+                                                 {
+                                                     {"set", SYMBOL_TYPE::TERMINAL},
+                                                 },
+                                                 {
+                                                     {"insert", SYMBOL_TYPE::TERMINAL},
                                                  },
                                              }},
                                             {"save-command",
@@ -228,29 +294,29 @@ Grammar TrizolamGrammar::create_new_instance()
                                                  {
                                                      {"log", SYMBOL_TYPE::TERMINAL},
                                                  },
-                                             }}, // TODO Figure out why this is throwing a bad_function_call exception
-                                            {"interaction-command",
+                                             }},
+                                            {"travel-command",
                                              {
                                                  {
-                                                     {"inventory-command", SYMBOL_TYPE::NONTERMINAL},
+                                                     {"direction", SYMBOL_TYPE::NONTERMINAL},
+                                                 },
+                                                 {
+                                                     {"movement", SYMBOL_TYPE::NONTERMINAL},
+                                                     {"direction", SYMBOL_TYPE::NONTERMINAL},
                                                  },
                                              }},
-                                            {"inventory-command",
+                                            {"place-object-command",
                                              {
                                                  {
-                                                     {"put-in-inventory-command", SYMBOL_TYPE::NONTERMINAL},
+                                                     {"place", SYMBOL_TYPE::NONTERMINAL},
+                                                     {"optional-article", SYMBOL_TYPE::NONTERMINAL},
+                                                     {"interactable-object", SYMBOL_TYPE::NONTERMINAL},
+                                                     {"preposition", SYMBOL_TYPE::NONTERMINAL},
+                                                     {"optional-article", SYMBOL_TYPE::NONTERMINAL},
+                                                     {"interactable-object", SYMBOL_TYPE::NONTERMINAL},
                                                  },
                                                  {
-                                                     {"remove-from-inventory-command", SYMBOL_TYPE::NONTERMINAL},
-                                                 },
-                                                 {
-                                                     {"place-object-command", SYMBOL_TYPE::NONTERMINAL},
-                                                 },
-                                             }},
-                                            {"put-in-inventory-command",
-                                             {
-                                                 {
-                                                     {"take-command", SYMBOL_TYPE::NONTERMINAL},
+                                                     {"take", SYMBOL_TYPE::NONTERMINAL},
                                                      {"optional-article", SYMBOL_TYPE::NONTERMINAL},
                                                      {"interactable-object", SYMBOL_TYPE::NONTERMINAL},
                                                  },
@@ -258,111 +324,12 @@ Grammar TrizolamGrammar::create_new_instance()
                                             {"remove-from-inventory-command",
                                              {
                                                  {
-                                                     {"drop-command", SYMBOL_TYPE::NONTERMINAL},
+                                                     {"drop", SYMBOL_TYPE::NONTERMINAL},
                                                      {"optional-article", SYMBOL_TYPE::NONTERMINAL},
                                                      {"interactable-object", SYMBOL_TYPE::NONTERMINAL},
-                                                 },
-                                             }},
-                                            {"place-object-command",
-                                             {
-                                                 {
-                                                     {"place-command", SYMBOL_TYPE::NONTERMINAL},
-                                                     {"optional-article", SYMBOL_TYPE::NONTERMINAL},
-                                                     {"interactable-object", SYMBOL_TYPE::NONTERMINAL},
-                                                     {"preposition", SYMBOL_TYPE::NONTERMINAL},
-                                                     {"optional-article", SYMBOL_TYPE::NONTERMINAL},
-                                                     {"interactable-object", SYMBOL_TYPE::NONTERMINAL},
-                                                 },
-                                             }},
-                                            {"take-command",
-                                             {
-                                                 {
-                                                     {"take", SYMBOL_TYPE::TERMINAL},
-                                                 },
-                                                 {
-                                                     {"pick", SYMBOL_TYPE::TERMINAL},
-                                                     {"up", SYMBOL_TYPE::TERMINAL},
-                                                 },
-                                             }},
-                                            {"drop-command",
-                                             {
-                                                 {
-                                                     {"drop", SYMBOL_TYPE::TERMINAL},
-                                                 },
-                                                 {
-                                                     {"toss", SYMBOL_TYPE::TERMINAL},
-                                                 },
-                                             }},
-                                            {"place-command",
-                                             {
-                                                 {
-                                                     {"drop-command", SYMBOL_TYPE::NONTERMINAL},
-                                                 },
-                                                 {
-                                                     {"place", SYMBOL_TYPE::TERMINAL},
-                                                 },
-                                                 {
-                                                     {"put", SYMBOL_TYPE::TERMINAL},
-                                                 },
-                                                 {
-                                                     {"put", SYMBOL_TYPE::TERMINAL},
-                                                 },
-                                                 {
-                                                     {"lay", SYMBOL_TYPE::TERMINAL},
-                                                 },
-                                                 {
-                                                     {"set", SYMBOL_TYPE::TERMINAL},
-                                                 },
-                                                 {
-                                                     {"insert", SYMBOL_TYPE::TERMINAL},
-                                                 },
-                                             }},
-                                            {"preposition",
-                                             {
-                                                 {
-                                                     {"on", SYMBOL_TYPE::TERMINAL},
-                                                 },
-                                                 {
-                                                     {"in", SYMBOL_TYPE::TERMINAL},
-                                                 },
-                                                 {
-                                                     {"inside", SYMBOL_TYPE::TERMINAL},
-                                                 },
-                                                 {
-                                                     {"into", SYMBOL_TYPE::TERMINAL},
                                                  },
                                              }},
                                         });
-    // new_instance->add_rule(TrizolamGrammarRules::Command);
-    // new_instance->add_rule(TrizolamGrammarRules::PersonalCommand);
-    // new_instance->add_rule(TrizolamGrammarRules::TravelCommand);
-    // new_instance->add_rule(TrizolamGrammarRules::Direction);
-    // new_instance->add_rule(TrizolamGrammarRules::MovementCommand);
-    // new_instance->add_rule(TrizolamGrammarRules::InsightCommand);
-    // new_instance->add_rule(TrizolamGrammarRules::PerceptionCommand);
-    // new_instance->add_rule(TrizolamGrammarRules::OptionalArticle);
-    // new_instance->add_rule(TrizolamGrammarRules::SceneObject);
-    // new_instance->add_rule(TrizolamGrammarRules::InteractableObject);
-    // new_instance->add_rule(TrizolamGrammarRules::BasicWord);
-    // new_instance->add_rule(TrizolamGrammarRules::NoninteractableObject);
-    // new_instance->add_rule(TrizolamGrammarRules::Scene);
-    // new_instance->add_rule(TrizolamGrammarRules::PlayerCharacter);
-    // new_instance->add_rule(TrizolamGrammarRules::MetaCommand);
-    // new_instance->add_rule(TrizolamGrammarRules::SaveStateCommand);
-    // new_instance->add_rule(TrizolamGrammarRules::SaveCommand);
-    // new_instance->add_rule(TrizolamGrammarRules::LoadCommand);
-    // new_instance->add_rule(TrizolamGrammarRules::ResetCommand);
-    // new_instance->add_rule(TrizolamGrammarRules::LogCommand);
-    // new_instance->add_rule(TrizolamGrammarRules::InventoryCommand);
-    // new_instance->add_rule(TrizolamGrammarRules::PutInInventoryCommand);
-    // new_instance->add_rule(TrizolamGrammarRules::RemoveFromInventoryCommand);
-    // new_instance->add_rule(TrizolamGrammarRules::PlaceObjectCommand);
-    // new_instance->add_rule(TrizolamGrammarRules::TakeCommand);
-    // new_instance->add_rule(TrizolamGrammarRules::DropCommand);
-    // new_instance->add_rule(TrizolamGrammarRules::PlaceCommand);
-    // new_instance->add_rule(TrizolamGrammarRules::Preposition);
-    // new_instance->add_rule(TrizolamGrammarRules::InteractionCommand);
-
     return *new_instance;
 }
 

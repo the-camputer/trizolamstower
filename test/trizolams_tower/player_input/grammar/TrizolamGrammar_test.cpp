@@ -8,7 +8,7 @@
 TEST_CASE("TrizolamGrammar Instance Properties")
 {
     REQUIRE(TrizolamGrammar::get_instance().get_name() == "trizolam-grammar");
-    REQUIRE(TrizolamGrammar::get_instance().get_first_rule_name() == "command");
+    REQUIRE(TrizolamGrammar::get_instance().get_first_rule_name() == "input");
 }
 
 TEST_CASE("Command Tests")
