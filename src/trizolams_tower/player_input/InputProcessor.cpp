@@ -43,8 +43,10 @@ PlayerCommand InputProcessor::process(std::string player_input)
         ActionPayload payload = func(processable_input);
         return PlayerCommand{rule_name, payload};
     }
-
-    return PlayerCommand(); // TODO: Create CommandPayloads and process based on parse table
+    else
+    {
+        return PlayerCommand{"ERROR", ActionPayload{{"type", RECOGNITION_STATUS_NAMES[parse_status]}}};
+    }
 }
 
 bool InputProcessor::not_isalnum_or_space(char c)

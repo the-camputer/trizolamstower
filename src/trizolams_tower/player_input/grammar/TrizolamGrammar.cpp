@@ -2,6 +2,7 @@
 #include "../commands/MovementDirections.h"
 #include "bestinshow/engine/grammar/Grammar.h"
 #include <algorithm>
+#include <boost/algorithm/string/join.hpp>
 #include <iostream>
 #include <memory>
 #include <string>
@@ -47,6 +48,27 @@ const std::function<ActionPayload(std::vector<std::string>)> travel_command_payl
         }
 
         return ActionPayload{{"direction", std::to_string(direction_to_go)}};
+    };
+
+const std::function<ActionPayload(std::vector<std::string>)> remove_inventory_command_payload_generator =
+    [](std::vector<std::string> player_input) {
+        std::vector<std::string> object_descr;
+        std::string object;
+        auto object_descr_end = player_input.end();
+        auto object_descr_begin = player_input.begin();
+        if (player_input.size() < 3)
+        {
+            object_descr_begin = player_input.begin() + 1;
+        }
+        else
+        {
+            object_descr_begin = player_input.begin() + 2;
+        }
+
+        object_descr = std::vector<std::string>(object_descr_begin, object_descr_end);
+        object = boost::join(object_descr, " ");
+
+        return ActionPayload{{"object", object}};
     };
 
 Grammar TrizolamGrammar::create_new_instance()
@@ -270,6 +292,9 @@ Grammar TrizolamGrammar::create_new_instance()
                                                  {
                                                      {"toss", SYMBOL_TYPE::TERMINAL},
                                                  },
+                                                 {
+                                                     {"remove", SYMBOL_TYPE::TERMINAL},
+                                                 },
                                              }},
                                             {"place",
                                              {
@@ -356,6 +381,14 @@ Grammar TrizolamGrammar::create_new_instance()
                                                      {"optional-article", SYMBOL_TYPE::NONTERMINAL},
                                                      {"interactable-object", SYMBOL_TYPE::NONTERMINAL},
                                                  },
+                                                 //  {
+                                                 //      {"take", SYMBOL_TYPE::NONTERMINAL},
+                                                 //      {"optional-article", SYMBOL_TYPE::NONTERMINAL},
+                                                 //      {"interactable-object", SYMBOL_TYPE::NONTERMINAL},
+                                                 //  },
+                                             }},
+                                            {"put-in-inventory-command",
+                                             {
                                                  {
                                                      {"take", SYMBOL_TYPE::NONTERMINAL},
                                                      {"optional-article", SYMBOL_TYPE::NONTERMINAL},
@@ -369,7 +402,8 @@ Grammar TrizolamGrammar::create_new_instance()
                                                      {"optional-article", SYMBOL_TYPE::NONTERMINAL},
                                                      {"interactable-object", SYMBOL_TYPE::NONTERMINAL},
                                                  },
-                                             }},
+                                             },
+                                             remove_inventory_command_payload_generator},
                                         });
     return *new_instance;
 }
