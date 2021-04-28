@@ -8,17 +8,12 @@
 #include <string>
 #include <vector>
 
-const std::function<ActionPayload(std::vector<std::string>)> empty_payload_generator =
-    [](std::vector<std::string> player_input) { return ActionPayload{}; };
-
 Rule::Rule(const std::string name) : rule_name{name}
 {
-    payload_generator = empty_payload_generator;
 }
 
 Rule::Rule(const std::string name, ProductionList productions) : rule_name{name}, productions{productions}
 {
-    payload_generator = empty_payload_generator;
 }
 
 Rule::Rule(const std::string name, ProductionList productions,
@@ -56,7 +51,15 @@ std::function<ActionPayload(std::vector<std::string>)> Rule::get_payload_generat
 {
     return this->payload_generator;
 }
+
 void Rule::set_payload_generator(std::function<ActionPayload(std::vector<std::string>)> generator)
 {
     payload_generator = generator;
+}
+
+Rule::PlayerCommand Rule::generate_command(std::vector<std::string> input)
+{
+    auto func = get_payload_generator();
+    ActionPayload payload = func(input);
+    return PlayerCommand{rule_name, payload};
 }

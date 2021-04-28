@@ -12,7 +12,7 @@ InputProcessor::InputProcessor() : grammar(TrizolamGrammar::get_instance())
 {
 }
 
-PlayerCommand InputProcessor::process(std::string player_input)
+Rule::PlayerCommand InputProcessor::process(std::string player_input)
 {
     // Remove special characters except spaces
     player_input.erase(std::remove_if(player_input.begin(), player_input.end(), InputProcessor::not_isalnum_or_space),
@@ -39,13 +39,11 @@ PlayerCommand InputProcessor::process(std::string player_input)
 
         Rule recognized_rule = grammar[end_rule_earley_item.rule];
         std::string rule_name = recognized_rule.get_rule_name();
-        auto func = recognized_rule.get_payload_generator();
-        ActionPayload payload = func(processable_input);
-        return PlayerCommand{rule_name, payload};
+        return recognized_rule.generate_command(processable_input);
     }
     else
     {
-        return PlayerCommand{"ERROR", ActionPayload{{"type", RECOGNITION_STATUS_NAMES[parse_status]}}};
+        return Rule::PlayerCommand{"ERROR", ActionPayload{{"type", RECOGNITION_STATUS_NAMES[parse_status]}}};
     }
 }
 

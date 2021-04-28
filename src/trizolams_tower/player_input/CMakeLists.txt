@@ -16,7 +16,6 @@ add_library(
 
     InputProcessor.h
     ${PROJECT_SOURCE_DIR}/include/bestinshow/engine/grammar/EarleyParser.h
-    commands/PlayerCommand.h
     ${PROJECT_SOURCE_DIR}/include/trizolams_tower/player_input/grammar/TrizolamGrammar.h
 )
 target_link_libraries(InputProcessor PRIVATE grammar EarleyParser TrizolamGrammar)
