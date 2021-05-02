@@ -55,7 +55,7 @@ TEST_CASE("Command Tests")
 
     SECTION("PutInInventoryCommand")
     {
-        std::vector<std::string> s_complete_opt_include = {"pick", "up", "body"};
+        std::vector<std::string> s_complete_opt_include = {"grab", "body"};
         auto complete_opt_included = EarleyParser::build_items(grammar, s_complete_opt_include);
 
         std::vector<std::string> s_complete_opt_not_included = {"take", "pencil"};
