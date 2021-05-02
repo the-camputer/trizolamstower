@@ -10,6 +10,15 @@ if(NOT TARGET spdlog)
     find_package(spdlog REQUIRED)
 endif()
 
+Include(FetchContent)
+
+FetchContent_Declare(
+  Catch2
+  GIT_REPOSITORY https://github.com/catchorg/Catch2.git
+  GIT_TAG        v2.13.6)
+
+FetchContent_MakeAvailable(Catch2)
+
 add_executable(
     tests 
     
@@ -31,4 +40,5 @@ target_link_libraries(
     EarleyParser
     TrizolamGrammar
     spdlog::spdlog
+    Catch2::Catch2
 )
