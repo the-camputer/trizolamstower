@@ -2,6 +2,8 @@
 #include "bestinshow/engine/grammar/Symbol.h"
 #include "spdlog/fmt/ostr.h"
 #include "spdlog/spdlog.h"
+#include <functional>
+#include <iostream>
 #include <memory>
 #include <string>
 #include <vector>
@@ -10,14 +12,19 @@ Rule::Rule(const std::string name) : rule_name{name}
 {
 }
 
-Rule::Rule(const std::string name, ProductionList productions) : rule_name{name}
+Rule::Rule(const std::string name, ProductionList productions) : rule_name{name}, productions{productions}
 {
-    this->productions = productions;
 }
 
-Rule::Rule(const Rule &prev) : rule_name{prev.rule_name}
+Rule::Rule(const std::string name, ProductionList productions,
+           std::function<ActionPayload(std::vector<std::string>)> generator)
+    : rule_name{name}, productions{productions}, payload_generator{generator}
 {
-    this->productions = prev.productions;
+}
+
+Rule::Rule(const Rule &prev)
+    : rule_name{prev.rule_name}, productions{prev.productions}, payload_generator{prev.payload_generator}
+{
 }
 
 std::string Rule::get_rule_name() const
@@ -40,26 +47,19 @@ void Rule::add_production(Production &production)
     productions.push_back(production);
 }
 
-// template<typename OStream>
-// OStream& operator<<(OStream& os, const Rule& v)
-// {
-//     os << "<" << v.get_rule_name() << "> ::= ";
+std::function<ActionPayload(std::vector<std::string>)> Rule::get_payload_generator()
+{
+    return this->payload_generator;
+}
 
-//     auto ref_production_list = v.get_productions();
-//     if (ref_production_list) {
-//         auto production_list = *ref_production_list;
-//         for(Production p : production_list) {
-//             for(Symbol s : p) {
-//                 os << s;
-//             }
+void Rule::set_payload_generator(std::function<ActionPayload(std::vector<std::string>)> generator)
+{
+    payload_generator = generator;
+}
 
-//             if (p != *(production_list.end() - 1)) {
-//                 os << "|";
-//             }
-//         }
-//     }
-
-//     os << std::endl;
-
-//     return os;
-// }
+Rule::PlayerCommand Rule::generate_command(std::vector<std::string> input)
+{
+    auto func = get_payload_generator();
+    ActionPayload payload = func(input);
+    return PlayerCommand{rule_name, payload};
+}

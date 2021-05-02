@@ -64,7 +64,10 @@
         "iomanip": "cpp",
         "mutex": "cpp",
         "thread": "cpp",
-        "unordered_set": "cpp"
+        "unordered_set": "cpp",
+        "complex": "cpp",
+        "list": "cpp",
+        "typeindex": "cpp"
     },
     "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools"
 }

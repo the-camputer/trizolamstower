@@ -9,7 +9,7 @@ ExampleGrammar::ExampleGrammar() : grammar{Grammar{"exmaple-grammar"}}
     /** implements simple grammar of the form
      * <exmaple-grammar> ::= <sum>
      * <sum> ::= <sum> [+-] <product>|<product>
-     * <product> ::= <product> [/*] <factor> |<factor>
+     * <product> ::= <product> [/ *] <factor> |<factor>
      * <factor> ::= ( <sum> )|<number>
      * <number> ::= [0-9] <number>|[0-9]
      */

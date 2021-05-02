@@ -2,25 +2,45 @@
 
 #include "Symbol.h"
 #include "spdlog/fmt/ostr.h"
-#include <algorithm>
-#include <memory>
+#include <functional>
 #include <ostream>
 #include <string>
+#include <unordered_map>
 #include <vector>
 
 using Production = std::vector<Symbol>;
 using ProductionList = std::vector<Production>;
+using ActionPayload = std::unordered_map<std::string, std::string>;
 
 class Rule
 {
   protected:
     std::string rule_name = "";
     ProductionList productions{};
+    std::function<ActionPayload(std::vector<std::string>)> payload_generator =
+        [](std::vector<std::string> player_input) { return ActionPayload{}; };
 
   public:
+    struct PlayerCommand
+    {
+        std::string type;
+        ActionPayload payload;
+
+        template <typename OStream> inline friend OStream &operator<<(OStream &ostream, const PlayerCommand &v)
+        {
+            ostream << "{ type: " << v.type << ", payload: { ";
+            for (auto const &pair : v.payload)
+            {
+                ostream << pair.first << ": " << pair.second << ", ";
+            }
+            ostream << "} }";
+            return ostream;
+        }
+    };
     Rule() = default;
     Rule(const std::string name);
     Rule(const std::string name, ProductionList productions);
+    Rule(const std::string, ProductionList, std::function<ActionPayload(std::vector<std::string>)>);
     Rule(const Rule &prev);
     ~Rule() = default;
 
@@ -28,6 +48,9 @@ class Rule
     void set_rule_name(std::string rule_name);
     ProductionList get_productions() const;
     void add_production(Production &production);
+    std::function<ActionPayload(std::vector<std::string>)> get_payload_generator();
+    void set_payload_generator(std::function<ActionPayload(std::vector<std::string>)>);
+    PlayerCommand generate_command(std::vector<std::string>);
     template <typename OStream> friend OStream &operator<<(OStream &os, const Rule &v)
     {
         os << "<" << v.get_rule_name() << "> ::= ";
