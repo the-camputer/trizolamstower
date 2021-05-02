@@ -1,6 +1,15 @@
 add_definitions(-g -Wall -std=c++2a)
 include_directories(${CMAKE_SOURCE_DIR}/include)
-link_directories(${CMAKE_SOURCE_DIR}/lib)
+link_directories(
+    ${CMAKE_SOURCE_DIR}/lib
+    ${CMAKE_SOURCE_DIR}/external/lib
+)
+
+if(NOT TARGET spdlog)
+    # Stand-alone build
+    find_package(spdlog REQUIRED)
+endif()
+
 add_executable(
     tests 
     
@@ -15,7 +24,11 @@ add_executable(
     ${PROJECT_SOURCE_DIR}/include/bestinshow/engine/grammar/EarleyParser.h
     ${PROJECT_SOURCE_DIR}/include/trizolams_tower/player_input/grammar/TrizolamGrammar.h
 )
-# target_include_directories(tests PUBLIC ${PROJECT_SOURCE_DIR})
-target_link_libraries(tests grammar EarleyParser TrizolamGrammar)
-# target_link_libraries(tests TrizolamGrammar)
-target_link_libraries(tests spdlog)
+target_link_libraries(
+    tests
+    PRIVATE 
+    grammar
+    EarleyParser
+    TrizolamGrammar
+    spdlog::spdlog
+)

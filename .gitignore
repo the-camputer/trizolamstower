@@ -34,6 +34,9 @@
 *.a
 *.lib
 
+# Static Libraries that should be included
+!external/**/*.a
+
 # Executables
 *.exe
 *.out

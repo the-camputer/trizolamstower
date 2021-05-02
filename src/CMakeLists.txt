@@ -2,11 +2,19 @@
 add_subdirectory(engine/grammar)
 add_subdirectory(trizolams_tower/player_input)
 
-include_directories(${CMAKE_SOURCE_DIR}/include)
-include_directories(${CMAKE_SOURCE_DIR}/external/include)
-link_directories(${CMAKE_SOURCE_DIR}/lib)
+include_directories(
+    ${CMAKE_SOURCE_DIR}/include
+    ${CMAKE_SOURCE_DIR}/external/include
+)
+link_directories(
+    ${CMAKE_SOURCE_DIR}/lib
+    ${CMAKE_SOURCE_DIR}/external/lib
+)
 
-# FIND_PACKAGE(spdlog)
+if(NOT TARGET spdlog)
+    # Stand-alone build
+    find_package(spdlog REQUIRED)
+endif()
 
 add_executable(
     TrizolamsTower
@@ -18,8 +26,15 @@ add_executable(
     ${PROJECT_SOURCE_DIR}/include/bestinshow/engine/grammar/EarleyParser.h
     ${PROJECT_SOURCE_DIR}/include/bestinshow/engine/grammar/EarleyItem.h
 )
-target_link_libraries(TrizolamsTower EarleyParser grammar TrizolamGrammar InputProcessor)
-target_link_libraries(TrizolamsTower spdlog)
+target_link_libraries(
+    TrizolamsTower
+    PRIVATE
+    EarleyParser
+    grammar
+    TrizolamGrammar
+    InputProcessor
+    spdlog::spdlog
+)
 
 # add_executable(
 #     testing_trizolam_grammar

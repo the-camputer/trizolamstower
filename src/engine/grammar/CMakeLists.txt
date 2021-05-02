@@ -1,4 +1,7 @@
-# add_definitions(-g -Wall -std=c++2a)
+if(NOT TARGET spdlog)
+    # Stand-alone build
+    find_package(spdlog REQUIRED)
+endif()
 
 add_library(
     grammar 
@@ -25,9 +28,22 @@ add_library(
     ${PROJECT_SOURCE_DIR}/include/bestinshow/engine/grammar/EarleyParser.h
     ${PROJECT_SOURCE_DIR}/include/bestinshow/engine/grammar/EarleyItem.h
 )
-target_include_directories(EarleyParser PRIVATE ${PROJECT_SOURCE_DIR}/include)
-target_link_libraries(EarleyParser grammar)
-target_link_libraries(EarleyParser spdlog)
+target_include_directories(
+    EarleyParser
+    PRIVATE
+    ${PROJECT_SOURCE_DIR}/include
+)
+target_link_directories(
+    EarleyParser
+    PRIVATE
+    ${CMAKE_SOURCE_DIR}/external/include
+)
+target_link_libraries(
+    EarleyParser
+    PRIVATE
+    grammar
+    spdlog::spdlog
+)
 
 add_library(
     ExampleGrammar
