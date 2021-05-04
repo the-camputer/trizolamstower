@@ -53,21 +53,9 @@ const std::function<ActionPayload(std::vector<std::string>)> travel_command_payl
 
 const std::function<ActionPayload(std::vector<std::string>)> inventory_command_payload_generator =
     [](std::vector<std::string> player_input) {
+        player_input.erase(std::remove(player_input.begin(), player_input.end(), "the"), player_input.end());
         std::vector<std::string> object_descr;
-        std::string object;
-        auto object_descr_end = player_input.end();
-        auto object_descr_begin = player_input.begin();
-        if (player_input.size() < 3)
-        {
-            object_descr_begin = player_input.begin() + 1;
-        }
-        else
-        {
-            object_descr_begin = player_input.begin() + 2;
-        }
-
-        object_descr = std::vector<std::string>(object_descr_begin, object_descr_end);
-        object = boost::join(object_descr, " ");
+        std::string object = player_input.back();
 
         return ActionPayload{{"object", object}};
     };
