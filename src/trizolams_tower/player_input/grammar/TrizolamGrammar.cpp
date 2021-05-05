@@ -70,6 +70,26 @@ const std::function<ActionPayload(std::vector<std::string>)> place_command_paylo
         return ActionPayload{{"object", object}, {"destination", *destination}};
     };
 
+std::unique_ptr<Grammar> TrizolamGrammar::m_instance;
+
+std::unordered_map<std::string, std::vector<std::vector<std::string>>> TrizolamGrammar::m_terminal_phrases{
+    {"optional-article", {{"the"}, {""}}},
+    {"directions", {{"n(orth)?"}, {"e(ast)?"}, {"s(outh)?"}, {"w(est)?"}}},
+    {"movement", {{"go"}, {"travel"}, {"walk"}, {"move"}, {"run"}}},
+    {"basic-object", {{"sword"}}},
+    {"scene", {{"area"}, {"what", "is", "around"}, {"nearby"}}},
+    {"player-character", {{"me"}, {"myself"}}},
+    {"perception", {{"examine"}, {"look", "at"}, {"look", "around"}}},
+    {"preposition", {{"on"}, {"in"}, {"inside"}, {"into"}}},
+    {"take", {{"take"}, {"grab"}, {"pick", "up"}}},
+    {"drop", {{"drop"}, {"toss"}, {"remove"}}},
+    {"save-command", {{"save", "game"}, {"save"}}},
+    {"load-command", {{"load", "game"}, {"load"}}},
+    {"reset-command", {{"reset", "game"}, {"reset"}}},
+    {"log-command", {{"show", "log"}, {"log"}}},
+
+};
+
 Grammar TrizolamGrammar::create_new_instance()
 {
     Grammar *new_instance =
@@ -82,16 +102,8 @@ Grammar TrizolamGrammar::create_new_instance()
                                                  {
                                                      {"interaction", SYMBOL_TYPE::NONTERMINAL},
                                                  },
-                                             }},
-                                            {"optional-article",
-                                             {
-                                                 {
-                                                     {"the", SYMBOL_TYPE::TERMINAL},
-                                                 },
-                                                 {
-                                                     {"", SYMBOL_TYPE::TERMINAL},
-                                                 },
-                                             }},
+                                             },
+                                             -1},
                                             {"personal",
                                              {
                                                  {
@@ -102,39 +114,6 @@ Grammar TrizolamGrammar::create_new_instance()
                                                  },
                                                  {
                                                      {"meta", SYMBOL_TYPE::NONTERMINAL},
-                                                 },
-                                             }},
-                                            {"direction",
-                                             {
-                                                 {
-                                                     {"n(orth)?", SYMBOL_TYPE::TERMINAL},
-                                                 },
-                                                 {
-                                                     {"e(ast)?", SYMBOL_TYPE::TERMINAL},
-                                                 },
-                                                 {
-                                                     {"s(outh)?", SYMBOL_TYPE::TERMINAL},
-                                                 },
-                                                 {
-                                                     {"w(est)?", SYMBOL_TYPE::TERMINAL},
-                                                 },
-                                             }},
-                                            {"movement",
-                                             {
-                                                 {
-                                                     {"go", SYMBOL_TYPE::TERMINAL},
-                                                 },
-                                                 {
-                                                     {"travel", SYMBOL_TYPE::TERMINAL},
-                                                 },
-                                                 {
-                                                     {"walk", SYMBOL_TYPE::TERMINAL},
-                                                 },
-                                                 {
-                                                     {"move", SYMBOL_TYPE::TERMINAL},
-                                                 },
-                                                 {
-                                                     {"run", SYMBOL_TYPE::TERMINAL},
                                                  },
                                              }},
                                             {"scene-object",
@@ -150,16 +129,10 @@ Grammar TrizolamGrammar::create_new_instance()
                                              {
                                                  {
                                                      {"interactable-object", SYMBOL_TYPE::NONTERMINAL},
-                                                     {"basic-word", SYMBOL_TYPE::NONTERMINAL},
+                                                     {"basic-object", SYMBOL_TYPE::NONTERMINAL},
                                                  },
                                                  {
-                                                     {"basic-word", SYMBOL_TYPE::NONTERMINAL},
-                                                 },
-                                             }},
-                                            {"basic-word",
-                                             {
-                                                 {
-                                                     {"\\w+", SYMBOL_TYPE::TERMINAL},
+                                                     {"basic-object", SYMBOL_TYPE::NONTERMINAL},
                                                  },
                                              }},
                                             {"noninteractable-object",
@@ -169,43 +142,6 @@ Grammar TrizolamGrammar::create_new_instance()
                                                  },
                                                  {
                                                      {"player-character", SYMBOL_TYPE::NONTERMINAL},
-                                                 },
-                                             }},
-                                            {"scene",
-                                             {
-                                                 {
-                                                     {"area", SYMBOL_TYPE::TERMINAL},
-                                                 },
-                                                 {
-                                                     {"what", SYMBOL_TYPE::TERMINAL},
-                                                     {"is", SYMBOL_TYPE::TERMINAL},
-                                                     {"around", SYMBOL_TYPE::TERMINAL},
-                                                 },
-                                                 {
-                                                     {"nearby", SYMBOL_TYPE::TERMINAL},
-                                                 },
-                                             }},
-                                            {"player-character",
-                                             {
-                                                 {
-                                                     {"myself", SYMBOL_TYPE::TERMINAL},
-                                                 },
-                                                 {
-                                                     {"me", SYMBOL_TYPE::TERMINAL},
-                                                 },
-                                             }},
-                                            {"perception",
-                                             {
-                                                 {
-                                                     {"examine", SYMBOL_TYPE::TERMINAL},
-                                                 },
-                                                 {
-                                                     {"look", SYMBOL_TYPE::TERMINAL},
-                                                     {"at", SYMBOL_TYPE::TERMINAL},
-                                                 },
-                                                 {
-                                                     {"look", SYMBOL_TYPE::TERMINAL},
-                                                     {"around", SYMBOL_TYPE::TERMINAL},
                                                  },
                                              }},
                                             {"insight-command",
@@ -246,21 +182,6 @@ Grammar TrizolamGrammar::create_new_instance()
                                                      {"inventory", SYMBOL_TYPE::NONTERMINAL},
                                                  },
                                              }},
-                                            {"preposition",
-                                             {
-                                                 {
-                                                     {"on", SYMBOL_TYPE::TERMINAL},
-                                                 },
-                                                 {
-                                                     {"in", SYMBOL_TYPE::TERMINAL},
-                                                 },
-                                                 {
-                                                     {"inside", SYMBOL_TYPE::TERMINAL},
-                                                 },
-                                                 {
-                                                     {"into", SYMBOL_TYPE::TERMINAL},
-                                                 },
-                                             }},
                                             {"inventory",
                                              {
                                                  {
@@ -271,27 +192,6 @@ Grammar TrizolamGrammar::create_new_instance()
                                                  },
                                                  {
                                                      {"place-object-command", SYMBOL_TYPE::NONTERMINAL},
-                                                 },
-                                             }},
-                                            {"take",
-                                             {
-                                                 {
-                                                     {"take", SYMBOL_TYPE::TERMINAL},
-                                                 },
-                                                 {
-                                                     {"grab", SYMBOL_TYPE::TERMINAL},
-                                                 },
-                                             }},
-                                            {"drop",
-                                             {
-                                                 {
-                                                     {"drop", SYMBOL_TYPE::TERMINAL},
-                                                 },
-                                                 {
-                                                     {"toss", SYMBOL_TYPE::TERMINAL},
-                                                 },
-                                                 {
-                                                     {"remove", SYMBOL_TYPE::TERMINAL},
                                                  },
                                              }},
                                             {"place",
@@ -318,46 +218,6 @@ Grammar TrizolamGrammar::create_new_instance()
                                                      {"insert", SYMBOL_TYPE::TERMINAL},
                                                  },
                                              }},
-                                            {"save-command",
-                                             {
-                                                 {
-                                                     {"save", SYMBOL_TYPE::TERMINAL},
-                                                     {"game", SYMBOL_TYPE::TERMINAL},
-                                                 },
-                                                 {
-                                                     {"save", SYMBOL_TYPE::TERMINAL},
-                                                 },
-                                             }},
-                                            {"load-command",
-                                             {
-                                                 {
-                                                     {"load", SYMBOL_TYPE::TERMINAL},
-                                                     {"game", SYMBOL_TYPE::TERMINAL},
-                                                 },
-                                                 {
-                                                     {"load", SYMBOL_TYPE::TERMINAL},
-                                                 },
-                                             }},
-                                            {"reset-command",
-                                             {
-                                                 {
-                                                     {"reset", SYMBOL_TYPE::TERMINAL},
-                                                     {"game", SYMBOL_TYPE::TERMINAL},
-                                                 },
-                                                 {
-                                                     {"reset", SYMBOL_TYPE::TERMINAL},
-                                                 },
-                                             }},
-                                            {"log-command",
-                                             {
-                                                 {
-                                                     {"show", SYMBOL_TYPE::TERMINAL},
-                                                     {"log", SYMBOL_TYPE::TERMINAL},
-                                                 },
-                                                 {
-                                                     {"log", SYMBOL_TYPE::TERMINAL},
-                                                 },
-                                             }},
                                             {"travel-command",
                                              {
                                                  {
@@ -368,7 +228,8 @@ Grammar TrizolamGrammar::create_new_instance()
                                                      {"direction", SYMBOL_TYPE::NONTERMINAL},
                                                  },
                                              },
-                                             travel_command_payload_generator},
+                                             travel_command_payload_generator,
+                                             1},
                                             {"place-object-command",
                                              {
                                                  {
@@ -380,7 +241,8 @@ Grammar TrizolamGrammar::create_new_instance()
                                                      {"interactable-object", SYMBOL_TYPE::NONTERMINAL},
                                                  },
                                              },
-                                             place_command_payload_generator},
+                                             place_command_payload_generator,
+                                             1},
                                             {"put-in-inventory-command",
                                              {
                                                  {
@@ -389,7 +251,8 @@ Grammar TrizolamGrammar::create_new_instance()
                                                      {"interactable-object", SYMBOL_TYPE::NONTERMINAL},
                                                  },
                                              },
-                                             inventory_command_payload_generator},
+                                             inventory_command_payload_generator,
+                                             1},
                                             {"remove-from-inventory-command",
                                              {
                                                  {
@@ -398,12 +261,47 @@ Grammar TrizolamGrammar::create_new_instance()
                                                      {"interactable-object", SYMBOL_TYPE::NONTERMINAL},
                                                  },
                                              },
-                                             inventory_command_payload_generator},
+                                             inventory_command_payload_generator,
+                                             1},
                                         });
+
+    for (auto &phrase_map : m_terminal_phrases)
+    {
+        Rule new_rule{phrase_map.first};
+        ProductionList productions_list;
+        for (auto &phrase : phrase_map.second)
+        {
+            Production new_production{};
+            for (auto &symbol : phrase)
+            {
+                new_production.push_back({symbol, SYMBOL_TYPE::TERMINAL});
+            }
+            new_rule.add_production(new_production);
+        }
+
+        if (phrase_map.first.find("command") != std::string::npos)
+        {
+            new_rule.set_rule_weight(1);
+        }
+
+        new_instance->add_rule(new_rule);
+    }
+
+    // auto direction_phrases = m_terminal_phrases["directions"];
+    // Rule direction_rule{"direction"};
+    // ProductionList direction_production_list;
+    // for (auto direction_phrase : direction_phrases)
+    // {
+    //     Production phrase_production{};
+    //     for (auto direction : direction_phrase)
+    //     {
+    //         phrase_production.push_back({direction, SYMBOL_TYPE::TERMINAL});
+    //     }
+    //     direction_rule.add_production(phrase_production);
+    // }
+    // new_instance->add_rule(direction_rule);
     return *new_instance;
 }
-
-std::unique_ptr<Grammar> TrizolamGrammar::m_instance;
 
 Grammar &TrizolamGrammar::get_instance()
 {

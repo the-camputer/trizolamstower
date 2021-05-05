@@ -8,22 +8,29 @@
 #include <string>
 #include <vector>
 
-Rule::Rule(const std::string name) : rule_name{name}
+Rule::Rule(const std::string name) : rule_name{name}, rule_weight{0}
 {
 }
 
-Rule::Rule(const std::string name, ProductionList productions) : rule_name{name}, productions{productions}
+Rule::Rule(const std::string name, ProductionList productions)
+    : rule_name{name}, productions{productions}, rule_weight{0}
+{
+}
+
+Rule::Rule(const std::string name, ProductionList productions, int rule_weight)
+    : rule_name{name}, productions{productions}, rule_weight{rule_weight}
 {
 }
 
 Rule::Rule(const std::string name, ProductionList productions,
-           std::function<ActionPayload(std::vector<std::string>)> generator)
-    : rule_name{name}, productions{productions}, payload_generator{generator}
+           std::function<ActionPayload(std::vector<std::string>)> generator, int rule_weight)
+    : rule_name{name}, productions{productions}, payload_generator{generator}, rule_weight{rule_weight}
 {
 }
 
 Rule::Rule(const Rule &prev)
-    : rule_name{prev.rule_name}, productions{prev.productions}, payload_generator{prev.payload_generator}
+    : rule_name{prev.rule_name}, productions{prev.productions}, payload_generator{prev.payload_generator},
+      rule_weight{prev.rule_weight}
 {
 }
 
@@ -62,4 +69,14 @@ Rule::PlayerCommand Rule::generate_command(std::vector<std::string> input)
     auto func = get_payload_generator();
     ActionPayload payload = func(input);
     return PlayerCommand{rule_name, payload};
+}
+
+void Rule::set_rule_weight(int rule_weight)
+{
+    this->rule_weight = rule_weight;
+}
+
+int Rule::get_rule_weight() const
+{
+    return this->rule_weight;
 }

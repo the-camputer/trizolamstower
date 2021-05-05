@@ -14,6 +14,7 @@ int main()
     std::string player_input;
     InputProcessor input_processor{};
     // spdlog::set_level(spdlog::level::debug);
+    spdlog::info("TRIZOLAM GRAMMAR {}", input_processor.get_grammar());
     while (true)
     {
         std::cout << "What is your command? " << std::endl;

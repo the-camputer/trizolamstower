@@ -1,3 +1,7 @@
+if(NOT TARGET spdlog)
+    # Stand-alone build
+    find_package(spdlog REQUIRED)
+endif()
 add_library(
     TrizolamGrammar
 
@@ -11,4 +15,4 @@ add_library(
 )
 
 target_include_directories(TrizolamGrammar PRIVATE ${PROJECT_SOURCE_DIR}/include)
-target_link_libraries(TrizolamGrammar EarleyParser grammar)
+target_link_libraries(TrizolamGrammar EarleyParser grammar spdlog::spdlog)

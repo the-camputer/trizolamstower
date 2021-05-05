@@ -51,3 +51,8 @@ bool InputProcessor::not_isalnum_or_space(char c)
 {
     return !std::isalnum(c) && !std::isspace(c);
 }
+
+Grammar InputProcessor::get_grammar()
+{
+    return this->grammar;
+}
