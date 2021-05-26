@@ -34,6 +34,12 @@ Rule::Rule(const Rule &prev)
 {
 }
 
+Rule::Rule(const Rule *prev)
+    : rule_name{prev->rule_name}, productions{prev->productions}, payload_generator{prev->payload_generator},
+      rule_weight{prev->rule_weight}
+{
+}
+
 std::string Rule::get_rule_name() const
 {
     return rule_name;
@@ -49,10 +55,15 @@ ProductionList Rule::get_productions() const
     return productions;
 }
 
-void Rule::add_production(Production &production)
+void Rule::add_production(Production production)
 {
     productions.push_back(production);
 }
+
+// void Rule::add_production(Production production)
+// {
+//     productions.push_back(production);
+// }
 
 std::function<ActionPayload(std::vector<std::string>)> Rule::get_payload_generator()
 {

@@ -74,7 +74,7 @@ std::unique_ptr<Grammar> TrizolamGrammar::m_instance;
 
 std::unordered_map<std::string, std::vector<std::vector<std::string>>> TrizolamGrammar::m_terminal_phrases{
     {"optional-article", {{"the"}, {""}}},
-    {"directions", {{"n(orth)?"}, {"e(ast)?"}, {"s(outh)?"}, {"w(est)?"}}},
+    {"direction", {{"n(orth)?"}, {"e(ast)?"}, {"s(outh)?"}, {"w(est)?"}}},
     {"movement", {{"go"}, {"travel"}, {"walk"}, {"move"}, {"run"}}},
     {"basic-object", {{"sword"}}},
     {"scene", {{"area"}, {"what", "is", "around"}, {"nearby"}}},
@@ -93,177 +93,179 @@ std::unordered_map<std::string, std::vector<std::vector<std::string>>> TrizolamG
 Grammar TrizolamGrammar::create_new_instance()
 {
     Grammar *new_instance =
-        new Grammar("trizolam-grammar", {
-                                            {"input",
-                                             {
-                                                 {
-                                                     {"personal", SYMBOL_TYPE::NONTERMINAL},
-                                                 },
-                                                 {
-                                                     {"interaction", SYMBOL_TYPE::NONTERMINAL},
-                                                 },
-                                             },
-                                             -1},
-                                            {"personal",
-                                             {
-                                                 {
-                                                     {"travel-command", SYMBOL_TYPE::NONTERMINAL},
-                                                 },
-                                                 {
-                                                     {"insight-command", SYMBOL_TYPE::NONTERMINAL},
-                                                 },
-                                                 {
-                                                     {"meta", SYMBOL_TYPE::NONTERMINAL},
-                                                 },
-                                             }},
-                                            {"scene-object",
-                                             {
-                                                 {
-                                                     {"interactable-object", SYMBOL_TYPE::NONTERMINAL},
-                                                 },
-                                                 {
-                                                     {"noninteractable-object", SYMBOL_TYPE::NONTERMINAL},
-                                                 },
-                                             }},
-                                            {"interactable-object",
-                                             {
-                                                 {
-                                                     {"interactable-object", SYMBOL_TYPE::NONTERMINAL},
-                                                     {"basic-object", SYMBOL_TYPE::NONTERMINAL},
-                                                 },
-                                                 {
-                                                     {"basic-object", SYMBOL_TYPE::NONTERMINAL},
-                                                 },
-                                             }},
-                                            {"noninteractable-object",
-                                             {
-                                                 {
-                                                     {"scene", SYMBOL_TYPE::NONTERMINAL},
-                                                 },
-                                                 {
-                                                     {"player-character", SYMBOL_TYPE::NONTERMINAL},
-                                                 },
-                                             }},
-                                            {"insight-command",
-                                             {
-                                                 {
-                                                     {"perception", SYMBOL_TYPE::NONTERMINAL},
-                                                     {"optional-article", SYMBOL_TYPE::NONTERMINAL},
-                                                     {"scene-object", SYMBOL_TYPE::NONTERMINAL},
-                                                 },
-                                                 {
-                                                     {"perception", SYMBOL_TYPE::NONTERMINAL},
-                                                 },
-                                             }},
-                                            {"meta",
-                                             {
-                                                 {
-                                                     {"save-state", SYMBOL_TYPE::NONTERMINAL},
-                                                 },
-                                                 {
-                                                     {"log-command", SYMBOL_TYPE::NONTERMINAL},
-                                                 },
-                                             }},
-                                            {"save-state",
-                                             {
-                                                 {
-                                                     {"save-command", SYMBOL_TYPE::NONTERMINAL},
-                                                 },
-                                                 {
-                                                     {"load-command", SYMBOL_TYPE::NONTERMINAL},
-                                                 },
-                                                 {
-                                                     {"reset-command", SYMBOL_TYPE::NONTERMINAL},
-                                                 },
-                                             }},
-                                            {"interaction",
-                                             {
-                                                 {
-                                                     {"inventory", SYMBOL_TYPE::NONTERMINAL},
-                                                 },
-                                             }},
-                                            {"inventory",
-                                             {
-                                                 {
-                                                     {"put-in-inventory-command", SYMBOL_TYPE::NONTERMINAL},
-                                                 },
-                                                 {
-                                                     {"remove-from-inventory-command", SYMBOL_TYPE::NONTERMINAL},
-                                                 },
-                                                 {
-                                                     {"place-object-command", SYMBOL_TYPE::NONTERMINAL},
-                                                 },
-                                             }},
-                                            {"place",
-                                             {
-                                                 {
-                                                     {"drop", SYMBOL_TYPE::NONTERMINAL},
-                                                 },
-                                                 {
-                                                     {"place", SYMBOL_TYPE::TERMINAL},
-                                                 },
-                                                 {
-                                                     {"put", SYMBOL_TYPE::TERMINAL},
-                                                 },
-                                                 {
-                                                     {"put", SYMBOL_TYPE::TERMINAL},
-                                                 },
-                                                 {
-                                                     {"lay", SYMBOL_TYPE::TERMINAL},
-                                                 },
-                                                 {
-                                                     {"set", SYMBOL_TYPE::TERMINAL},
-                                                 },
-                                                 {
-                                                     {"insert", SYMBOL_TYPE::TERMINAL},
-                                                 },
-                                             }},
-                                            {"travel-command",
-                                             {
-                                                 {
-                                                     {"direction", SYMBOL_TYPE::NONTERMINAL},
-                                                 },
-                                                 {
-                                                     {"movement", SYMBOL_TYPE::NONTERMINAL},
-                                                     {"direction", SYMBOL_TYPE::NONTERMINAL},
-                                                 },
-                                             },
-                                             travel_command_payload_generator,
-                                             1},
-                                            {"place-object-command",
-                                             {
-                                                 {
-                                                     {"place", SYMBOL_TYPE::NONTERMINAL},
-                                                     {"optional-article", SYMBOL_TYPE::NONTERMINAL},
-                                                     {"interactable-object", SYMBOL_TYPE::NONTERMINAL},
-                                                     {"preposition", SYMBOL_TYPE::NONTERMINAL},
-                                                     {"optional-article", SYMBOL_TYPE::NONTERMINAL},
-                                                     {"interactable-object", SYMBOL_TYPE::NONTERMINAL},
-                                                 },
-                                             },
-                                             place_command_payload_generator,
-                                             1},
-                                            {"put-in-inventory-command",
-                                             {
-                                                 {
-                                                     {"take", SYMBOL_TYPE::NONTERMINAL},
-                                                     {"optional-article", SYMBOL_TYPE::NONTERMINAL},
-                                                     {"interactable-object", SYMBOL_TYPE::NONTERMINAL},
-                                                 },
-                                             },
-                                             inventory_command_payload_generator,
-                                             1},
-                                            {"remove-from-inventory-command",
-                                             {
-                                                 {
-                                                     {"drop", SYMBOL_TYPE::NONTERMINAL},
-                                                     {"optional-article", SYMBOL_TYPE::NONTERMINAL},
-                                                     {"interactable-object", SYMBOL_TYPE::NONTERMINAL},
-                                                 },
-                                             },
-                                             inventory_command_payload_generator,
-                                             1},
-                                        });
+        new Grammar(
+            "trizolam-grammar",
+            {
+                std::make_shared<Rule>(new Rule{"input",
+                                                {
+                                                    {
+                                                        {"personal", SYMBOL_TYPE::NONTERMINAL},
+                                                    },
+                                                    {
+                                                        {"interaction", SYMBOL_TYPE::NONTERMINAL},
+                                                    },
+                                                },
+                                                -1}),
+                std::make_shared<Rule>(new Rule{"personal",
+                                                {
+                                                    {
+                                                        {"travel-command", SYMBOL_TYPE::NONTERMINAL},
+                                                    },
+                                                    {
+                                                        {"insight-command", SYMBOL_TYPE::NONTERMINAL},
+                                                    },
+                                                    {
+                                                        {"meta", SYMBOL_TYPE::NONTERMINAL},
+                                                    },
+                                                }}),
+                std::make_shared<Rule>(new Rule{"scene-object",
+                                                {
+                                                    {
+                                                        {"interactable-object", SYMBOL_TYPE::NONTERMINAL},
+                                                    },
+                                                    {
+                                                        {"noninteractable-object", SYMBOL_TYPE::NONTERMINAL},
+                                                    },
+                                                }}),
+                std::make_shared<Rule>(new Rule{"interactable-object",
+                                                {
+                                                    {
+                                                        {"interactable-object", SYMBOL_TYPE::NONTERMINAL},
+                                                        {"basic-object", SYMBOL_TYPE::NONTERMINAL},
+                                                    },
+                                                    {
+                                                        {"basic-object", SYMBOL_TYPE::NONTERMINAL},
+                                                    },
+                                                }}),
+                std::make_shared<Rule>(new Rule{"noninteractable-object",
+                                                {
+                                                    {
+                                                        {"scene", SYMBOL_TYPE::NONTERMINAL},
+                                                    },
+                                                    {
+                                                        {"player-character", SYMBOL_TYPE::NONTERMINAL},
+                                                    },
+                                                }}),
+                std::make_shared<Rule>(new Rule{"insight-command",
+                                                {
+                                                    {
+                                                        {"perception", SYMBOL_TYPE::NONTERMINAL},
+                                                        {"optional-article", SYMBOL_TYPE::NONTERMINAL},
+                                                        {"scene-object", SYMBOL_TYPE::NONTERMINAL},
+                                                    },
+                                                    {
+                                                        {"perception", SYMBOL_TYPE::NONTERMINAL},
+                                                    },
+                                                }}),
+                std::make_shared<Rule>(new Rule{"meta",
+                                                {
+                                                    {
+                                                        {"save-state", SYMBOL_TYPE::NONTERMINAL},
+                                                    },
+                                                    {
+                                                        {"log-command", SYMBOL_TYPE::NONTERMINAL},
+                                                    },
+                                                }}),
+                std::make_shared<Rule>(new Rule{"save-state",
+                                                {
+                                                    {
+                                                        {"save-command", SYMBOL_TYPE::NONTERMINAL},
+                                                    },
+                                                    {
+                                                        {"load-command", SYMBOL_TYPE::NONTERMINAL},
+                                                    },
+                                                    {
+                                                        {"reset-command", SYMBOL_TYPE::NONTERMINAL},
+                                                    },
+                                                }}),
+                std::make_shared<Rule>(new Rule{"interaction",
+                                                {
+                                                    {
+                                                        {"inventory", SYMBOL_TYPE::NONTERMINAL},
+                                                    },
+                                                }}),
+                std::make_shared<Rule>(new Rule{"inventory",
+                                                {
+                                                    {
+                                                        {"put-in-inventory-command", SYMBOL_TYPE::NONTERMINAL},
+                                                    },
+                                                    {
+                                                        {"remove-from-inventory-command", SYMBOL_TYPE::NONTERMINAL},
+                                                    },
+                                                    {
+                                                        {"place-object-command", SYMBOL_TYPE::NONTERMINAL},
+                                                    },
+                                                }}),
+                std::make_shared<Rule>(new Rule{"place",
+                                                {
+                                                    {
+                                                        {"drop", SYMBOL_TYPE::NONTERMINAL},
+                                                    },
+                                                    {
+                                                        {"place", SYMBOL_TYPE::TERMINAL},
+                                                    },
+                                                    {
+                                                        {"put", SYMBOL_TYPE::TERMINAL},
+                                                    },
+                                                    {
+                                                        {"put", SYMBOL_TYPE::TERMINAL},
+                                                    },
+                                                    {
+                                                        {"lay", SYMBOL_TYPE::TERMINAL},
+                                                    },
+                                                    {
+                                                        {"set", SYMBOL_TYPE::TERMINAL},
+                                                    },
+                                                    {
+                                                        {"insert", SYMBOL_TYPE::TERMINAL},
+                                                    },
+                                                }}),
+                std::make_shared<Rule>(new Rule{"travel-command",
+                                                {
+                                                    {
+                                                        {"direction", SYMBOL_TYPE::NONTERMINAL},
+                                                    },
+                                                    {
+                                                        {"movement", SYMBOL_TYPE::NONTERMINAL},
+                                                        {"direction", SYMBOL_TYPE::NONTERMINAL},
+                                                    },
+                                                },
+                                                travel_command_payload_generator,
+                                                1}),
+                std::make_shared<Rule>(new Rule{"place-object-command",
+                                                {
+                                                    {
+                                                        {"place", SYMBOL_TYPE::NONTERMINAL},
+                                                        {"optional-article", SYMBOL_TYPE::NONTERMINAL},
+                                                        {"interactable-object", SYMBOL_TYPE::NONTERMINAL},
+                                                        {"preposition", SYMBOL_TYPE::NONTERMINAL},
+                                                        {"optional-article", SYMBOL_TYPE::NONTERMINAL},
+                                                        {"interactable-object", SYMBOL_TYPE::NONTERMINAL},
+                                                    },
+                                                },
+                                                place_command_payload_generator,
+                                                1}),
+                std::make_shared<Rule>(new Rule{"put-in-inventory-command",
+                                                {
+                                                    {
+                                                        {"take", SYMBOL_TYPE::NONTERMINAL},
+                                                        {"optional-article", SYMBOL_TYPE::NONTERMINAL},
+                                                        {"interactable-object", SYMBOL_TYPE::NONTERMINAL},
+                                                    },
+                                                },
+                                                inventory_command_payload_generator,
+                                                1}),
+                std::make_shared<Rule>(new Rule{"remove-from-inventory-command",
+                                                {
+                                                    {
+                                                        {"drop", SYMBOL_TYPE::NONTERMINAL},
+                                                        {"optional-article", SYMBOL_TYPE::NONTERMINAL},
+                                                        {"interactable-object", SYMBOL_TYPE::NONTERMINAL},
+                                                    },
+                                                },
+                                                inventory_command_payload_generator,
+                                                1}),
+            });
 
     for (auto &phrase_map : m_terminal_phrases)
     {
@@ -287,20 +289,20 @@ Grammar TrizolamGrammar::create_new_instance()
         new_instance->add_rule(new_rule);
     }
 
-    // auto direction_phrases = m_terminal_phrases["directions"];
-    // Rule direction_rule{"direction"};
-    // ProductionList direction_production_list;
-    // for (auto direction_phrase : direction_phrases)
-    // {
-    //     Production phrase_production{};
-    //     for (auto direction : direction_phrase)
-    //     {
-    //         phrase_production.push_back({direction, SYMBOL_TYPE::TERMINAL});
-    //     }
-    //     direction_rule.add_production(phrase_production);
-    // }
-    // new_instance->add_rule(direction_rule);
     return *new_instance;
+}
+
+// TODO: Something in here is causing a sigsev error
+void TrizolamGrammar::add_object(std::vector<std::string> new_object)
+{
+    m_terminal_phrases["basic-object"].push_back(new_object);
+    Production obj_production{};
+    for (auto str : new_object)
+    {
+        obj_production.push_back({str, SYMBOL_TYPE::TERMINAL});
+    }
+    // Production obj_production = Production{{new_object, SYMBOL_TYPE::TERMINAL}};
+    get_instance().add_production("basic-object", obj_production);
 }
 
 Grammar &TrizolamGrammar::get_instance()

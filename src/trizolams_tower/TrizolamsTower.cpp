@@ -13,6 +13,10 @@ int main()
 {
     std::string player_input;
     InputProcessor input_processor{};
+    TrizolamGrammar::add_object({"knife"});
+    TrizolamGrammar::add_object({"table"});
+    TrizolamGrammar::add_object({"coin"});
+    TrizolamGrammar::add_object({"slot"});
     // spdlog::set_level(spdlog::level::debug);
     spdlog::info("TRIZOLAM GRAMMAR {}", input_processor.get_grammar());
     while (true)

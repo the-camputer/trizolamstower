@@ -7,7 +7,7 @@
 #include <string>
 #include <vector>
 
-using RuleList = std::vector<Rule>;
+using RuleList = std::vector<std::shared_ptr<Rule>>;
 
 class Grammar
 {
@@ -24,6 +24,7 @@ class Grammar
     ~Grammar() = default;
     void add_rule(Rule &new_rule);
     void add_rule(Rule &&new_rule);
+    void add_production(std::string, Production);
     RuleList get_rules() const;
     void set_name(std::string new_name);
     std::string get_name();
@@ -36,9 +37,9 @@ class Grammar
         if (v.rules.size() > 0)
         {
             ostream << "<" << v.first_rule_name << ">\n";
-            for (Rule rule : v.get_rules())
+            for (auto rule : v.get_rules())
             {
-                ostream << rule;
+                ostream << *rule;
             }
         }
         else
@@ -51,6 +52,17 @@ class Grammar
 
     inline Rule operator[](int i)
     {
-        return get_rules().at(i);
+        return *get_rules().at(i);
     }
+
+    // inline Rule *operator[](std::string rule_name)
+    // {
+    //     auto rules_list = get_rules();
+    //     auto it = std::find_if(rules_list.begin(), rules_list.end(),
+    //                            [&rule_name](const Rule &rule) { return rule.get_rule_name() == rule_name; });
+
+    //     auto index = it - rules_list.begin();
+
+    //     return &(get_rules().at(index));
+    // }
 };

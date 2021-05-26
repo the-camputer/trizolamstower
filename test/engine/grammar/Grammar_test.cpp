@@ -31,7 +31,7 @@ TEST_CASE("Grammar Printing")
 
     os.clear();
 
-    SECTION("Nonempty rule set prints out all Symbols and Rules for the grammer")
+    SECTION("Nonempty rule set prints out all Rules with weights and Symbols for the grammer")
     {
         using namespace std::string_literals;
         Grammar test_grammar{"test-grammar"};
@@ -60,7 +60,8 @@ TEST_CASE("Grammar Printing")
 
         os << test_grammar;
 
-        REQUIRE(os.str() ==
-                "<test-grammar> ::= <test-rule>\n<test-rule> ::= <digit><test-rule>|<digit>\n<digit> ::= [0-9]\n");
+        REQUIRE(
+            os.str() ==
+            "<test-grammar> ::= <test-rule>\n(0) <test-rule> ::= <digit><test-rule>|<digit>\n(0) <digit> ::= [0-9]\n");
     }
 }

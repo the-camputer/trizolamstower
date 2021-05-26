@@ -14,11 +14,11 @@ TEST_CASE("Rule Printing")
 {
     std::ostringstream os{};
 
-    SECTION("empty productions prints just the name in BNF format")
+    SECTION("empty productions prints just the name in BNF format with weight")
     {
         Rule test_rule{"test-rule"};
         os << test_rule;
-        REQUIRE(os.str() == "<test-rule> ::= \n");
+        REQUIRE(os.str() == "(0) <test-rule> ::= \n");
     }
 
     os.clear();
@@ -33,7 +33,7 @@ TEST_CASE("Rule Printing")
 
         os << test_rule;
 
-        REQUIRE(os.str() == "<test-rule> ::= <linked-rule>\n");
+        REQUIRE(os.str() == "(0) <test-rule> ::= <linked-rule>\n");
     }
 
     os.clear();
@@ -50,7 +50,7 @@ TEST_CASE("Rule Printing")
 
         os << test_rule;
 
-        REQUIRE(os.str() == "<test-rule> ::= [a-zA-Z0-9]\n");
+        REQUIRE(os.str() == "(0) <test-rule> ::= [a-zA-Z0-9]\n");
     }
 
     os.clear();
@@ -71,7 +71,7 @@ TEST_CASE("Rule Printing")
 
         os << test_rule;
 
-        REQUIRE(os.str() == "<test-rule> ::= <digit><test-rule>|<digit>\n");
+        REQUIRE(os.str() == "(0) <test-rule> ::= <digit><test-rule>|<digit>\n");
     }
 
     os.clear();
