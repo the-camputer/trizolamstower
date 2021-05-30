@@ -123,7 +123,7 @@ class EarleyParser
      * @param set The StateSet to add the EarleyItem to
      * @param item The item to potentiallly add to the StateSet
      */
-    static void add_to_set(StateSet &set, EarleyItem item);
+    static void add_to_set(StateSet &set, EarleyItem item, Grammar grammar);
 
     /**
      * @brief Retrieves the symbol next in line for the EarleyItem, i.e. what's

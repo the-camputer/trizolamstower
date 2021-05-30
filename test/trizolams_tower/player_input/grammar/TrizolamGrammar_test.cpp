@@ -1,6 +1,7 @@
 #include "bestinshow/engine/grammar/EarleyParser.h"
 #include "trizolams_tower/player_input/grammar/TrizolamGrammar.h"
 #include <catch/catch.hpp>
+#include <iostream>
 #include <memory>
 #include <string>
 #include <vector>
@@ -17,6 +18,11 @@ TEST_CASE("Command Tests")
 
     SECTION("PlaceObjectCommand")
     {
+        TrizolamGrammar::add_object({"knife"});
+        TrizolamGrammar::add_object({"table"});
+        TrizolamGrammar::add_object({"coin"});
+        TrizolamGrammar::add_object({"slot"});
+
         std::vector<std::string> s_complete_opts_included = {"put", "the", "knife", "on", "the", "table"};
         auto complete_opts_included = EarleyParser::build_items(grammar, s_complete_opts_included);
 
@@ -37,6 +43,8 @@ TEST_CASE("Command Tests")
 
     SECTION("RemoveFromInventoryCommand")
     {
+        TrizolamGrammar::add_object({"hempen", "rope"});
+        TrizolamGrammar::add_object({"body"});
         std::vector<std::string> s_complete_opt_included = {"drop", "the", "hempen", "rope"};
         auto complete_opt_included = EarleyParser::build_items(grammar, s_complete_opt_included);
 
@@ -44,17 +52,18 @@ TEST_CASE("Command Tests")
         auto complete_opt_not_include = EarleyParser::build_items(grammar, s_complete_opt_not_included);
 
         // TODO: How do we handle incompletes that are grammatically correct
-        // std::vector<std::string> s_incomplete = {"drop", "the"};
-        // auto incomplete = EarleyParser::build_items(grammar, s_incomplete);
+        std::vector<std::string> s_incomplete = {"drop", "the"};
+        auto incomplete = EarleyParser::build_items(grammar, s_incomplete);
 
-        // REQUIRE(EarleyParser::diagnose(*complete_opt_included, grammar, s_complete_opt_included) ==
-        //         RECOGNITION_STATUS::INCOMPLETE);
+        REQUIRE(EarleyParser::diagnose(*complete_opt_included, grammar, s_complete_opt_included) ==
+                RECOGNITION_STATUS::COMPLETE);
 
-        // REQUIRE(EarleyParser::diagnose(*incomplete, grammar, s_incomplete) == RECOGNITION_STATUS::INCOMPLETE);
+        REQUIRE(EarleyParser::diagnose(*incomplete, grammar, s_incomplete) == RECOGNITION_STATUS::INCOMPLETE);
     }
 
     SECTION("PutInInventoryCommand")
     {
+        TrizolamGrammar::add_object({"pencil"});
         std::vector<std::string> s_complete_opt_include = {"grab", "body"};
         auto complete_opt_included = EarleyParser::build_items(grammar, s_complete_opt_include);
 

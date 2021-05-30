@@ -97,7 +97,7 @@ RECOGNITION_STATUS EarleyParser::diagnose(ParseTable parse_table, Grammar gramma
     }
 }
 
-void EarleyParser::add_to_set(StateSet &set, EarleyItem item)
+void EarleyParser::add_to_set(StateSet &set, EarleyItem item, Grammar grammar)
 {
     for (EarleyItem in_set : set)
     {
@@ -107,7 +107,7 @@ void EarleyParser::add_to_set(StateSet &set, EarleyItem item)
         }
     }
 
-    spdlog::debug("ADDING {} TO STATE SET", item);
+    spdlog::debug("ADDING {} ({}) TO STATE SET", item, grammar[item.rule].get_rule_name());
     set.push_back(item);
 }
 
@@ -118,7 +118,8 @@ void EarleyParser::complete(ParseTable &parse_table, int input_pos, int state_se
     {
         if (next_symbol(grammar, old_item).pattern == name(grammar, item))
         {
-            add_to_set(parse_table[input_pos], {old_item.rule, old_item.production, old_item.start, old_item.next + 1});
+            add_to_set(parse_table[input_pos], {old_item.rule, old_item.production, old_item.start, old_item.next + 1},
+                       grammar);
         }
     }
 }
@@ -170,11 +171,11 @@ void EarleyParser::predict(ParseTable &parse_table, int input_pos, Symbol symbol
     RuleList rules = grammar.get_rules();
     for (size_t i = 0; i < rules.size(); i++)
     {
-        if (rules[i].get_rule_name() == symbol.pattern)
+        if (rules[i]->get_rule_name() == symbol.pattern)
         {
-            for (size_t ii = 0; ii < rules[i].get_productions().size(); ii++)
+            for (size_t ii = 0; ii < rules[i]->get_productions().size(); ii++)
             {
-                add_to_set(parse_table[input_pos], {(int)i, (int)ii, input_pos, 0});
+                add_to_set(parse_table[input_pos], {(int)i, (int)ii, input_pos, 0}, grammar);
             }
         }
     }
@@ -192,7 +193,7 @@ std::unique_ptr<ParseTable> EarleyParser::build_items(Grammar grammar, std::vect
     parse_table->push_back({});
 
     RuleList rules = grammar.get_rules();
-    Rule first_rule = rules[0];
+    Rule first_rule = *rules[0];
     ProductionList first_rule_productions = first_rule.get_productions();
     for (size_t i = 0; i < first_rule_productions.size(); i++)
     {
