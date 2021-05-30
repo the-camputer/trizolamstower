@@ -156,7 +156,8 @@ Grammar TrizolamGrammar::create_new_instance()
                                                     {
                                                         {"perception", SYMBOL_TYPE::NONTERMINAL},
                                                     },
-                                                }}),
+                                                },
+                                                1}),
                 std::make_shared<Rule>(new Rule{"meta",
                                                 {
                                                     {

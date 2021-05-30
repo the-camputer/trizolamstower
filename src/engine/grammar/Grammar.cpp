@@ -14,6 +14,11 @@
 //     }
 // }
 
+bool Grammar::compare_rule_ptr(std::shared_ptr<Rule> a, std::shared_ptr<Rule> b)
+{
+    return *a < *b;
+}
+
 Grammar::Grammar(const std::string grammar_name) : grammar_name{grammar_name}
 {
 }
@@ -26,7 +31,7 @@ Grammar::Grammar(const std::string grammar_name, RuleList rules) : grammar_name{
     // }
 
     first_rule_name = rules[0]->get_rule_name();
-    std::sort(this->rules.begin(), this->rules.end());
+    std::sort(this->rules.begin(), this->rules.end(), compare_rule_ptr);
 }
 
 Grammar::Grammar(const Grammar &prev)

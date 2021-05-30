@@ -15,6 +15,7 @@ class Grammar
     std::string grammar_name = "";
     std::string first_rule_name = "";
     RuleList rules{};
+    static bool compare_rule_ptr(std::shared_ptr<Rule>, std::shared_ptr<Rule>);
 
   public:
     Grammar(const std::string grammar_name);
