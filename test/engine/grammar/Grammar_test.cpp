@@ -1,7 +1,7 @@
 #include "bestinshow/engine/grammar/Grammar.h"
 #include "bestinshow/engine/grammar/Rule.h"
 #include "bestinshow/engine/grammar/Symbol.h"
-#include <catch/catch.hpp>
+#include <catch2/catch.hpp>
 #include <ostream>
 #include <string>
 

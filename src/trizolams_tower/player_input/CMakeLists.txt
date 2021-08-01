@@ -1,7 +1,6 @@
 add_subdirectory(grammar)
 
 include_directories(${CMAKE_SOURCE_DIR}/include)
-include_directories(${CMAKE_SOURCE_DIR}/external/include)
 link_directories(${CMAKE_SOURCE_DIR}/lib)
 link_directories(commands)
 

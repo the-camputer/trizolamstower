@@ -1,7 +1,7 @@
 #include "bestinshow/engine/grammar/Grammar.h"
 #include "bestinshow/engine/grammar/Rule.h"
-#include "spdlog/fmt/ostr.h"
 #include "spdlog/spdlog.h"
+#include "spdlog/fmt/ostr.h"
 #include <algorithm>
 #include <string>
 #include <vector>

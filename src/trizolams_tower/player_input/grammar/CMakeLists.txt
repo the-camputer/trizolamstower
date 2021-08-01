@@ -1,6 +1,6 @@
-if(NOT TARGET spdlog)
+if(NOT TARGET CONAN_PKG::spdlog)
     # Stand-alone build
-    find_package(spdlog REQUIRED)
+    find_package(CONAN_PKG::spdlog REQUIRED)
 endif()
 add_library(
     TrizolamGrammar
@@ -15,4 +15,4 @@ add_library(
 )
 
 target_include_directories(TrizolamGrammar PRIVATE ${PROJECT_SOURCE_DIR}/include)
-target_link_libraries(TrizolamGrammar EarleyParser grammar spdlog::spdlog)
+target_link_libraries(TrizolamGrammar EarleyParser grammar CONAN_PKG::spdlog)

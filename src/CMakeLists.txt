@@ -4,16 +4,14 @@ add_subdirectory(trizolams_tower/player_input)
 
 include_directories(
     ${CMAKE_SOURCE_DIR}/include
-    ${CMAKE_SOURCE_DIR}/external/include
 )
 link_directories(
     ${CMAKE_SOURCE_DIR}/lib
-    ${CMAKE_SOURCE_DIR}/external/lib
 )
 
-if(NOT TARGET spdlog)
+if(NOT TARGET CONAN_PKG::spdlog)
     # Stand-alone build
-    find_package(spdlog REQUIRED)
+    find_package(CONAN_PKG::spdlog REQUIRED)
 endif()
 
 add_executable(
@@ -33,7 +31,7 @@ target_link_libraries(
     grammar
     TrizolamGrammar
     InputProcessor
-    spdlog::spdlog
+    CONAN_PKG::spdlog
 )
 
 # add_executable(

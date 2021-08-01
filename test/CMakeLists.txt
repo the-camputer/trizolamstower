@@ -2,22 +2,16 @@ add_definitions(-g -Wall -std=c++2a)
 include_directories(${CMAKE_SOURCE_DIR}/include)
 link_directories(
     ${CMAKE_SOURCE_DIR}/lib
-    ${CMAKE_SOURCE_DIR}/external/lib
 )
 
-if(NOT TARGET spdlog)
+if(NOT TARGET CONAN_PKG::spdlog)
     # Stand-alone build
-    find_package(spdlog REQUIRED)
+    find_package(CONAN_PKG::spdlog REQUIRED)
 endif()
 
-Include(FetchContent)
-
-FetchContent_Declare(
-  Catch2
-  GIT_REPOSITORY https://github.com/catchorg/Catch2.git
-  GIT_TAG        v2.13.6)
-
-FetchContent_MakeAvailable(Catch2)
+if(NOT TARGET CONAN_PKG::catch2)
+    find_package(CONAN_PKG::catch2 REQUIRED)
+endif()
 
 add_executable(
     tests 
@@ -39,6 +33,6 @@ target_link_libraries(
     grammar
     EarleyParser
     TrizolamGrammar
-    spdlog::spdlog
-    Catch2::Catch2
+    CONAN_PKG::spdlog
+    CONAN_PKG::catch2
 )

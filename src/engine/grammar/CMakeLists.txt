@@ -1,6 +1,6 @@
-if(NOT TARGET spdlog)
+if(NOT TARGET CONAN_PKG::spdlog)
     # Stand-alone build
-    find_package(spdlog REQUIRED)
+    find_package(CONAN_PKG::spdlog REQUIRED)
 endif()
 
 add_library(
@@ -17,6 +17,7 @@ add_library(
 )
 
 target_include_directories(grammar PRIVATE ${PROJECT_SOURCE_DIR}/include)
+target_link_libraries(grammar PUBLIC CONAN_PKG::spdlog)
 
 add_library(
     EarleyParser
@@ -33,16 +34,12 @@ target_include_directories(
     PRIVATE
     ${PROJECT_SOURCE_DIR}/include
 )
-target_link_directories(
-    EarleyParser
-    PRIVATE
-    ${CMAKE_SOURCE_DIR}/external/include
-)
+
 target_link_libraries(
     EarleyParser
     PRIVATE
     grammar
-    spdlog::spdlog
+    CONAN_PKG::spdlog
 )
 
 add_library(

@@ -8,7 +8,6 @@
 #include "EarleyItem.h"
 #include "Grammar.h"
 
-#define stringify(name) #name
 enum RECOGNITION_STATUS
 {
     COMPLETE = 0,    // Wholely valid input
@@ -18,10 +17,10 @@ enum RECOGNITION_STATUS
 };
 
 inline const char *RECOGNITION_STATUS_NAMES[] = {
-    stringify(RECOGNITION_STATUS::COMPLETE),
-    stringify(RECOGNITION_STATUS::INCOMPLETE),
-    stringify(RECOGNITION_STATUS::PARTIAL_FAILURE),
-    stringify(RECOGNITION_STATUS::FAILURE),
+    "COMPLETE",
+    "INCOMPLETE",
+    "PARTIAL_FAILURE",
+    "FAILURE",
 };
 
 class EarleyParser
