@@ -3,7 +3,7 @@
 
 class TrizolamGrammarRules
 {
-  public:
+public:
     static inline Rule Command = {"command",
                                   {
                                       {

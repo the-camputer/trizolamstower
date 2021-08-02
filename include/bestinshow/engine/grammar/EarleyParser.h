@@ -10,10 +10,10 @@
 
 enum RECOGNITION_STATUS
 {
-    COMPLETE = 0,    // Wholely valid input
-    INCOMPLETE,      // parsed wholely, but no partial success found at end of parse table
-    PARTIAL_FAILURE, // parsing stopped part of the way through
-    FAILURE          // No partial successes found in parse table
+  COMPLETE = 0,    // Wholely valid input
+  INCOMPLETE,      // parsed wholely, but no partial success found at end of parse table
+  PARTIAL_FAILURE, // parsing stopped part of the way through
+  FAILURE          // No partial successes found in parse table
 };
 
 inline const char *RECOGNITION_STATUS_NAMES[] = {
@@ -25,10 +25,10 @@ inline const char *RECOGNITION_STATUS_NAMES[] = {
 
 class EarleyParser
 {
-  public:
-    static std::unique_ptr<ParseTable> build_items(Grammar grammar, std::vector<std::string> input);
+public:
+  static std::unique_ptr<ParseTable> build_items(Grammar grammar, std::vector<std::string> input);
 
-    /**
+  /**
      * @brief Analyzes the given parse table for validity of input against the
      * grammar
      *
@@ -38,10 +38,10 @@ class EarleyParser
      * @return RECOGNITION_STATUS Synbolizes the state of the ParseTable in
      * regard to validity
      */
-    static RECOGNITION_STATUS diagnose(ParseTable parse_table, Grammar grammar, std::vector<std::string> input);
+  static RECOGNITION_STATUS diagnose(ParseTable parse_table, Grammar grammar, std::vector<std::string> input);
 
-  private:
-    /**
+private:
+  /**
      * @brief Completes a successful scan by backfilling the state set with
      * origins of the successful scan
      *
@@ -50,9 +50,9 @@ class EarleyParser
      * @param state_set_pos What Earley Item within the State Set to complete
      * @param grammar What grammar the parse table is based on
      */
-    static void complete(ParseTable &parse_table, int input_pos, int state_set_pos, Grammar grammar);
+  static void complete(ParseTable &parse_table, int input_pos, int state_set_pos, Grammar grammar);
 
-    /**
+  /**
      * @brief Scans the next character in the input string and compares against
      * the given pattern
      *
@@ -64,10 +64,10 @@ class EarleyParser
      * @param symbol What pattern to use for regex parsing
      * @param input The string to be processing
      */
-    static void scan(ParseTable &parse_table, int input_pos, int state_set_pos, Symbol symbol,
-                     std::vector<std::string> &input);
+  static void scan(ParseTable &parse_table, int input_pos, int state_set_pos, Symbol symbol,
+                   std::vector<std::string> &input);
 
-    /**
+  /**
      * @brief Adds all relevant possible states to a State Set given a rule name
      *
      * @param parse_table The Parse Table to build
@@ -77,9 +77,9 @@ class EarleyParser
      * items from
      * @param grammar The Grammar the Parse Table is based on
      */
-    static void predict(ParseTable &parse_table, int input_pos, Symbol symbol, Grammar grammar);
+  static void predict(ParseTable &parse_table, int input_pos, Symbol symbol, Grammar grammar);
 
-    /**
+  /**
      * @brief Checks to see if there exists a partial parse in the given
      * ParseTable
      *
@@ -91,9 +91,9 @@ class EarleyParser
      * @return false if ParseTable does not contain a partial parse at the given
      * position
      */
-    static bool has_partial_parse(ParseTable parse_table, int input_pos, Grammar grammar);
+  static bool has_partial_parse(ParseTable parse_table, int input_pos, Grammar grammar);
 
-    /**
+  /**
      * @brief Checks to see if the ParseTable represenets a completed parse,
      * i.e. that the associated input is valid
      *
@@ -102,9 +102,9 @@ class EarleyParser
      * @return true If the ParseTable represents a valid input
      * @return false If the ParseTable does not represent a valid input
      */
-    static bool has_complete_parse(ParseTable parse_table, Grammar grammar);
+  static bool has_complete_parse(ParseTable parse_table, Grammar grammar);
 
-    /**
+  /**
      * @brief Retrieves the position for the last known partial parse from the
      * given ParseTable
      *
@@ -113,18 +113,18 @@ class EarleyParser
      * @return position in the ParseTable where the last partial parse exists,
      * or -1 if none exists
      */
-    static int last_partial_parse(ParseTable parse_table, Grammar grammar);
+  static int last_partial_parse(ParseTable parse_table, Grammar grammar);
 
-    /**
+  /**
      * @brief Adds EarleyItem to the StateSet if item does not already exist in
      * the set
      *
      * @param set The StateSet to add the EarleyItem to
      * @param item The item to potentiallly add to the StateSet
      */
-    static void add_to_set(StateSet &set, EarleyItem item, Grammar grammar);
+  static void add_to_set(StateSet &set, EarleyItem item, Grammar grammar);
 
-    /**
+  /**
      * @brief Retrieves the symbol next in line for the EarleyItem, i.e. what's
      * 'right' of the dot
      *
@@ -132,17 +132,17 @@ class EarleyParser
      * @param item
      * @return Symbol
      */
-    static Symbol next_symbol(Grammar grammar, EarleyItem item);
+  static Symbol next_symbol(Grammar grammar, EarleyItem item);
 
-    /**
+  /**
      * @brief Gets the name of the rule associated with the given EarleyItem
      *
      * @param grammar
      * @param item
      * @return std::string Name of the associated rule
      */
-    static inline std::string name(Grammar grammar, EarleyItem item)
-    {
-        return grammar[item.rule].get_rule_name();
-    }
+  static inline std::string name(Grammar grammar, EarleyItem item)
+  {
+    return grammar[item.rule].get_rule_name();
+  }
 };

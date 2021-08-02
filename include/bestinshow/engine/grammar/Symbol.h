@@ -18,7 +18,8 @@ struct Symbol
     std::string pattern;
     SYMBOL_TYPE type;
 
-    template <typename OStream> friend inline OStream &operator<<(OStream &os, const Symbol &v)
+    template <typename OStream>
+    friend inline OStream &operator<<(OStream &os, const Symbol &v)
     {
         if (v.type == SYMBOL_TYPE::NONTERMINAL)
         {
