@@ -1,5 +1,5 @@
 #include "bestinshow/engine/grammar/EarleyParser.h"
-#include "player_input/InputProcessor.h"
+#include "bestinshow/engine/InputProcessor.h"
 #include "trizolams_tower/player_input/grammar/TrizolamGrammar.h"
 #include <boost/algorithm/string/classification.hpp>
 #include <boost/algorithm/string/split.hpp>
@@ -12,7 +12,7 @@
 int main()
 {
     std::string player_input;
-    InputProcessor input_processor{};
+    InputProcessor input_processor{TrizolamGrammar::get_instance()};
     spdlog::info("TRIZOLAM GRAMMAR {}", input_processor.get_grammar());
     while (true)
     {

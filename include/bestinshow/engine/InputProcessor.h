@@ -5,12 +5,14 @@
 
 class InputProcessor
 {
-  public:
+public:
     InputProcessor();
+    InputProcessor(Grammar);
     Rule::PlayerCommand process(std::string);
+    void set_grammar();
     Grammar get_grammar();
 
-  private:
+private:
     static bool not_isalnum_or_space(char c);
     Grammar grammar;
 };

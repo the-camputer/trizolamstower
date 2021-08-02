@@ -1,5 +1,5 @@
 # add_definitions(-g -Wall -std=c++2a)
-add_subdirectory(engine/grammar)
+add_subdirectory(engine)
 add_subdirectory(trizolams_tower/player_input)
 
 include_directories(
@@ -19,7 +19,7 @@ add_executable(
 
     trizolams_tower/TrizolamsTower.cpp
 
-    trizolams_tower/player_input/InputProcessor.h
+    ${PROJECT_SOURCE_DIR}/include/bestinshow/engine/InputProcessor.h
     ${PROJECT_SOURCE_DIR}/include/trizolams_tower/player_input/grammar/TrizolamGrammar.h
     ${PROJECT_SOURCE_DIR}/include/bestinshow/engine/grammar/EarleyParser.h
     ${PROJECT_SOURCE_DIR}/include/bestinshow/engine/grammar/EarleyItem.h
