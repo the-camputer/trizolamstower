@@ -1,6 +1,4 @@
-# add_definitions(-g -Wall -std=c++2a)
-add_subdirectory(engine)
-add_subdirectory(trizolams_tower/player_input)
+add_subdirectory(player_input)
 
 include_directories(
     ${CMAKE_SOURCE_DIR}/include
@@ -17,7 +15,7 @@ endif()
 add_executable(
     TrizolamsTower
 
-    trizolams_tower/TrizolamsTower.cpp
+    TrizolamsTower.cpp
 
     ${PROJECT_SOURCE_DIR}/include/bestinshow/engine/InputProcessor.h
     ${PROJECT_SOURCE_DIR}/include/trizolams_tower/player_input/grammar/TrizolamGrammar.h
@@ -33,15 +31,3 @@ target_link_libraries(
     InputProcessor
     CONAN_PKG::spdlog
 )
-
-# add_executable(
-#     testing_trizolam_grammar
-
-#     trizolams_tower/player_input/grammar/TrizolamGrammar.cpp
-
-#     ${PROJECT_SOURCE_DIR}/include/bestinshow/engine/grammar/Grammar.h
-#     ${PROJECT_SOURCE_DIR}/include/trizolams_tower/player_input/grammar/TrizolamGrammar.h
-#     trizolams_tower/player_input/grammar/TrizolamGrammarRules.h
-#     ${PROJECT_SOURCE_DIR}/include/bestinshow/engine/grammar/EarleyParser.h
-# )
-# target_link_libraries(testing_trizolam_grammar grammar EarleyParser)

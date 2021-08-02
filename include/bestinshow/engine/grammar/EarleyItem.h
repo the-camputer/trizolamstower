@@ -17,7 +17,8 @@ struct EarleyItem
                ei1.next == ei2.next;
     }
 
-    template <typename OStream> inline friend OStream &operator<<(OStream &ostream, const EarleyItem &v)
+    template <typename OStream>
+    inline friend OStream &operator<<(OStream &ostream, const EarleyItem &v)
     {
         ostream << "{ rule: " << v.rule << ", production: " << v.production << ", start: " << v.start
                 << ", next: " << v.next << "}";

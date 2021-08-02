@@ -9,66 +9,71 @@
 
 // TODO: These seem really brittle. Figure out a better way to handle sifting through data
 const std::function<ActionPayload(std::vector<std::string>)> travel_command_payload_generator =
-    [](std::vector<std::string> player_input) {
-        auto get_direction = [](std::string direction_raw) {
-            std::transform(direction_raw.begin(), direction_raw.end(), direction_raw.begin(),
-                           [](unsigned char c) { return std::tolower(c); });
-            auto direction = direction_raw.at(0);
-            auto result = MOVEMENT_DIRECTION::UNKOWN;
-            switch (direction)
-            {
-            case 'n':
-                result = MOVEMENT_DIRECTION::NORTH;
-                break;
-            case 'e':
-                result = MOVEMENT_DIRECTION::EAST;
-                break;
-            case 's':
-                result = MOVEMENT_DIRECTION::SOUTH;
-                break;
-            case 'w':
-                result = MOVEMENT_DIRECTION::WEST;
-                break;
-            default:
-                result = MOVEMENT_DIRECTION::UNKOWN;
-                break;
-            };
-
-            return result;
+    [](std::vector<std::string> player_input)
+{
+    auto get_direction = [](std::string direction_raw)
+    {
+        std::transform(direction_raw.begin(), direction_raw.end(), direction_raw.begin(),
+                       [](unsigned char c)
+                       { return std::tolower(c); });
+        auto direction = direction_raw.at(0);
+        auto result = MOVEMENT_DIRECTION::UNKOWN;
+        switch (direction)
+        {
+        case 'n':
+            result = MOVEMENT_DIRECTION::NORTH;
+            break;
+        case 'e':
+            result = MOVEMENT_DIRECTION::EAST;
+            break;
+        case 's':
+            result = MOVEMENT_DIRECTION::SOUTH;
+            break;
+        case 'w':
+            result = MOVEMENT_DIRECTION::WEST;
+            break;
+        default:
+            result = MOVEMENT_DIRECTION::UNKOWN;
+            break;
         };
 
-        MOVEMENT_DIRECTION direction_to_go;
-
-        if (player_input.size() == 1)
-        {
-            direction_to_go = get_direction(player_input[0]);
-        }
-        else
-        {
-            direction_to_go = get_direction(player_input[1]);
-        }
-
-        return ActionPayload{{"direction", std::to_string(direction_to_go)}};
+        return result;
     };
+
+    MOVEMENT_DIRECTION direction_to_go;
+
+    if (player_input.size() == 1)
+    {
+        direction_to_go = get_direction(player_input[0]);
+    }
+    else
+    {
+        direction_to_go = get_direction(player_input[1]);
+    }
+
+    return ActionPayload{{"direction", std::to_string(direction_to_go)}};
+};
 
 const std::function<ActionPayload(std::vector<std::string>)> inventory_command_payload_generator =
-    [](std::vector<std::string> player_input) {
-        player_input.erase(std::remove(player_input.begin(), player_input.end(), "the"), player_input.end());
-        std::vector<std::string> object_descr;
-        std::string object = player_input.back();
+    [](std::vector<std::string> player_input)
+{
+    player_input.erase(std::remove(player_input.begin(), player_input.end(), "the"), player_input.end());
+    std::vector<std::string> object_descr;
+    std::string object = player_input.back();
 
-        return ActionPayload{{"object", object}};
-    };
+    return ActionPayload{{"object", object}};
+};
 
 const std::function<ActionPayload(std::vector<std::string>)> place_command_payload_generator =
-    [](std::vector<std::string> player_input) {
-        player_input.erase(std::remove(player_input.begin(), player_input.end(), "the"), player_input.end());
+    [](std::vector<std::string> player_input)
+{
+    player_input.erase(std::remove(player_input.begin(), player_input.end(), "the"), player_input.end());
 
-        auto object = player_input[1];
-        auto destination = player_input.end() - 1;
+    auto object = player_input[1];
+    auto destination = player_input.end() - 1;
 
-        return ActionPayload{{"object", object}, {"destination", *destination}};
-    };
+    return ActionPayload{{"object", object}, {"destination", *destination}};
+};
 
 std::unique_ptr<Grammar> TrizolamGrammar::m_instance;
 

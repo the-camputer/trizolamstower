@@ -11,13 +11,13 @@ using RuleList = std::vector<std::shared_ptr<Rule>>;
 
 class Grammar
 {
-  protected:
+protected:
     std::string grammar_name = "";
     std::string first_rule_name = "";
     RuleList rules{};
     static bool compare_rule_ptr(std::shared_ptr<Rule>, std::shared_ptr<Rule>);
 
-  public:
+public:
     Grammar(const std::string grammar_name);
     Grammar(const std::string grammar_name, RuleList rules);
     Grammar();
@@ -32,7 +32,8 @@ class Grammar
     void set_first_rule_name(std::string new_name);
     std::string get_first_rule_name();
 
-    template <typename OStream> inline friend OStream &operator<<(OStream &ostream, const Grammar &v)
+    template <typename OStream>
+    inline friend OStream &operator<<(OStream &ostream, const Grammar &v)
     {
         ostream << "<" << v.grammar_name << "> ::= ";
         if (v.rules.size() > 0)

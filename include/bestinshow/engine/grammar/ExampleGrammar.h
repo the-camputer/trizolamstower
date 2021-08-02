@@ -2,11 +2,11 @@
 
 class ExampleGrammar
 {
-  private:
-    Grammar grammar;
+private:
+  Grammar grammar;
 
-  public:
-    ExampleGrammar();
-    ~ExampleGrammar() = default;
-    Grammar get_grammar();
+public:
+  ExampleGrammar();
+  ~ExampleGrammar() = default;
+  Grammar get_grammar();
 };

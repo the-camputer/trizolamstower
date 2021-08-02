@@ -1,4 +1,4 @@
-#include "InputProcessor.h"
+#include "bestinshow/engine/InputProcessor.h"
 #include "bestinshow/engine/grammar/EarleyParser.h"
 #include "trizolams_tower/player_input/grammar/TrizolamGrammar.h"
 #include <algorithm>
@@ -7,8 +7,13 @@
 #include <boost/algorithm/string/split.hpp>
 #include <iostream>
 #include <memory>
+#include <spdlog/spdlog.h>
 
-InputProcessor::InputProcessor() : grammar(TrizolamGrammar::get_instance())
+InputProcessor::InputProcessor(Grammar grammar) : grammar(grammar)
+{
+}
+
+InputProcessor::InputProcessor()
 {
 }
 
@@ -28,13 +33,14 @@ Rule::PlayerCommand InputProcessor::process(std::string player_input)
 
     RECOGNITION_STATUS parse_status = EarleyParser::diagnose(*parsed_input, grammar, processable_input);
 
-    std::cout << "Result is: " << RECOGNITION_STATUS_NAMES[parse_status] << std::endl;
+    spdlog::debug("Result is: {}", RECOGNITION_STATUS_NAMES[parse_status]);
 
     if (parse_status == RECOGNITION_STATUS::COMPLETE)
     {
         auto final_state_set = parsed_input->at(parsed_input->size() - 1);
         std::sort(final_state_set.begin(), final_state_set.end(),
-                  [](const EarleyItem &lhs, const EarleyItem &rhs) { return lhs.rule < rhs.rule; });
+                  [](const EarleyItem &lhs, const EarleyItem &rhs)
+                  { return lhs.rule < rhs.rule; });
         auto end_rule_earley_item = final_state_set.back();
 
         Rule recognized_rule = grammar[end_rule_earley_item.rule];

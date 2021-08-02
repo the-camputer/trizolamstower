@@ -67,7 +67,21 @@
         "unordered_set": "cpp",
         "complex": "cpp",
         "list": "cpp",
-        "typeindex": "cpp"
+        "typeindex": "cpp",
+        "csignal": "cpp",
+        "any": "cpp",
+        "strstream": "cpp",
+        "codecvt": "cpp",
+        "coroutine": "cpp",
+        "csetjmp": "cpp",
+        "forward_list": "cpp",
+        "source_location": "cpp",
+        "rope": "cpp",
+        "slist": "cpp",
+        "scoped_allocator": "cpp",
+        "span": "cpp",
+        "cfenv": "cpp",
+        "valarray": "cpp"
     },
     "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools"
 }
