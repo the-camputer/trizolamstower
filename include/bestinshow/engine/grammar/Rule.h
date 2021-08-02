@@ -14,20 +14,22 @@ using ActionPayload = std::unordered_map<std::string, std::string>;
 
 class Rule
 {
-  protected:
+protected:
     std::string rule_name = "";
     ProductionList productions{};
     std::function<ActionPayload(std::vector<std::string>)> payload_generator =
-        [](std::vector<std::string> player_input) { return ActionPayload{}; };
+        [](std::vector<std::string> player_input)
+    { return ActionPayload{}; };
     int rule_weight;
 
-  public:
+public:
     struct PlayerCommand
     {
         std::string type;
         ActionPayload payload;
 
-        template <typename OStream> inline friend OStream &operator<<(OStream &ostream, const PlayerCommand &v)
+        template <typename OStream>
+        inline friend OStream &operator<<(OStream &ostream, const PlayerCommand &v)
         {
             ostream << "{ type: " << v.type << ", payload: { ";
             for (auto const &pair : v.payload)
@@ -57,7 +59,8 @@ class Rule
     PlayerCommand generate_command(std::vector<std::string>);
     void set_rule_weight(int weight);
     int get_rule_weight() const;
-    template <typename OStream> friend OStream &operator<<(OStream &os, const Rule &v)
+    template <typename OStream>
+    friend OStream &operator<<(OStream &os, const Rule &v)
     {
         os << "(" << v.get_rule_weight() << ") "
            << "<" << v.get_rule_name() << "> ::= ";

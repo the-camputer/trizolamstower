@@ -3,29 +3,6 @@
     "tasks": [
         {
             "type": "shell",
-            "label": "shell: g++ build active file",
-            "command": "/usr/bin/g++",
-            "args": [
-                "-g",
-                "${file}",
-                "-o",
-                "${fileDirname}/${fileBasenameNoExtension}",
-                "-pthread",
-                "-I${workspaceFolder}/include"
-            ],
-            "options": {
-                "cwd": "/usr/bin"
-            },
-            "problemMatcher": [
-                "$gcc"
-            ],
-            "group": {
-                "kind": "build",
-                "isDefault": true
-            }
-        },
-        {
-            "type": "shell",
             "label": "g++ build active file",
             "command": "/usr/bin/g++-10",
             "args": [
@@ -36,11 +13,17 @@
                 "${fileDirname}/${fileBasenameNoExtension}",
                 "-pthread",
                 "-I${workspaceFolder}/include",
-                "-I${workspaceFolder}/lib",
                 "-I${workspaceFolder}/src"
             ],
             "options": {
                 "cwd": "/usr/bin"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
             }
         }
     ]

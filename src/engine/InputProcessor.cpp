@@ -7,6 +7,7 @@
 #include <boost/algorithm/string/split.hpp>
 #include <iostream>
 #include <memory>
+#include <spdlog/spdlog.h>
 
 InputProcessor::InputProcessor(Grammar grammar) : grammar(grammar)
 {
@@ -32,7 +33,7 @@ Rule::PlayerCommand InputProcessor::process(std::string player_input)
 
     RECOGNITION_STATUS parse_status = EarleyParser::diagnose(*parsed_input, grammar, processable_input);
 
-    std::cout << "Result is: " << RECOGNITION_STATUS_NAMES[parse_status] << std::endl;
+    spdlog::debug("Result is: {}", RECOGNITION_STATUS_NAMES[parse_status]);
 
     if (parse_status == RECOGNITION_STATUS::COMPLETE)
     {
