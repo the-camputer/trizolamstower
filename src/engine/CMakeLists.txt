@@ -2,7 +2,6 @@ add_subdirectory(grammar)
 
 include_directories(${CMAKE_SOURCE_DIR}/include)
 link_directories(${CMAKE_SOURCE_DIR}/lib)
-link_directories(commands)
 
 add_library(
     InputProcessor
@@ -16,4 +15,3 @@ add_library(
     ${PROJECT_SOURCE_DIR}/include/trizolams_tower/player_input/grammar/TrizolamGrammar.h
 )
 target_link_libraries(InputProcessor PRIVATE grammar EarleyParser TrizolamGrammar)
-target_link_libraries(InputProcessor)
