@@ -33,15 +33,3 @@ target_link_libraries(
     InputProcessor
     CONAN_PKG::spdlog
 )
-
-# add_executable(
-#     testing_trizolam_grammar
-
-#     trizolams_tower/player_input/grammar/TrizolamGrammar.cpp
-
-#     ${PROJECT_SOURCE_DIR}/include/bestinshow/engine/grammar/Grammar.h
-#     ${PROJECT_SOURCE_DIR}/include/trizolams_tower/player_input/grammar/TrizolamGrammar.h
-#     trizolams_tower/player_input/grammar/TrizolamGrammarRules.h
-#     ${PROJECT_SOURCE_DIR}/include/bestinshow/engine/grammar/EarleyParser.h
-# )
-# target_link_libraries(testing_trizolam_grammar grammar EarleyParser)

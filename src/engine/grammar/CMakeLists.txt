@@ -41,15 +41,3 @@ target_link_libraries(
     grammar
     CONAN_PKG::spdlog
 )
-
-add_library(
-    ExampleGrammar
-
-    OBJECT
-
-    ExampleGrammar.cpp
-
-    ${PROJECT_SOURCE_DIR}/include/bestinshow/engine/grammar/ExampleGrammar.h
-)
-target_include_directories(ExampleGrammar PRIVATE ${PROJECT_SOURCE_DIR}/include)
-target_link_libraries(ExampleGrammar grammar)
