@@ -1,6 +1,5 @@
 #include "bestinshow/engine/InputProcessor.h"
 #include "bestinshow/engine/grammar/EarleyParser.h"
-#include "trizolams_tower/player_input/grammar/TrizolamGrammar.h"
 #include <algorithm>
 #include <boost/algorithm/string/classification.hpp>
 #include <boost/algorithm/string/join.hpp>
