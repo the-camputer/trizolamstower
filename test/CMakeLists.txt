@@ -1,8 +1,5 @@
-add_definitions(-g -Wall -std=c++2a)
+# add_definitions(-g -Wall -std=c++2a)
 include_directories(${CMAKE_SOURCE_DIR}/include)
-link_directories(
-    ${CMAKE_SOURCE_DIR}/lib
-)
 
 if(NOT TARGET CONAN_PKG::spdlog)
     # Stand-alone build
@@ -29,12 +26,13 @@ add_executable(
     ${PROJECT_SOURCE_DIR}/include/bestinshow/engine/InputProcessor.h
     ${PROJECT_SOURCE_DIR}/include/trizolams_tower/player_input/grammar/TrizolamGrammar.h
 )
+
 target_link_libraries(
     tests
+
     PRIVATE 
-    grammar
-    EarleyParser
-    InputProcessor
+
+    TrizolamEngine
     TrizolamGrammar
     CONAN_PKG::spdlog
     CONAN_PKG::catch2
