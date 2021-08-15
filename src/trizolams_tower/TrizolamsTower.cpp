@@ -9,36 +9,47 @@
 #include <spdlog/spdlog.h>
 #include <string>
 
+/*
+    initialize grammar - TrizolamGrammar
+    initialize input proceesor - InputProcessor
+    initialize scene management
+    initialize state
+    display initial scene description
+    while true:
+        get input
+        convert input to player command - InputProcessor
+        execute command
+        update state with results
+*/
+
+std::string get_input();
+
 int main()
 {
-    std::string player_input;
-    InputProcessor input_processor{TrizolamGrammar::get_instance()};
-    spdlog::info("TRIZOLAM GRAMMAR {}", input_processor.get_grammar());
+    Grammar game_grammar = TrizolamGrammar::get_instance();
+    InputProcessor input_processor{game_grammar};
+
+    // TODO: Replace with initial scene description
+    std::cout << "Welcome to Trizolam's Tower!" << std::endl;
     while (true)
     {
-        std::cout << "What is your command? " << std::endl;
-        std::getline(std::cin, player_input);
+        std::string player_input = get_input();
 
         if (player_input == "quit")
         {
             return 0;
         }
 
-        std::cout << "Processing the following input: " << player_input << std::endl;
-
         auto command = input_processor.process(player_input);
-        spdlog::info("WOW MUCH THING {}", command);
-        // std::vector<std::string> processable_input;
-        // boost::split(processable_input, player_input, boost::is_any_of(" "), boost::token_compress_on);
-
-        // std::cout << "Length of input in words is " << processable_input.size() << std::endl;
-
-        // std::cout << "Processing for grammatical completeness..." << std::endl;
-
-        // std::unique_ptr<ParseTable> parsed_input = EarleyParser::build_items(grammar, processable_input);
-
-        // RECOGNITION_STATUS parse_status = EarleyParser::diagnose(*parsed_input, grammar, processable_input);
-
-        // std::cout << "Result is: " << RECOGNITION_STATUS_NAMES[parse_status] << std::endl;
+        spdlog::info("{}", command);
     }
+}
+
+std::string get_input()
+{
+    std::string player_input;
+    std::cout << "> ";
+    std::getline(std::cin, player_input);
+
+    return player_input;
 }
