@@ -1,6 +1,7 @@
 #include "bestinshow/engine/grammar/EarleyParser.h"
 #include "bestinshow/engine/InputProcessor.h"
 #include "trizolams_tower/player_input/grammar/TrizolamGrammar.h"
+#include "trizolams_tower/managers/GameManager.h"
 #include <boost/algorithm/string/classification.hpp>
 #include <boost/algorithm/string/split.hpp>
 #include <iostream>
@@ -13,7 +14,7 @@
     initialize grammar - TrizolamGrammar
     initialize input proceesor - InputProcessor
     initialize scene management
-    initialize state
+    initialize state - GameManager
     display initial scene description
     while true:
         get input
@@ -28,6 +29,8 @@ int main()
 {
     Grammar game_grammar = TrizolamGrammar::get_instance();
     InputProcessor input_processor{game_grammar};
+
+    GameManager game_manager{};
 
     // TODO: Replace with initial scene description
     std::cout << "Welcome to Trizolam's Tower!" << std::endl;
