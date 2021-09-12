@@ -10,14 +10,17 @@ const std::string test_scenes_file = "test_resources/TestScene.yml";
 const std::string program_root = boost::dll::program_location().parent_path().parent_path().c_str();
 const std::string test_scene_file_path = program_root + "/" + test_scenes_file;
 
+SceneManager test_scene_manager{test_scene_file_path};
+
 TEST_CASE("SceneManager creates scene map without throwing an error")
 {
-    REQUIRE_NOTHROW(SceneManager{test_scene_file_path});
+    REQUIRE_NOTHROW(test_scene_manager.construct_scenes());
 }
 
 TEST_CASE("SceneManager creates scene map that mirrors configuration file")
 {
-    SceneManager test_scene_manager{test_scene_file_path};
+
+    test_scene_manager.construct_scenes();
 
     SECTION("via scene descriptions")
     {

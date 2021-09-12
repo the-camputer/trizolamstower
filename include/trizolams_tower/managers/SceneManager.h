@@ -2,7 +2,6 @@
 #include "../player_input/commands/MovementDirections.h"
 #include <unordered_map>
 #include <string>
-#include <vector>
 
 class SceneManager
 {
@@ -18,9 +17,9 @@ public:
     SceneManager(std::string);
     std::string get_scene_description(std::string);
     std::string get_next_scene(std::string, MOVEMENT_DIRECTION);
+    std::string construct_scenes();
 
 private:
-    std::vector<std::vector<YAML::Node>> adjacency_matrix;
     std::unordered_map<std::string, SceneManager::Scene> m_scenes;
-    void construct_scenes(std::vector<YAML::Node>);
+    std::vector<YAML::Node> raw_scene_list;
 };

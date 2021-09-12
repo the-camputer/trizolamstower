@@ -9,15 +9,19 @@ SceneManager::SceneManager(std::string filename)
     std::ifstream fin(filename);
     YAML::Parser parser(fin);
 
-    std::vector<YAML::Node> doc = YAML::LoadAllFromFile(filename);
-
-    construct_scenes(doc);
+    raw_scene_list = YAML::LoadAllFromFile(filename);
 };
 
-void SceneManager::construct_scenes(std::vector<YAML::Node> yaml_nodes)
+std::string SceneManager::construct_scenes()
 {
-    for (const auto &scene : yaml_nodes)
+    std::string first_scene_name;
+    for (const auto &scene : raw_scene_list)
     {
+        if (scene["Name"] == raw_scene_list[0]["Name"])
+        {
+            first_scene_name = scene["Name"].as<std::string>();
+        }
+
         auto scene_name = scene["Name"].as<std::string>();
         auto scene_description = scene["Description"].as<std::string>();
         std::unordered_map<MOVEMENT_DIRECTION, std::string> scene_connections{
@@ -29,6 +33,8 @@ void SceneManager::construct_scenes(std::vector<YAML::Node> yaml_nodes)
 
         m_scenes[scene_name] = Scene{scene_name, scene_description, scene_connections};
     }
+
+    return first_scene_name;
 }
 
 std::string SceneManager::get_scene_description(std::string scene_name)
