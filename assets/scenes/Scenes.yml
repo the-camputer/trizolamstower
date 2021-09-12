@@ -1,3 +1,5 @@
+# first document will always represent the starting position in the game
+# 'null' cannot be a scene name. That is reserved for empty connections
 Name: Start
 Description: >
   Wow look

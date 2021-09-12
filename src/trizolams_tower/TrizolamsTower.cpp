@@ -61,7 +61,35 @@ int main()
         }
 
         auto command = input_processor.process(player_input);
-        spdlog::info("{}", command);
+
+        if (command.type == "travel-command")
+        {
+            bool scene_changed = false;
+            MOVEMENT_DIRECTION travel_direction = (MOVEMENT_DIRECTION)std::stoi(command.payload["direction"]);
+            auto new_scene_name = scene_manager.get_next_scene(game_manager.get_player_position(), travel_direction);
+            if (new_scene_name != "null")
+            {
+                scene_changed = true;
+                game_manager.set_player_position(new_scene_name);
+            }
+
+            if (scene_changed)
+            {
+                std::cout
+                    << scene_manager.get_scene_description(game_manager.get_player_position())
+                    << std::endl;
+            }
+        }
+        else if (command.type == "insight-command")
+        {
+            std::cout
+                << scene_manager.get_scene_description(game_manager.get_player_position())
+                << std::endl;
+        }
+        else
+        {
+            spdlog::info("{}", command);
+        }
     }
 }
 
