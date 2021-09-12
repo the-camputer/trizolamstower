@@ -6,13 +6,12 @@ if(NOT TARGET CONAN_PKG::boost)
     find_package(CONAN_PKG::boost REQUIRED)
 endif()
 
-if(NOT TARGET CONAN_PKG::spdlog)
-    # Stand-alone build
-    find_package(CONAN_PKG::spdlog REQUIRED)
-endif()
-
 if(NOT TARGET CONAN_PKG::catch2)
     find_package(CONAN_PKG::catch2 REQUIRED)
+endif()
+
+if (NOT TARGET CONAN_PKG::yaml-cpp)
+    find_package(CONAN_PKG::yaml-cpp REQUIRED)
 endif()
 
 
@@ -45,7 +44,6 @@ target_link_libraries(
     TrizolamGrammar
     TrizolamManagers
     CONAN_PKG::boost
-    CONAN_PKG::spdlog
     CONAN_PKG::yaml-cpp
     CONAN_PKG::catch2
 )

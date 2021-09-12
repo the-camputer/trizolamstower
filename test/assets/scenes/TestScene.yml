@@ -2,7 +2,6 @@ Name: Start
 Description: >
   Wow look
   a description
-
 Connections:
   North: Next
   East:
