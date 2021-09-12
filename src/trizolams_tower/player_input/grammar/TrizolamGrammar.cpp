@@ -1,5 +1,5 @@
 #include "trizolams_tower/player_input/grammar/TrizolamGrammar.h"
-#include "../commands/MovementDirections.h"
+#include "trizolams_tower/player_input/commands/MovementDirections.h"
 #include "bestinshow/engine/grammar/Grammar.h"
 #include <algorithm>
 #include <boost/algorithm/string/join.hpp>

@@ -1,4 +1,5 @@
 add_subdirectory(player_input)
+add_subdirectory(managers)
 
 include_directories(
     ${CMAKE_SOURCE_DIR}/include
@@ -19,6 +20,8 @@ add_executable(
     ${PROJECT_SOURCE_DIR}/include/bestinshow/engine/grammar/EarleyParser.h
     ${PROJECT_SOURCE_DIR}/include/bestinshow/engine/grammar/EarleyItem.h
 )
+
+#TODO Figure out how to copy Scenes.yml to build
 
 target_link_libraries(
     TrizolamsTower
