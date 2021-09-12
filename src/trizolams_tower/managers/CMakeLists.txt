@@ -10,9 +10,11 @@ add_library(
     OBJECT
 
     SceneManager.cpp
+    GameManager.cpp
 
     ${PROJECT_SOURCE_DIR}/include/trizolams_tower/player_input/commands/MovementDirections.h
     ${PROJECT_SOURCE_DIR}/include/trizolams_tower/managers/SceneManager.h
+    ${PROJECT_SOURCE_DIR}/src/trizolams_tower/managers/GameManager.h
 )
 
 target_include_directories(

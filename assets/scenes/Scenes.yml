@@ -3,17 +3,17 @@ Description: >
   Wow look
   a description
 Connections:
-  - North: Next
-  - East:
-  - South:
-  - West:
+  North: Next
+  East:
+  South:
+  West:
 ---
 Name: Next
 Description: >
   Oh my goodness
   another description
 Connections:
-  - North:
-  - East:
-  - South: Start
-  - West:
+  North:
+  East:
+  South: Start
+  West:

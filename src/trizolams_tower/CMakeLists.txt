@@ -10,6 +10,10 @@ if(NOT TARGET CONAN_PKG::spdlog)
     find_package(CONAN_PKG::spdlog REQUIRED)
 endif()
 
+if (NOT TARGET CONAN_PKG::yaml-cpp)
+    find_package(CONAN_PKG::yaml-cpp REQUIRED)
+endif()
+
 add_executable(
     TrizolamsTower
 
@@ -19,6 +23,8 @@ add_executable(
     ${PROJECT_SOURCE_DIR}/include/bestinshow/engine/InputProcessor.h
     ${PROJECT_SOURCE_DIR}/include/bestinshow/engine/grammar/EarleyParser.h
     ${PROJECT_SOURCE_DIR}/include/bestinshow/engine/grammar/EarleyItem.h
+    ${PROJECT_SOURCE_DIR}/include/trizolams_tower/managers/SceneManager.h
+    
 )
 
 #TODO Figure out how to copy Scenes.yml to build
@@ -30,5 +36,17 @@ target_link_libraries(
     
     TrizolamEngine
     TrizolamGrammar
+    TrizolamManagers
     CONAN_PKG::spdlog
+    CONAN_PKG::yaml-cpp
+)
+
+file(
+    COPY 
+
+    ${PROJECT_SOURCE_DIR}/assets/scenes/Scenes.yml
+
+    DESTINATION
+
+    ${CMAKE_BINARY_DIR}/resources
 )
