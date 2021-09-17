@@ -12,6 +12,7 @@ SceneManager::SceneManager(std::string filename)
     raw_scene_list = YAML::LoadAllFromFile(filename);
 };
 
+// TODO Refactor this into a series of function calls so it's less ugly
 std::string SceneManager::construct_scenes()
 {
     std::string first_scene_name;
