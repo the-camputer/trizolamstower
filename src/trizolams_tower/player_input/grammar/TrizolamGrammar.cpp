@@ -298,7 +298,6 @@ Grammar TrizolamGrammar::create_new_instance()
     return *new_instance;
 }
 
-// TODO: Something in here is causing a sigsev error
 void TrizolamGrammar::add_object(std::vector<std::string> new_object)
 {
     m_terminal_phrases["basic-object"].push_back(new_object);

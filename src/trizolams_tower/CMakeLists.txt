@@ -27,8 +27,6 @@ add_executable(
     
 )
 
-#TODO Figure out how to copy Scenes.yml to build
-
 target_link_libraries(
     TrizolamsTower
 
