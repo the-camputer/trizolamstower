@@ -1,0 +1,48 @@
+Name: Start
+Description: >
+  Wow look
+  a description
+Connections:
+  North:
+    Name: Next
+    Blocked: false
+    Reason:
+  East:
+    Name: Final
+    Blocked: true
+    Reason: "the door is locked"
+  South:
+    Name:
+  West:
+    Name:
+---
+Name: Next
+Description: >
+  Oh my goodness
+  another description
+Connections:
+  North:
+    Name:
+  East:
+    Name:
+  South:
+    Name: Start
+    Blocked: false
+    Reason:
+  West:
+    Name:
+---
+Name: Final
+Description: >
+  Oh wow look the end
+Connections:
+  North:
+    Name:
+  East:
+    Name: Start
+    Blocked: false
+    Reason:
+  South:
+    Name:
+  West:
+    Name:

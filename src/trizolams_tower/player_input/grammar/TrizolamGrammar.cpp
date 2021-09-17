@@ -1,5 +1,5 @@
 #include "trizolams_tower/player_input/grammar/TrizolamGrammar.h"
-#include "../commands/MovementDirections.h"
+#include "trizolams_tower/player_input/commands/MovementDirections.h"
 #include "bestinshow/engine/grammar/Grammar.h"
 #include <algorithm>
 #include <boost/algorithm/string/join.hpp>
@@ -298,7 +298,6 @@ Grammar TrizolamGrammar::create_new_instance()
     return *new_instance;
 }
 
-// TODO: Something in here is causing a sigsev error
 void TrizolamGrammar::add_object(std::vector<std::string> new_object)
 {
     m_terminal_phrases["basic-object"].push_back(new_object);

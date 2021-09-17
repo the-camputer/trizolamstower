@@ -2,6 +2,7 @@
 boost/1.76.0
 spdlog/1.9.1
 catch2/2.13.7
+yaml-cpp/0.7.0 
 
 [generators]
 cmake
