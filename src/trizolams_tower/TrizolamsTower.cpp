@@ -5,6 +5,7 @@
 #include "trizolams_tower/managers/SceneManager.h"
 #include <boost/algorithm/string/classification.hpp>
 #include <boost/algorithm/string/split.hpp>
+#include <boost/algorithm/string/trim.hpp>
 #include <boost/dll.hpp>
 #include <iostream>
 #include <memory>
@@ -111,6 +112,7 @@ std::string get_input()
     std::string player_input;
     std::cout << "> ";
     std::getline(std::cin, player_input);
+    boost::algorithm::trim(player_input);
 
     return player_input;
 }
