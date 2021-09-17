@@ -30,8 +30,16 @@ TEST_CASE("SceneManager creates scene map that mirrors configuration file")
 
     SECTION("via connection retrieval")
     {
-        REQUIRE(test_scene_manager.get_next_scene("Start", MOVEMENT_DIRECTION::NORTH) == "Next");
-        REQUIRE(test_scene_manager.get_next_scene("Next", MOVEMENT_DIRECTION::SOUTH) == "Start");
-        REQUIRE(test_scene_manager.get_next_scene("Start", MOVEMENT_DIRECTION::EAST) == "null");
+        REQUIRE(test_scene_manager.get_next_scene("Start", MOVEMENT_DIRECTION::NORTH).next_scene_name == "Next");
+        REQUIRE(test_scene_manager.get_next_scene("Next", MOVEMENT_DIRECTION::SOUTH).next_scene_name == "Start");
+        REQUIRE(test_scene_manager.get_next_scene("Start", MOVEMENT_DIRECTION::WEST).next_scene_name == "");
+    }
+
+    SECTION("via blocked status and reason")
+    {
+        auto final_scene_connection = test_scene_manager.get_next_scene("Start", MOVEMENT_DIRECTION::EAST);
+        REQUIRE(final_scene_connection.next_scene_name == "Final");
+        REQUIRE(final_scene_connection.blocked == true);
+        REQUIRE(final_scene_connection.blocked_reason == "the door is locked");
     }
 }

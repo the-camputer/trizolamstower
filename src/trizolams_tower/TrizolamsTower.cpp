@@ -66,11 +66,24 @@ int main()
         {
             bool scene_changed = false;
             MOVEMENT_DIRECTION travel_direction = (MOVEMENT_DIRECTION)std::stoi(command.payload["direction"]);
-            auto new_scene_name = scene_manager.get_next_scene(game_manager.get_player_position(), travel_direction);
-            if (new_scene_name != "null")
+            auto new_scene = scene_manager.get_next_scene(game_manager.get_player_position(), travel_direction);
+            // TODO add in check for blocked
+            if (!new_scene.blocked && new_scene.next_scene_name != "")
             {
                 scene_changed = true;
-                game_manager.set_player_position(new_scene_name);
+                game_manager.set_player_position(new_scene.next_scene_name);
+            }
+            else if (new_scene.blocked)
+            {
+                std::cout
+                    << new_scene.blocked_reason
+                    << std::endl;
+            }
+            else
+            {
+                std::cout
+                    << "We stick to the paths here"
+                    << std::endl;
             }
 
             if (scene_changed)
