@@ -1,6 +1,7 @@
 #include "trizolams_tower/player_input/TrizolamGrammar.h"
 #include "trizolams_tower/player_input/commands/MovementDirections.h"
 #include "bestinshow/engine/grammar/Grammar.h"
+#include "../commands/TravelCommand.h"
 #include <algorithm>
 #include <boost/algorithm/string/join.hpp>
 #include <iostream>
@@ -239,7 +240,7 @@ Grammar TrizolamGrammar::create_new_instance()
                                                         {"direction", SYMBOL_TYPE::NONTERMINAL},
                                                     },
                                                 },
-                                                travel_command_payload_generator,
+                                                TravelCommand::get_payload_generator(),
                                                 1}),
                 std::make_shared<Rule>(new Rule{"place-object-command",
                                                 {

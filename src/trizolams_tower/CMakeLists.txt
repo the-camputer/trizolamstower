@@ -1,3 +1,4 @@
+add_subdirectory(commands)
 add_subdirectory(player_input)
 add_subdirectory(managers)
 
@@ -35,6 +36,7 @@ target_link_libraries(
     TrizolamEngine
     TrizolamGrammar
     TrizolamManagers
+    TrizolamCommandPrcocessors
     CONAN_PKG::spdlog
     CONAN_PKG::yaml-cpp
 )

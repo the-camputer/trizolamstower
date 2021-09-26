@@ -3,6 +3,7 @@
 #include "trizolams_tower/player_input/TrizolamGrammar.h"
 #include "./managers/GameManager.h"
 #include "trizolams_tower/managers/SceneManager.h"
+#include "./commands/TravelCommand.h"
 #include <boost/algorithm/string/classification.hpp>
 #include <boost/algorithm/string/split.hpp>
 #include <boost/algorithm/string/trim.hpp>
@@ -16,14 +17,13 @@
 /*
     initialize grammar - TrizolamGrammar
     initialize input proceesor - InputProcessor
-    initialize scene management
+    initialize scene management - SceneManager
     initialize state - GameManager
     display initial scene description
     while true:
         get input
         convert input to player command - InputProcessor
-        execute command
-        update state with results
+        execute command - CommandProcessor
 */
 
 const std::string scenes_file = "resources/Scenes.yml";
@@ -63,36 +63,10 @@ int main()
 
         auto command = input_processor.process(player_input);
 
+        // TODO: Want to replace this if block with a CommandProcessor
         if (command.type == "travel-command")
         {
-            bool scene_changed = false;
-            MOVEMENT_DIRECTION travel_direction = (MOVEMENT_DIRECTION)std::stoi(command.payload["direction"]);
-            auto new_scene = scene_manager.get_next_scene(game_manager.get_player_position(), travel_direction);
-
-            if (!new_scene.blocked && new_scene.next_scene_name != "")
-            {
-                scene_changed = true;
-                game_manager.set_player_position(new_scene.next_scene_name);
-            }
-            else if (new_scene.blocked)
-            {
-                std::cout
-                    << new_scene.blocked_reason
-                    << std::endl;
-            }
-            else
-            {
-                std::cout
-                    << "We stick to the paths here"
-                    << std::endl;
-            }
-
-            if (scene_changed)
-            {
-                std::cout
-                    << scene_manager.get_scene_description(game_manager.get_player_position())
-                    << std::endl;
-            }
+            TravelCommand::handle_command(game_manager, scene_manager, command);
         }
         else if (command.type == "insight-command")
         {

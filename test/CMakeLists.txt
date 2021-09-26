@@ -43,6 +43,7 @@ target_link_libraries(
     TrizolamEngine
     TrizolamGrammar
     TrizolamManagers
+    TrizolamCommandPrcocessors
     CONAN_PKG::boost
     CONAN_PKG::yaml-cpp
     CONAN_PKG::catch2

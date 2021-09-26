@@ -11,13 +11,14 @@
 using Production = std::vector<Symbol>;
 using ProductionList = std::vector<Production>;
 using ActionPayload = std::unordered_map<std::string, std::string>;
+using PayloadGenerator = std::function<ActionPayload(std::vector<std::string>)>;
 
 class Rule
 {
 protected:
     std::string rule_name = "";
     ProductionList productions{};
-    std::function<ActionPayload(std::vector<std::string>)> payload_generator =
+    PayloadGenerator payload_generator =
         [](std::vector<std::string> player_input)
     { return ActionPayload{}; };
     int rule_weight;

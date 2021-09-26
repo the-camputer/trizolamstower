@@ -3,6 +3,10 @@ if(NOT TARGET CONAN_PKG::spdlog)
     find_package(CONAN_PKG::spdlog REQUIRED)
 endif()
 
+if (NOT TARGET CONAN_PKG::yaml-cpp)
+    find_package(CONAN_PKG::yaml-cpp REQUIRED)
+endif()
+
 add_library(
     TrizolamGrammar
 
@@ -13,6 +17,7 @@ add_library(
     ${PROJECT_SOURCE_DIR}/include/bestinshow/engine/grammar/EarleyParser.h
     ${PROJECT_SOURCE_DIR}/include/trizolams_tower/player_input/TrizolamGrammar.h
     ${PROJECT_SOURCE_DIR}/include/trizolams_tower/player_input/commands/MovementDirections.h
+    ${PROJECT_SOURCE_DIR}/src/trizolams_tower/commands/TravelCommand.h
 )
 
 target_include_directories(
@@ -28,5 +33,7 @@ target_link_libraries(
     PRIVATE 
     
     TrizolamEngine
+    TrizolamCommandPrcocessors
     CONAN_PKG::spdlog
+    CONAN_PKG::yaml-cpp
 )
