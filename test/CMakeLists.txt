@@ -24,14 +24,14 @@ add_executable(
     engine/grammar/Grammar_test.cpp
     engine/InputProcessor_test.cpp
     trizolams_tower/managers/SceneManager_test.cpp
-    trizolams_tower/player_input/grammar/TrizolamGrammar_test.cpp
+    trizolams_tower/player_input/TrizolamGrammar_test.cpp
 
     ${PROJECT_SOURCE_DIR}/include/bestinshow/engine/grammar/Rule.h
     ${PROJECT_SOURCE_DIR}/include/bestinshow/engine/grammar/Grammar.h
     ${PROJECT_SOURCE_DIR}/include/bestinshow/engine/grammar/Symbol.h
     ${PROJECT_SOURCE_DIR}/include/bestinshow/engine/grammar/EarleyParser.h
     ${PROJECT_SOURCE_DIR}/include/bestinshow/engine/InputProcessor.h
-    ${PROJECT_SOURCE_DIR}/include/trizolams_tower/player_input/grammar/TrizolamGrammar.h
+    ${PROJECT_SOURCE_DIR}/include/trizolams_tower/player_input/TrizolamGrammar.h
     ${PROJECT_SOURCE_DIR}/include/trizolams_tower/managers/SceneManager.h
 )
 

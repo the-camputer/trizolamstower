@@ -19,7 +19,7 @@ add_executable(
 
     TrizolamsTower.cpp
 
-    ${PROJECT_SOURCE_DIR}/include/trizolams_tower/player_input/grammar/TrizolamGrammar.h
+    ${PROJECT_SOURCE_DIR}/include/trizolams_tower/player_input/TrizolamGrammar.h
     ${PROJECT_SOURCE_DIR}/include/bestinshow/engine/InputProcessor.h
     ${PROJECT_SOURCE_DIR}/include/bestinshow/engine/grammar/EarleyParser.h
     ${PROJECT_SOURCE_DIR}/include/bestinshow/engine/grammar/EarleyItem.h

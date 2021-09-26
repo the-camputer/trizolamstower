@@ -1,6 +1,6 @@
 #include "bestinshow/engine/grammar/EarleyParser.h"
 #include "bestinshow/engine/InputProcessor.h"
-#include "trizolams_tower/player_input/grammar/TrizolamGrammar.h"
+#include "trizolams_tower/player_input/TrizolamGrammar.h"
 #include "./managers/GameManager.h"
 #include "trizolams_tower/managers/SceneManager.h"
 #include <boost/algorithm/string/classification.hpp>
@@ -68,7 +68,7 @@ int main()
             bool scene_changed = false;
             MOVEMENT_DIRECTION travel_direction = (MOVEMENT_DIRECTION)std::stoi(command.payload["direction"]);
             auto new_scene = scene_manager.get_next_scene(game_manager.get_player_position(), travel_direction);
-            // TODO add in check for blocked
+
             if (!new_scene.blocked && new_scene.next_scene_name != "")
             {
                 scene_changed = true;

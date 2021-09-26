@@ -1,4 +1,4 @@
-#include "trizolams_tower/player_input/grammar/TrizolamGrammar.h"
+#include "trizolams_tower/player_input/TrizolamGrammar.h"
 #include "trizolams_tower/player_input/commands/MovementDirections.h"
 #include "bestinshow/engine/grammar/Grammar.h"
 #include <algorithm>
@@ -193,6 +193,9 @@ Grammar TrizolamGrammar::create_new_instance()
                 std::make_shared<Rule>(new Rule{"inventory",
                                                 {
                                                     {
+                                                        {"open-inventory-command", SYMBOL_TYPE::NONTERMINAL},
+                                                    },
+                                                    {
                                                         {"put-in-inventory-command", SYMBOL_TYPE::NONTERMINAL},
                                                     },
                                                     {
@@ -250,6 +253,14 @@ Grammar TrizolamGrammar::create_new_instance()
                                                     },
                                                 },
                                                 place_command_payload_generator,
+                                                1}),
+                std::make_shared<Rule>(new Rule{"open-inventory-command",
+                                                {
+                                                    {
+                                                        {"open", SYMBOL_TYPE::TERMINAL},
+                                                        {"inventory", SYMBOL_TYPE::TERMINAL},
+                                                    },
+                                                },
                                                 1}),
                 std::make_shared<Rule>(new Rule{"put-in-inventory-command",
                                                 {

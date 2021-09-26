@@ -1,5 +1,5 @@
 #include "bestinshow/engine/grammar/EarleyParser.h"
-#include "trizolams_tower/player_input/grammar/TrizolamGrammar.h"
+#include "trizolams_tower/player_input/TrizolamGrammar.h"
 #include <catch2/catch.hpp>
 #include <iostream>
 #include <memory>
