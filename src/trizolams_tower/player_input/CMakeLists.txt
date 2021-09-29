@@ -15,8 +15,8 @@ add_library(
     TrizolamGrammar.cpp
 
     ${PROJECT_SOURCE_DIR}/include/bestinshow/engine/grammar/EarleyParser.h
-    ${PROJECT_SOURCE_DIR}/include/trizolams_tower/player_input/TrizolamGrammar.h
-    ${PROJECT_SOURCE_DIR}/include/trizolams_tower/player_input/commands/MovementDirections.h
+    ${PROJECT_SOURCE_DIR}/src/trizolams_tower/player_input/TrizolamGrammar.h
+    ${PROJECT_SOURCE_DIR}/src/trizolams_tower/commands/MovementDirections.h
     ${PROJECT_SOURCE_DIR}/src/trizolams_tower/commands/TravelCommand.h
 )
 

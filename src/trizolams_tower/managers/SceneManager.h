@@ -1,7 +1,7 @@
 #pragma once
 
 #include <yaml-cpp/yaml.h>
-#include "../player_input/commands/MovementDirections.h"
+#include "../commands/MovementDirections.h"
 #include <unordered_map>
 #include <string>
 

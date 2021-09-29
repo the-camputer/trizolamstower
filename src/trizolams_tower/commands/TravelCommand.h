@@ -2,8 +2,8 @@
 
 #include "ICommand.h"
 #include "../managers/GameManager.h"
+#include "../managers/SceneManager.h"
 #include "bestinshow/engine/grammar/Rule.h"
-#include "trizolams_tower/managers/SceneManager.h"
 
 class TravelCommand : public ICommand
 {

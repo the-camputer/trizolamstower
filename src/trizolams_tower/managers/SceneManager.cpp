@@ -1,4 +1,4 @@
-#include "trizolams_tower/managers/SceneManager.h"
+#include "SceneManager.h"
 
 #include <fstream>
 #include <iostream>

@@ -1,5 +1,5 @@
 #include "TravelCommand.h"
-#include "trizolams_tower/player_input/commands/MovementDirections.h"
+#include "MovementDirections.h"
 #include <iostream>
 #include <string>
 

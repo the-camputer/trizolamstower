@@ -14,7 +14,7 @@ if (NOT TARGET CONAN_PKG::yaml-cpp)
     find_package(CONAN_PKG::yaml-cpp REQUIRED)
 endif()
 
-
+include_directories(${PROJECT_SOURCE_DIR}/src)
 
 add_executable(
     tests 
@@ -31,9 +31,18 @@ add_executable(
     ${PROJECT_SOURCE_DIR}/include/bestinshow/engine/grammar/Symbol.h
     ${PROJECT_SOURCE_DIR}/include/bestinshow/engine/grammar/EarleyParser.h
     ${PROJECT_SOURCE_DIR}/include/bestinshow/engine/InputProcessor.h
-    ${PROJECT_SOURCE_DIR}/include/trizolams_tower/player_input/TrizolamGrammar.h
-    ${PROJECT_SOURCE_DIR}/include/trizolams_tower/managers/SceneManager.h
+    ${PROJECT_SOURCE_DIR}/src/trizolams_tower/player_input/TrizolamGrammar.h
+    ${PROJECT_SOURCE_DIR}/src/trizolams_tower/managers/SceneManager.h
 )
+
+# target_include_directories(
+#     TrizolamGrammar
+
+#     PRIVATE 
+
+#     ${PROJECT_SOURCE_DIR}/include
+#     ${PROJECT_SOURCE_DIR}/src
+# )
 
 target_link_libraries(
     tests

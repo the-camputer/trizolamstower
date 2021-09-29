@@ -1,10 +1,10 @@
 #include "bestinshow/engine/grammar/EarleyParser.h"
 #include "bestinshow/engine/InputProcessor.h"
-#include "trizolams_tower/player_input/TrizolamGrammar.h"
-#include "./managers/GameManager.h"
-#include "trizolams_tower/managers/SceneManager.h"
-#include "./commands/TravelCommand.h"
-#include "./commands/CommandProcessor.h"
+#include "player_input/TrizolamGrammar.h"
+#include "managers/GameManager.h"
+#include "managers/SceneManager.h"
+#include "commands/TravelCommand.h"
+#include "commands/CommandProcessor.h"
 #include <boost/algorithm/string/classification.hpp>
 #include <boost/algorithm/string/split.hpp>
 #include <boost/algorithm/string/trim.hpp>

@@ -2,7 +2,7 @@
 
 #include "ICommand.h"
 #include "../managers/GameManager.h"
-#include "trizolams_tower/managers/SceneManager.h"
+#include "../managers/SceneManager.h"
 #include <memory>
 #include <string>
 #include <unordered_map>
@@ -18,5 +18,5 @@ public:
     CommandProcessor(std::shared_ptr<GameManager>, std::shared_ptr<SceneManager>);
     ~CommandProcessor() = default;
     void get_payload_generator(std::string);
-    void process_command()
+    void process_command();
 };
