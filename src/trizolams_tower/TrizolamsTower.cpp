@@ -4,6 +4,7 @@
 #include "./managers/GameManager.h"
 #include "trizolams_tower/managers/SceneManager.h"
 #include "./commands/TravelCommand.h"
+#include "./commands/CommandProcessor.h"
 #include <boost/algorithm/string/classification.hpp>
 #include <boost/algorithm/string/split.hpp>
 #include <boost/algorithm/string/trim.hpp>
@@ -35,15 +36,19 @@ std::string get_input();
 int main()
 {
     const std::string program_root = boost::dll::program_location().parent_path().parent_path().c_str();
-    Grammar game_grammar = TrizolamGrammar::get_instance();
-    InputProcessor input_processor{game_grammar};
-
-    GameManager game_manager{};
     SceneManager scene_manager{scenes_file_path};
+    GameManager game_manager{};
 
     std::string starting_pos = scene_manager.construct_scenes();
-
     game_manager.set_player_position(starting_pos);
+
+    std::shared_ptr<SceneManager> scene_manager_ptr = std::make_shared<SceneManager>(scene_manager);
+    std::shared_ptr<GameManager> game_manager_ptr = std::make_shared<GameManager>(game_manager);
+
+    CommandProcessor command_processor{game_manager_ptr, scene_manager_ptr};
+
+    Grammar game_grammar = TrizolamGrammar::get_instance();
+    InputProcessor input_processor{game_grammar};
 
     std::cout
         << "Welcome to Trizolam's Tower!\n"

@@ -32,6 +32,7 @@ const std::function<ActionPayload(std::vector<std::string>)> place_command_paylo
 
 std::unique_ptr<Grammar> TrizolamGrammar::m_instance;
 
+// TODO: Probably best to get rid of this and just have a static grammar so we can attach the Command-based payload generators properly
 std::unordered_map<std::string, std::vector<std::vector<std::string>>> TrizolamGrammar::m_terminal_phrases{
     {"optional-article", {{"the"}, {""}}},
     {"direction", {{"n(orth)?"}, {"e(ast)?"}, {"s(outh)?"}, {"w(est)?"}}},

@@ -7,6 +7,8 @@
 // TODO: Consider changing up this impl to have get_instance return a TrizolamGrammar instance. Then call get_grammar on
 // that to get the grammar. This will allow you to run add_object on the TrizolamGrammar instance without awkward
 // references to the grammar floating around
+
+// TODO: HEY YOU WHAT IF WE DIDN'T USE A SINGLETON AND JUST PASSED AROUND A POINTER INSTEAD?
 class TrizolamGrammar
 {
 private:
