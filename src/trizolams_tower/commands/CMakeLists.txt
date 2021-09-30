@@ -11,11 +11,13 @@ add_library(
 
     OBJECT
 
+    ICommand.cpp
     TravelCommand.cpp
     CommandProcessor.cpp
 
     ${PROJECT_SOURCE_DIR}/include/bestinshow/engine/grammar/Rule.h
     ${PROJECT_SOURCE_DIR}/src/trizolams_tower/managers/SceneManager.h
+    ${PROJECT_SOURCE_DIR}/src/trizolams_tower/commands/ICommand.h
     ${PROJECT_SOURCE_DIR}/src/trizolams_tower/commands/CommandProcessor.h
 )
 

@@ -46,9 +46,11 @@ int main()
     std::shared_ptr<GameManager> game_manager_ptr = std::make_shared<GameManager>(game_manager);
 
     CommandProcessor command_processor{game_manager_ptr, scene_manager_ptr};
+    std::shared_ptr<CommandProcessor> command_processor_ptr = std::make_shared<CommandProcessor>(command_processor);
 
-    Grammar game_grammar = TrizolamGrammar::get_instance();
-    InputProcessor input_processor{game_grammar};
+    TrizolamGrammar trizolam_grammar{command_processor_ptr};
+
+    InputProcessor input_processor{trizolam_grammar.get_grammar()};
 
     std::cout
         << "Welcome to Trizolam's Tower!\n"
@@ -71,7 +73,7 @@ int main()
         // TODO: Want to replace this if block with a CommandProcessor
         if (command.type == "travel-command")
         {
-            TravelCommand::handle_command(game_manager, scene_manager, command);
+            command_processor.process_command(command);
         }
         else if (command.type == "insight-command")
         {

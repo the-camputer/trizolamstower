@@ -51,7 +51,7 @@ std::unordered_map<std::string, std::vector<std::vector<std::string>>> TrizolamG
 
 };
 
-Grammar TrizolamGrammar::create_new_instance()
+Grammar TrizolamGrammar::create_new_grammar()
 {
     Grammar *new_instance =
         new Grammar(
@@ -195,7 +195,7 @@ Grammar TrizolamGrammar::create_new_instance()
                                                         {"direction", SYMBOL_TYPE::NONTERMINAL},
                                                     },
                                                 },
-                                                TravelCommand::get_payload_generator(),
+                                                m_command_processor->get_payload_generator("travel-command"),
                                                 1}),
                 std::make_shared<Rule>(new Rule{"place-object-command",
                                                 {
@@ -265,24 +265,29 @@ Grammar TrizolamGrammar::create_new_instance()
     return *new_instance;
 }
 
-void TrizolamGrammar::add_object(std::vector<std::string> new_object)
+// void TrizolamGrammar::add_object(std::vector<std::string> new_object)
+// {
+//     m_terminal_phrases["basic-object"].push_back(new_object);
+//     Production obj_production{};
+//     for (auto str : new_object)
+//     {
+//         obj_production.push_back({str, SYMBOL_TYPE::TERMINAL});
+//     }
+//     // Production obj_production = Production{{new_object, SYMBOL_TYPE::TERMINAL}};
+//     get_grammar().add_production("basic-object", obj_production);
+// }
+
+TrizolamGrammar::TrizolamGrammar(std::shared_ptr<CommandProcessor> command_processor)
 {
-    m_terminal_phrases["basic-object"].push_back(new_object);
-    Production obj_production{};
-    for (auto str : new_object)
-    {
-        obj_production.push_back({str, SYMBOL_TYPE::TERMINAL});
-    }
-    // Production obj_production = Production{{new_object, SYMBOL_TYPE::TERMINAL}};
-    get_instance().add_production("basic-object", obj_production);
+    m_command_processor = command_processor;
 }
 
-Grammar &TrizolamGrammar::get_instance()
+Grammar &TrizolamGrammar::get_grammar()
 {
-    if (!m_instance)
+    if (!m_grammar)
     {
-        m_instance = std::make_unique<Grammar>(create_new_instance());
+        m_grammar = std::make_unique<Grammar>(create_new_grammar());
     }
 
-    return *m_instance;
+    return *m_grammar;
 }

@@ -1,16 +1,15 @@
 #pragma once
 
 #include "ICommand.h"
-#include "../managers/GameManager.h"
-#include "../managers/SceneManager.h"
-#include "bestinshow/engine/grammar/Rule.h"
 
 class TravelCommand : public ICommand
 {
 public:
-    static bool handle_command(GameManager &, SceneManager &, Rule::PlayerCommand &);
-    static PayloadGenerator get_payload_generator();
+    TravelCommand();
+    ~TravelCommand() = default;
+    bool handle_command(GameManager &, SceneManager &, Rule::PlayerCommand &) override;
+    PayloadGenerator get_payload_generator() override;
 
 private:
-    static PayloadGenerator payload_generator;
+    PayloadGenerator payload_generator;
 };

@@ -3,50 +3,53 @@
 #include <iostream>
 #include <string>
 
-PayloadGenerator TravelCommand::payload_generator = [](std::vector<std::string> player_input)
+TravelCommand::TravelCommand()
 {
-    auto get_direction = [](std::string direction_raw)
+    payload_generator = [](std::vector<std::string> player_input)
     {
-        std::transform(direction_raw.begin(), direction_raw.end(), direction_raw.begin(),
-                       [](unsigned char c)
-                       { return std::tolower(c); });
-        auto direction = direction_raw.at(0);
-        auto result = MOVEMENT_DIRECTION::UNKOWN;
-        switch (direction)
+        auto get_direction = [](std::string direction_raw)
         {
-        case 'n':
-            result = MOVEMENT_DIRECTION::NORTH;
-            break;
-        case 'e':
-            result = MOVEMENT_DIRECTION::EAST;
-            break;
-        case 's':
-            result = MOVEMENT_DIRECTION::SOUTH;
-            break;
-        case 'w':
-            result = MOVEMENT_DIRECTION::WEST;
-            break;
-        default:
-            result = MOVEMENT_DIRECTION::UNKOWN;
-            break;
+            std::transform(direction_raw.begin(), direction_raw.end(), direction_raw.begin(),
+                           [](unsigned char c)
+                           { return std::tolower(c); });
+            auto direction = direction_raw.at(0);
+            auto result = MOVEMENT_DIRECTION::UNKOWN;
+            switch (direction)
+            {
+            case 'n':
+                result = MOVEMENT_DIRECTION::NORTH;
+                break;
+            case 'e':
+                result = MOVEMENT_DIRECTION::EAST;
+                break;
+            case 's':
+                result = MOVEMENT_DIRECTION::SOUTH;
+                break;
+            case 'w':
+                result = MOVEMENT_DIRECTION::WEST;
+                break;
+            default:
+                result = MOVEMENT_DIRECTION::UNKOWN;
+                break;
+            };
+
+            return result;
         };
 
-        return result;
+        MOVEMENT_DIRECTION direction_to_go;
+
+        if (player_input.size() == 1)
+        {
+            direction_to_go = get_direction(player_input[0]);
+        }
+        else
+        {
+            direction_to_go = get_direction(player_input[1]);
+        }
+
+        return ActionPayload{{"direction", std::to_string(direction_to_go)}};
     };
-
-    MOVEMENT_DIRECTION direction_to_go;
-
-    if (player_input.size() == 1)
-    {
-        direction_to_go = get_direction(player_input[0]);
-    }
-    else
-    {
-        direction_to_go = get_direction(player_input[1]);
-    }
-
-    return ActionPayload{{"direction", std::to_string(direction_to_go)}};
-};
+}
 
 PayloadGenerator TravelCommand::get_payload_generator()
 {

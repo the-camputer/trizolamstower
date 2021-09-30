@@ -1,5 +1,6 @@
 #pragma once
 #include "bestinshow/engine/grammar/Grammar.h"
+#include "../commands/CommandProcessor.h"
 #include <memory>
 #include <string>
 #include <unordered_map>
@@ -12,15 +13,20 @@
 class TrizolamGrammar
 {
 private:
-  TrizolamGrammar();
   static Grammar create_new_instance();
+  Grammar create_new_grammar();
 
   static std::unique_ptr<Grammar> m_instance;
+
+  std::unique_ptr<Grammar> m_grammar;
+  std::shared_ptr<CommandProcessor> m_command_processor;
 
   static std::unordered_map<std::string, std::vector<std::vector<std::string>>> m_terminal_phrases;
 
 public:
+  TrizolamGrammar(std::shared_ptr<CommandProcessor>);
   ~TrizolamGrammar() = default;
-  static Grammar &get_instance();
+  // static Grammar &get_instance();
+  Grammar &get_grammar();
   static void add_object(std::vector<std::string>);
 };
