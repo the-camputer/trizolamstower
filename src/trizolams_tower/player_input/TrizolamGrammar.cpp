@@ -19,17 +19,6 @@ const std::function<ActionPayload(std::vector<std::string>)> inventory_command_p
     return ActionPayload{{"object", object}};
 };
 
-const std::function<ActionPayload(std::vector<std::string>)> place_command_payload_generator =
-    [](std::vector<std::string> player_input)
-{
-    player_input.erase(std::remove(player_input.begin(), player_input.end(), "the"), player_input.end());
-
-    auto object = player_input[1];
-    auto destination = player_input.end() - 1;
-
-    return ActionPayload{{"object", object}, {"destination", *destination}};
-};
-
 std::unique_ptr<Grammar> TrizolamGrammar::m_instance;
 
 // TODO: Probably best to get rid of this and just have a static grammar so we can attach the Command-based payload generators properly
@@ -208,7 +197,7 @@ Grammar TrizolamGrammar::create_new_grammar()
                                                         {"interactable-object", SYMBOL_TYPE::NONTERMINAL},
                                                     },
                                                 },
-                                                place_command_payload_generator,
+                                                m_command_processor->get_payload_generator("place-object-command"),
                                                 1}),
                 std::make_shared<Rule>(new Rule{"open-inventory-command",
                                                 {

@@ -1,5 +1,6 @@
-#include "CommandProcessor.h"
+#include "./CommandProcessor.h"
 #include "TravelCommand.h"
+#include "PlaceObjectCommand.h"
 
 CommandProcessor::CommandProcessor(std::shared_ptr<GameManager> gm, std::shared_ptr<SceneManager> sm)
 {
@@ -8,6 +9,7 @@ CommandProcessor::CommandProcessor(std::shared_ptr<GameManager> gm, std::shared_
 
     m_processors = {
         {"travel-command", new TravelCommand{}},
+        {"place-object-command", new PlaceObjectCommand{}},
     };
 }
 
@@ -25,7 +27,7 @@ void CommandProcessor::process_command(Rule::PlayerCommand command)
 
 CommandProcessor::~CommandProcessor()
 {
-    // TODO: DELETE M_PROCESSORS POINTERS
+    // TODO: I think this causes a segmentation fault on exit, but do I care?
     for (auto const &[key, value] : m_processors)
     {
         delete (value);

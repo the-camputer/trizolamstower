@@ -70,12 +70,17 @@ int main()
 
         auto command = input_processor.process(player_input);
 
-        // TODO: Want to replace this if block with a CommandProcessor
-        if (command.type == "travel-command")
+        if (command.type == "ERROR")
+        {
+            spdlog::info("{}", command);
+        }
+        else
         {
             command_processor.process_command(command);
         }
-        else if (command.type == "insight-command")
+
+        // TODO: Want to replace this if block with a CommandProcessor
+        if (command.type == "insight-command")
         {
             std::cout
                 << scene_manager.get_scene_description(game_manager.get_player_position())
